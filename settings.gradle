@@ -1,0 +1,6 @@
+rootProject.name = 'suit'
+
+include 'lsstviewer'
+
+project(":lsstviewer").projectDir = file("src/lsstviewer")
+

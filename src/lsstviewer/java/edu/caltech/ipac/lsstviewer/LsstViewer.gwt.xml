@@ -1,0 +1,17 @@
+<module rename-to="lsstviewer">
+    <inherits name='edu.caltech.ipac.firefly.FireFly'/>
+    <inherits name='edu.caltech.ipac.fftools.FFToolsLib'/>
+
+    <!-- Specify the app entry point class.                   -->
+    <entry-point class='edu.caltech.ipac.lsstviewer.core.LsstViewerEntryPoint'/>
+
+    <set-property name="gwt.suppressNonStaticFinalFieldWarnings" value="true" />
+    <source path="core"/>
+
+    <add-linker name="xsiframe" />
+    <set-configuration-property name="devModeRedirectEnabled" value="true"/>
+    <set-property name="compiler.useSourceMaps" value="true" />
+    <!--<set-property name="gwt.codeserver.port" value="9876" />-->
+
+
+</module>

@@ -1,0 +1,20 @@
+ext.fireflyPath = "$rootDir.path/../firefly/"
+
+
+
+allprojects {
+  defaultTasks 'build'
+  apply from: "$fireflyPath/buildScript/init.gincl"
+}
+
+subprojects {
+
+  apply plugin: "java"
+  apply from: "$fireflyPath/buildScript/depends.gincl"
+  apply from: "$rootDir.path/buildScript/depends.gincl"
+
+}
+
+
+
+apply from: "$fireflyPath/buildScript/utils.gincl"

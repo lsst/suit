@@ -1,0 +1,31 @@
+ext {
+}
+
+dependencies {
+  compile firefly_lib
+}
+
+repositories {
+  flatDir {
+    name 'suit_repo'
+    dirs  "$rootDir/jars/build",
+            "$rootDir/jars/informix",
+            "$rootDir/jars/votable"
+  }
+}
+
+
+// make sure node_modules exists.  if it does not, use the one from firefly's
+import java.nio.file.*;
+
+Path target = Paths.get("${fireflyPath}/node_modules");
+Path link = Paths.get("${rootDir.path}/node_modules");
+
+if (!Files.exists(link)) {
+  try {
+// creates hard link
+    Files.createSymbolicLink(link, target);
+  } catch (Exception ex) {
+    System.err.println(ex);
+  }
+};

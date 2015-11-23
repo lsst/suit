@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE Mission SYSTEM "Mission.dtd">
+
+<Mission name="square" dataTypes="ImageSet">
+    <Title>Square Searches</Title>
+    <SpacialTypes catalog="Cone,Box" imageSet="Cone"/>
+    <Desc>Square Stuff</Desc>
+
+    <ImageSet name="square-1">
+        <Title>Data Type 1</Title>
+        <Desc>Data Type 1 tool tip</Desc>
+        <DataSource searchProcId="somePython">
+            <Param key="searchType" value="MySearch1"/>
+        </DataSource>
+        <xi:include href="SQUARE/square_optional.xml"/>
+    </ImageSet>
+    <ImageSet name="square-2">
+        <Title>More Data</Title>
+        <Desc>More Data tool tip</Desc>
+        <DataSource searchProcId="somePython">
+            <Param key="searchType" value="MySearch2"/>
+        </DataSource>
+        <xi:include href="SQUARE/square_optional.xml"/>
+    </ImageSet>
+
+</Mission>
