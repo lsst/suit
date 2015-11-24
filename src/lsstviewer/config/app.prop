@@ -7,3 +7,4 @@ FireflyTools.Advertise= @FireflyTools.Advertise@
 
 irsa.gator.hostname=@irsa.gator.hostname@
 wise.ibe.host=@wise.ibe.host@
+python.exe= @python.exe@

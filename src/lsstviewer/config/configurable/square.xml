@@ -7,16 +7,18 @@
     <Desc>Square Stuff</Desc>
 
     <ImageSet name="square-1">
-        <Title>Data Type 1</Title>
-        <Desc>Data Type 1 tool tip</Desc>
-        <DataSource searchProcId="somePython">
+        <Title>Sample Image Set</Title>
+        <Desc>Sample Image Set tool tip</Desc>
+        <DataSource searchProcId="ImageMetadataFromPythonTask">
             <Param key="searchType" value="MySearch1"/>
+            <Param key="task" value="getImageMetadata"/>
+            <Param key="dir" value="/hydra/cm/suit/src/lsstviewer/test/data"/>
         </DataSource>
         <xi:include href="SQUARE/square_optional.xml"/>
     </ImageSet>
     <ImageSet name="square-2">
-        <Title>More Data</Title>
-        <Desc>More Data tool tip</Desc>
+        <Title>Another Image Set</Title>
+        <Desc>Another Set tool tip</Desc>
         <DataSource searchProcId="somePython">
             <Param key="searchType" value="MySearch2"/>
         </DataSource>
