@@ -10,43 +10,41 @@
             <NullAllowed/>
             <ShortDescription>this field chooses a band.</ShortDescription>
             <ErrorDescription>Please select band.</ErrorDescription>
-            <EnumValue id="A">
+            <EnumValue id="ALL-abc">
                 <Title>All Bands</Title>
             </EnumValue>
-            <EnumValue id="1">
-                <Title>Band 1</Title>
+            <EnumValue id="A">
+                <Title>Band A</Title>
             </EnumValue>
-            <EnumValue id="2">
-                <Title>Band 2</Title>
-            </EnumValue>
-            <EnumValue id="3">
-                <Title>Band 3</Title>
+            <EnumValue id="B">
+                <Title>Band B</Title>
             </EnumValue>
         </EnumString>
     </FieldGroup>
 
     <FieldGroup labelWidth="580">
-        <FieldGroup direction="horizontal" labelWidth="100">
-            <Date>
-                <Name>xdate</Name>
-                <Title>Reference Date</Title>
-                <NullAllowed/>
-                <ShortDescription>Reference date, specified in yyyy-MM-dd format. (Can differ by one day from the actual UT observation time.)</ShortDescription>
-                <ErrorDescription>Format error!</ErrorDescription>
-                <Format>yyyy-MM-dd</Format>
-            </Date>
-        </FieldGroup>
         <Label>
-            <![CDATA[<i>&nbsp;&nbsp;&nbsp;&nbsp;Enter reference date, format example: </i>1998-03-04<i>.</i><br><br>]]></Label>
+            <![CDATA[<i>&nbsp;&nbsp;&nbsp;&nbsp;Enter more data: </i>]]></Label>
     </FieldGroup>
+
     <FieldGroup align="left" labelWidth="100">
         <String>
-            <Name>scan</Name>
-            <Title>Scan Number</Title>
+            <Name>another</Name>
+            <Title>Another Number</Title>
             <PreferWidth>20</PreferWidth>
             <NullAllowed/>
             <ShortDescription>Optionally provide the nightly scan number (a positive integer) of the FITS images to return, example: 13.</ShortDescription>
         </String>
+        <Integer>
+             <Name>radius</Name>
+             <Title>Radius</Title>
+             <ShortDescription>Enter the radius between 1 and 3600 arcsec</ShortDescription>
+             <Default>5</Default>
+             <ErrorDescription>Radius should be between 1 and 3600 arcsec</ErrorDescription>
+             <PreferWidth>20</PreferWidth>
+             <Min>1</Min>
+             <Max>3600</Max>
+         </Integer>
     </FieldGroup>
 
 </Form>

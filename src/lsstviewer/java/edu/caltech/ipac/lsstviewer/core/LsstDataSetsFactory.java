@@ -155,7 +155,7 @@ public class LsstDataSetsFactory implements DataSetInfoFactory {
         squareProj.addCatagory(squareCatagory);
         Set<SpacialType> stSet= new HashSet<SpacialType>(10);
         addImageData(squareDsInfo, stSet);
-        stSet.add(SpacialType.Cone);
+//        stSet.add(SpacialType.Cone);
         dsList.add(squareDsInfo);
 
 

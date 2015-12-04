@@ -14,15 +14,17 @@
             <Param key="task" value="getImageMetadata"/>
             <Param key="dir" value="/hydra/cm/suit/src/lsstviewer/test/data"/>
         </DataSource>
-        <xi:include href="SQUARE/square_optional.xml"/>
+        <xi:include href="SQUARE/square_optional1.xml"/>
     </ImageSet>
     <ImageSet name="square-2">
         <Title>Another Image Set</Title>
         <Desc>Another Set tool tip</Desc>
-        <DataSource searchProcId="somePython">
+        <DataSource searchProcId="ImageMetadataFromPythonTask">
             <Param key="searchType" value="MySearch2"/>
+            <Param key="task" value="getImageMetadata"/>
+            <Param key="dir" value="/hydra/cm/suit/src/lsstviewer/test/data"/>
         </DataSource>
-        <xi:include href="SQUARE/square_optional.xml"/>
+        <xi:include href="SQUARE/square_optional2.xml"/>
     </ImageSet>
 
 </Mission>
