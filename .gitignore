@@ -1,10 +1,9 @@
 #
 # =======================================================================
-# ------ Ignore file of the "ife" repository
+# ------ Ignore file
 # =======================================================================
-#
+
 # -- ignore tmp files that are produce by programs such a vim, python and finder
-#
 *.ipr
 *.iws
 *.iml
@@ -13,31 +12,18 @@
 *.pyc
 .DS_Store
 *~
-#
+
 # -- ignore IntelliJ project files
-#
 .idea/
-#
+
 # -- ignore the build directories
-#
 build/
 .gradle/
-java/classes/
-java/dist/
-#
+
 # ------- ignore these configuration files
-#
-java/tools/build_override.properties
-#
-#
-#
-# ------- Ignore jar files that we build - these are artifacts 
-#
+
+# ------- Ignore jar files that we build - these are artifacts
 jars/build/
-#
-# ------ ignore build number files
-java/tools/build.number
-#
+
 # ignore javascript dependencies
 node_modules/
-node_modules

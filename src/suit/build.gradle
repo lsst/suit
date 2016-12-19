@@ -1,0 +1,32 @@
+
+ext["app-name"] = 'suit'
+
+apply from: "$fireflyPath/buildScript/gwt_webapp.gincl"
+
+
+dependencies {
+  compile project(':firefly')
+  webappLib FIREFLY_RUNTIME + firefly_lib
+}
+
+ext.appConfig = {
+  BuildMajor  = "1"
+  BuildMinor  = "0"
+  BuildRev    = "1"
+
+  ehcache.multicast.port = "4077"
+  environments {
+    dev {
+      ehcache.multicast.port = "5077"
+    }
+
+    test {
+      ehcache.multicast.port = "6077"
+    }
+
+    ops {
+      ehcache.multicast.port = "7077"
+    }
+  }
+}
+

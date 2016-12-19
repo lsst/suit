@@ -23,13 +23,6 @@ debug.mode=@debug.mode@
 # Enabling this feature may incur a small performance hit.
 ehcache.jmx.monitor=true
 
-# If set then ehcache will look throught the cache and call cleanup
-# on any element that implements Cleanupable
-# This does not remove an element from cache but just allows the element
-# to remove and large chunks of memory
-ehcache.cleanup.internal.minutes= 5
-ehcache.cleanup.cache.types= VISUALIZE
-
 # a number between 0-1.  percentage of the heap used for visualization cache.
 # if 0, it will not automatically calculate the size.  instead, it will use vis.shared.mem.size.
 pct.vis.shared.mem.size=@pct.vis.shared.mem.size@
@@ -42,7 +35,5 @@ sso.server.url=@sso.server.url@
 sso.user.profile.url=@sso.user.profile.url@
 
 help.base.url=@help.base.url@
-
-
 
 visualize.fits.MaxSizeInBytes= @visualize.fits.MaxSizeInBytes@
