@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app>
+
+    <display-name>@app-name@</display-name>
+
+
+    <!--CommonFilter-->
+    <filter>
+        <filter-name>CommonFilter</filter-name>
+        <filter-class>edu.caltech.ipac.firefly.server.filters.CommonFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>CommonFilter</filter-name>
+        <url-pattern>/admin/*</url-pattern>
+        <url-pattern>/servlet/*</url-pattern>
+        <url-pattern>/sticky/*</url-pattern>
+    </filter-mapping>
+
+    <!--NoCacheFilter-->
+    <filter>
+        <filter-name>NoCacheFilter</filter-name>
+        <filter-class>edu.caltech.ipac.firefly.server.filters.NoCacheFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>NoCacheFilter</filter-name>
+        <url-pattern>/firefly_loader.js</url-pattern>
+    </filter-mapping>
+
+    <!--GZipFilter-->
+    <filter>
+        <filter-name>GZipFilter</filter-name>
+        <filter-class>net.sf.ehcache.constructs.web.filter.GzipFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>GZipFilter</filter-name>
+        <url-pattern>*.html</url-pattern>
+        <url-pattern>*.css</url-pattern>
+        <url-pattern>*.js</url-pattern>
+        <url-pattern>/sticky/CmdSrv</url-pattern>
+        <url-pattern>/sticky/firefly/events</url-pattern>
+    </filter-mapping>
+
+
+
+    <!-- Servlet and its mappings -->
+    <servlet>
+        <servlet-class>edu.caltech.ipac.firefly.server.servlets.AnyFileDownload</servlet-class>
+        <servlet-name>FireFly Any FileDownload</servlet-name>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>FireFly Any FileDownload</servlet-name>
+        <url-pattern>/servlet/Download</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-class>edu.caltech.ipac.firefly.server.servlets.FitsUpload</servlet-class>
+        <servlet-name>FireFly FitsUpload</servlet-name>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>FireFly FitsUpload</servlet-name>
+        <url-pattern>/servlet/FireFly_FitsUpload</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-class>edu.caltech.ipac.firefly.server.servlets.ImageDownload</servlet-class>
+        <servlet-name>FireFly ImageDownload</servlet-name>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>FireFly ImageDownload</servlet-name>
+        <url-pattern>/sticky/FireFly_ImageDownload</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-class>edu.caltech.ipac.firefly.server.rpc.PlotServiceImpl</servlet-class>
+        <servlet-name>FireFly PlotService</servlet-name>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>FireFly PlotService</servlet-name>
+        <url-pattern>/sticky/FireFly_PlotService</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-class>edu.caltech.ipac.firefly.server.servlets.AnyFileUpload</servlet-class>
+        <servlet-name>Firefly FileUpload</servlet-name>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Firefly FileUpload</servlet-name>
+        <url-pattern>/sticky/Firefly_FileUpload</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-class>edu.caltech.ipac.firefly.server.servlets.ServerStatus</servlet-class>
+        <servlet-name>status</servlet-name>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>status</servlet-name>
+        <url-pattern>/admin/status</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-class>edu.caltech.ipac.firefly.server.servlets.CommandService</servlet-class>
+        <servlet-name>FireFly CommandService</servlet-name>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>FireFly CommandService</servlet-name>
+        <url-pattern>/sticky/CmdSrv</url-pattern>
+    </servlet-mapping>
+
+
+<!--    Resources                         -->
+    <resource-ref>
+        <description>Firefly Mail Session</description>
+        <res-ref-name>MailSession</res-ref-name>
+        <res-type>javax.mail.Session</res-type>
+        <res-auth>Container</res-auth>
+        <res-sharing-scope>Shareable</res-sharing-scope>
+    </resource-ref>
+
+    <context-param>
+        <param-name>AppName</param-name>
+        <param-value>Science User Interface and Tools</param-value>
+    </context-param>
+
+
+    <security-constraint>
+      <web-resource-collection>
+        <web-resource-name> Admin Area </web-resource-name>
+        <url-pattern>/admin/* </url-pattern>
+      </web-resource-collection>
+      <auth-constraint>
+        <!-- Roles that have access -->
+        <role-name>admin</role-name>
+      </auth-constraint>
+    </security-constraint>
+
+    <security-role>
+        <role-name>admin</role-name>
+    </security-role>
+
+    <!-- BASIC authentication -->
+    <login-config>
+      <auth-method> BASIC </auth-method>
+      <realm-name> Admin Area </realm-name>
+    </login-config>
+
+    <mime-mapping>
+        <extension>fits</extension>
+        <mime-type>image/fits</mime-type>
+    </mime-mapping>
+
+    <welcome-file-list>
+        <welcome-file>index.html</welcome-file>
+        <welcome-file>@launch.page@</welcome-file>
+    </welcome-file-list>
+
+
+</web-app>

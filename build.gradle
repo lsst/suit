@@ -5,6 +5,7 @@ ext.fireflyPath = "$rootDir.path/../firefly/"
 allprojects {
   defaultTasks 'build'
   apply from: "$fireflyPath/buildScript/init.gincl"
+  apply from: "$rootDir.path/buildScript/init.gincl"
 }
 
 subprojects {
@@ -18,3 +19,13 @@ subprojects {
 
 
 apply from: "$fireflyPath/buildScript/utils.gincl"
+
+task purge << {
+  println('Removes all build directories.')
+  delete "${rootDir}/build", "${rootDir}/jars/build", "${rootDir}/node_modules"
+}
+
+task clean << {
+  println('Removes all build directories.')
+  delete "${rootDir}/build", "${rootDir}/jars/build"
+}

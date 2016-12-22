@@ -1,31 +1,31 @@
-ext {
-}
-
 dependencies {
-  compile firefly_lib
 }
-
-repositories {
-  flatDir {
-    name 'suit_repo'
-    dirs  "$rootDir/jars/build",
-            "$rootDir/jars/informix",
-            "$rootDir/jars/votable"
-  }
-}
-
 
 // make sure node_modules exists.  if it does not, use the one from firefly's
 import java.nio.file.*;
 
-Path target = Paths.get("${fireflyPath}/node_modules");
-Path link = Paths.get("${rootDir.path}/node_modules");
+Path target_node_module = Paths.get("${fireflyPath}/node_modules");
+if (!Files.exists(target_node_module)) {
+  Files.createDirectory(target_node_module);
+}
 
-if (!Files.exists(link)) {
+Path node_modules = Paths.get("${rootDir.path}/node_modules");
+if (!Files.exists(node_modules)) {
   try {
-// creates hard link
-    Files.createSymbolicLink(link, target);
+// creates node_module symlink
+    Files.createSymbolicLink(node_modules, target_node_module);
   } catch (Exception ex) {
     System.err.println(ex);
+  }
+
+  Path pjson = Paths.get("${rootDir.path}/package.json");
+  if (!Files.exists(pjson)) {
+    try {
+// creates package.json symlink
+      Path target_pjson = Paths.get("${fireflyPath}/package.json");
+      Files.createSymbolicLink(pjson, target_pjson);
+    } catch (Exception ex) {
+      System.err.println(ex);
+    }
   }
 };

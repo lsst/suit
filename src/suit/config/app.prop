@@ -1,0 +1,9 @@
+# set this property to the search path to look for fits files
+# this path does not need to include the upload or cache directory
+visualize.fits.search.path=@alerts.dir@:@work.directory@:@visualize.fits.search.path@:@wise.filesystem_basepath@:@planck.filesystem_basepath@:@ptf.filesystem_basepath@:@lcogt.filesystem_basepath@:@lsst.filesystem_basepath@
+
+
+FireflyTools.Advertise= @FireflyTools.Advertise@
+
+irsa.gator.hostname=@irsa.gator.hostname@
+wise.ibe.host=@wise.ibe.host@

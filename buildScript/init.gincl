@@ -1,0 +1,8 @@
+
+repositories {
+    flatDir {
+        name 'suit_repo'
+        dirs  "$rootDir/jars/build"
+    }
+}
+
