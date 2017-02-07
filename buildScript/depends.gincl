@@ -17,15 +17,26 @@ if (!Files.exists(node_modules)) {
   } catch (Exception ex) {
     System.err.println(ex);
   }
+}
 
-  Path pjson = Paths.get("${rootDir.path}/package.json");
-  if (!Files.exists(pjson)) {
-    try {
+Path pjson = Paths.get("${rootDir.path}/package.json");
+if (!Files.exists(pjson)) {
+  try {
 // creates package.json symlink
-      Path target_pjson = Paths.get("${fireflyPath}/package.json");
-      Files.createSymbolicLink(pjson, target_pjson);
-    } catch (Exception ex) {
-      System.err.println(ex);
-    }
+    Path target_pjson = Paths.get("${fireflyPath}/package.json");
+    Files.createSymbolicLink(pjson, target_pjson);
+  } catch (Exception ex) {
+    System.err.println(ex);
   }
-};
+}
+
+Path lockf = Paths.get("${rootDir.path}/yarn.lock");
+if (!Files.exists(lockf)) {
+  try {
+// creates yarn.lock symlink
+    Path target_lockf = Paths.get("${fireflyPath}/yarn.lock");
+    Files.createSymbolicLink(lockf, target_lockf);
+  } catch (Exception ex) {
+    System.err.println(ex);
+  }
+}
