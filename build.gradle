@@ -1,3 +1,5 @@
+import java.nio.file.*;
+
 ext.fireflyPath = "$rootDir.path/../firefly/"
 
 
@@ -23,6 +25,8 @@ apply from: "$fireflyPath/buildScript/utils.gincl"
 task purge << {
   println('Removes all build directories.')
   delete "${rootDir}/build", "${rootDir}/jars/build", "${rootDir}/node_modules"
+  Files.delete(Paths.get("${rootDir}/yarn.lock"));
+  Files.delete(Paths.get("${rootDir}/package.json"));
 }
 
 task clean << {
