@@ -26,4 +26,6 @@ build/
 jars/build/
 
 # ignore javascript dependencies
-node_modules/
+node_modules
+package.json
+yarn.lock

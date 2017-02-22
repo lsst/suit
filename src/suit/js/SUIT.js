@@ -6,6 +6,7 @@
 import {get} from 'lodash';
 
 import {firefly, Templates} from 'firefly/Firefly.js';
+import {timeSeriesButton} from './actions.jsx';
 // import {HELP_LOAD} from 'firefly/core/AppDataCntlr.js';
 
 
@@ -29,14 +30,21 @@ const defaults = {
         imageTabs: ['fileUpload', 'url', '2mass', 'wise', 'sdss', 'msx', 'dss', 'iras'],
         irsaCatalogFilter: 'lsstFilter',
         catalogSpacialOp: 'polygonWhenPlotExist'
-    }
+    },
+    rightButtons: [timeSeriesButton]
 };
 
 const app = get(window, 'firefly.app', {});
 const options = Object.assign({}, defaults.options, app.options);
 
 var viewer, props;
-if (app) {
+if (app.template) {
+    if (app.template === 'LightCurveViewer') {
+        defaults.menu = [
+            {label:'Upload', action:'LCUpload'},
+            {label:'Help', action:'app_data.helpLoad', type:'COMMAND'},
+        ];
+    }
     props = Object.assign({}, defaults, app);
     viewer = Templates[props.template];
 }
