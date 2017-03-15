@@ -23,6 +23,7 @@
     </filter>
     <filter-mapping>
         <filter-name>NoCacheFilter</filter-name>
+        <url-pattern>*.nocache.js</url-pattern>
         <url-pattern>/firefly_loader.js</url-pattern>
     </filter-mapping>
 
@@ -71,15 +72,6 @@
     </servlet-mapping>
 
     <servlet>
-        <servlet-class>edu.caltech.ipac.firefly.server.servlets.AnyFileUpload</servlet-class>
-        <servlet-name>Firefly FileUpload</servlet-name>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>Firefly FileUpload</servlet-name>
-        <url-pattern>/sticky/Firefly_FileUpload</url-pattern>
-    </servlet-mapping>
-
-    <servlet>
         <servlet-class>edu.caltech.ipac.firefly.server.servlets.ServerStatus</servlet-class>
         <servlet-name>status</servlet-name>
     </servlet>
@@ -99,19 +91,21 @@
 
 
 <!--    Resources                         -->
+
     <resource-ref>
-        <description>Firefly Mail Session</description>
+        <description>Operation Datasource</description>
+        <res-ref-name>jdbc/Operation</res-ref-name>
+        <res-type>javax.sql.DataSource</res-type>
+        <res-auth>Container</res-auth>
+    </resource-ref>
+
+    <resource-ref>
+        <description>Mail Session</description>
         <res-ref-name>MailSession</res-ref-name>
         <res-type>javax.mail.Session</res-type>
         <res-auth>Container</res-auth>
         <res-sharing-scope>Shareable</res-sharing-scope>
     </resource-ref>
-
-    <context-param>
-        <param-name>AppName</param-name>
-        <param-value>Science User Interface and Tools</param-value>
-    </context-param>
-
 
     <security-constraint>
       <web-resource-collection>
@@ -146,7 +140,8 @@
 
     <!--welcome page-->
     <welcome-file-list>
-        <welcome-file>main.html</welcome-file>
+        <welcome-file>@launch.page@</welcome-file>
+        <welcome-file>index.html</welcome-file>
     </welcome-file-list>
 
     <!--url mapper-->
