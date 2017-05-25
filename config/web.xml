@@ -11,9 +11,11 @@
     </filter>
     <filter-mapping>
         <filter-name>CommonFilter</filter-name>
+        <url-pattern>*.html</url-pattern>
         <url-pattern>/admin/*</url-pattern>
         <url-pattern>/servlet/*</url-pattern>
         <url-pattern>/sticky/*</url-pattern>
+        <url-pattern>/oidc/*</url-pattern>
     </filter-mapping>
 
     <!--NoCacheFilter-->
@@ -41,6 +43,33 @@
         <url-pattern>/sticky/firefly/events</url-pattern>
     </filter-mapping>
 
+
+    <!--Authentication-->
+    <filter>
+        <filter-name>AuthFilter</filter-name>
+        <filter-class>edu.caltech.ipac.firefly.server.security.SsoCheckFilter</filter-class>
+        <!--<init-param>-->
+        <!--<param-name>exclude-pattern</param-name>-->
+        <!--<param-value>/public/.*|/demo/.*</param-value>-->
+        <!--</init-param>-->
+    </filter>
+    <filter-mapping>
+        <filter-name>AuthFilter</filter-name>
+        <url-pattern>*.html</url-pattern>
+        <url-pattern>/admin/*</url-pattern>
+        <url-pattern>/servlet/*</url-pattern>
+        <url-pattern>/sticky/*</url-pattern>
+    </filter-mapping>
+
+    <servlet>
+        <servlet-name>VerifyServlet</servlet-name>
+        <servlet-class>edu.caltech.ipac.firefly.server.security.SsoVerifyServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>VerifyServlet</servlet-name>
+        <url-pattern>/oidc/verify</url-pattern>
+    </servlet-mapping>
+    <!--Authentication  end -->
 
 
     <!-- Servlet and its mappings -->

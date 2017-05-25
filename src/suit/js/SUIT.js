@@ -16,6 +16,7 @@ import {timeSeriesButton} from './actions.jsx';
  */
 const defaults = {
     div: 'app',
+    showUserInfo: true,
     appTitle: '',
     appIcon: 'images/lsst_logo.png',
     template: 'FireflyViewer',

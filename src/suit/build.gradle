@@ -6,7 +6,7 @@ apply from: "$fireflyPath/buildScript/gwt_webapp.gincl"
 
 dependencies {
   compile project(':firefly')
-  webappLib FIREFLY_RUNTIME + firefly_lib
+  webappLib oidc_lib, FIREFLY_RUNTIME + firefly_lib
 }
 
 ext.appConfig = {

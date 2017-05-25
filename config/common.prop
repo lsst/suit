@@ -34,6 +34,11 @@ ArrayRenderer.padding=\
 sso.server.url=@sso.server.url@
 sso.user.profile.url=@sso.user.profile.url@
 
+sso.framework.name=@sso.framework.name@
+sso.auth.required=@sso.auth.required@
+oidc_client_id = @oidc_client_id@
+oidc_client_secret = @oidc_client_secret@
+
 help.base.url=@help.base.url@
 
 visualize.fits.MaxSizeInBytes= @visualize.fits.MaxSizeInBytes@
