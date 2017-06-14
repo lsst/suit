@@ -61,6 +61,8 @@ function checkForTimeSeriesData({tbl_id, highlightedRow}) {
         const row = getTblRowAsObj(getTblById(tbl_id), highlightedRow) || {};
         const {mission, tableType, filterIdColumn, objectIdColumn} = get(tableModel, 'tableMeta', {});
         const objectId = objectIdColumn ? get(row, objectIdColumn, '') : '';
+        let   noteForSDSS = '';
+
         const hasForcedSource = (tt) => {
                 var ttype = !tt ? -1 :
                             [SOURCE, FORCEDSOURCE]
@@ -79,14 +81,17 @@ function checkForTimeSeriesData({tbl_id, highlightedRow}) {
         const showEnable = () => {   // disable the button for sdss, object, and not i band
                  if (mission.toLowerCase().includes('wise')) return true;
                  const sdssBand = {u: '0', g: '1', r:'2', i: '3', z: '4'};
-                 const filterId = filterIdColumn ? get(row, filterIdColumn) : sdssBand.i;
+                 const bShow = filterIdColumn ? get(row, filterIdColumn) === sdssBand.i : true;
 
-                 return filterId && filterId === sdssBand.i ? true : false;
+                 if (!bShow) {
+                     noteForSDSS = ', forced photometry is limited to i-band objects only.';
+                 }
+                 return bShow;
         };
 
         const show = showView()&&(!!objectId);
 
-        return {show, enable:show&&showEnable(),  title: `View Time Series: ${objectId}`};
+        return {show, enable:show&&showEnable(),  title: `View Time Series: ${objectId}${noteForSDSS}`};
     }
 }
 
