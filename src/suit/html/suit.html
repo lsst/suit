@@ -7,7 +7,14 @@
     <title>LSST PDAC</title>
 
     <script>
-        window.firefly = {app: {template: 'FireflyViewer'}};     // set to app mode, instead of api.
+        window.firefly = {
+                            app: {
+                               template: 'FireflyViewer',     // set to app mode, instead of api.
+                               options: {
+                                 charts: {chartEngine: 'plotly'}
+                               }
+                            }
+                         };
     </script>
     <script  type="text/javascript" src="firefly_loader.js"></script>
 </head>
