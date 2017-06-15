@@ -34,15 +34,19 @@ function launchTimeSeries({tbl_id, highlightedRow}) {
     } else {
         const row = getTblRowAsObj(getTblById(tbl_id), highlightedRow) || {};
         const {mission, tableName, database, objectIdColumn} = get(tableModel, 'tableMeta') || {};
-        const objectId = objectIdColumn ? get(row, objectIdColumn, undefined) : undefined; // || row.id;  this yield too many empty table.
-        const META_INFO = {[LC.META_MISSION]: mission};
-        req = makeTblRequest('LSSTLightCurveQuery', objectId, {objectId, table_name: tableName, database}, {tbl_id: LC.RAW_TABLE, META_INFO});
+        const objectId = objectIdColumn ? get(row, objectIdColumn, undefined) : undefined;
 
-        if (mission.toLowerCase().includes('wise')) {
-           req = req && addExistingConstraints(tableModel, req);
+        if (!isNil(objectId)) {
+            const META_INFO = {[LC.META_MISSION]: mission};
+
+            req = makeTblRequest('LSSTLightCurveQuery', objectId, {objectId, table_name: tableName, database}, {tbl_id: LC.RAW_TABLE, META_INFO});
+
+            if (mission.toLowerCase().includes('wise')) {
+                req = req && addExistingConstraints(tableModel, req);
+            }
+
+            req && getViewer(undefined, 'timeseries').showTable(req);
         }
-
-        req && getViewer(undefined, 'timeseries').showTable(req);
     }
 }
 
@@ -89,9 +93,9 @@ function checkForTimeSeriesData({tbl_id, highlightedRow}) {
                  return bShow;
         };
 
-        const show = showView()&&(!!objectId);
+        const show = showView();
 
-        return {show, enable:show&&showEnable(),  title: `View Time Series: ${objectId}${noteForSDSS}`};
+        return {show, enable:(!!objectId)&&show&&showEnable(),  title: `View Time Series: ${objectId}${noteForSDSS}`};
     }
 }
 
