@@ -48,10 +48,12 @@
     <filter>
         <filter-name>AuthFilter</filter-name>
         <filter-class>edu.caltech.ipac.firefly.server.security.SsoCheckFilter</filter-class>
-        <!--<init-param>-->
-        <!--<param-name>exclude-pattern</param-name>-->
-        <!--<param-value>/public/.*|/demo/.*</param-value>-->
-        <!--</init-param>-->
+        <init-param>
+            <param-name>exclude-pattern</param-name>
+            <param-value>/public/.*|/demo/.*</param-value>
+            <param-name>allow</param-name>
+            <param-value>lsst_pdac,lsst_users</param-value>
+        </init-param>
     </filter>
     <filter-mapping>
         <filter-name>AuthFilter</filter-name>
@@ -166,6 +168,12 @@
         <extension>fit</extension>
         <mime-type>image/fits</mime-type>
     </mime-mapping>
+
+    <!--error page-->
+    <error-page>
+        <error-code>401</error-code>
+        <location>/public/status-401.html</location>
+    </error-page>
 
     <!--welcome page-->
     <welcome-file-list>
