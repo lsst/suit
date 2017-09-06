@@ -38,7 +38,8 @@ sso.framework.name=@sso.framework.name@
 sso.auth.required=@sso.auth.required@
 oidc_client_id = @oidc_client_id@
 oidc_client_secret = @oidc_client_secret@
-oidc_redirect_uri = @__$sso_redirect_uri@
+oidc_redirect_uri = @sso_redirect_uri@
+__$sso_redirect_uri = @sso_redirect_uri@
 
 help.base.url=@help.base.url@
 
