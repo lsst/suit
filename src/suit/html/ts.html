@@ -8,13 +8,14 @@
 
     <script>
         window.firefly = {
-                            app: {
-                               template: 'LightCurveViewer',     // set to use the light curve template
-                                options: {
-                                    charts: {chartEngine: 'plotly'}
-                                }
-                            }
-                         };
+            app: {
+               template: 'LightCurveViewer',     // set to use the light curve template
+                menu: [
+                    {label:'Upload', action:'LCUpload'},
+                    {label:'Help', action:'app_data.helpLoad', type:'COMMAND'},
+                ],
+            }
+        };
     </script>
     <script  type="text/javascript" src="firefly_loader.js"></script>
 </head>
