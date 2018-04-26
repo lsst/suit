@@ -5,49 +5,37 @@
 
 import {get} from 'lodash';
 
-import {firefly, Templates} from 'firefly/Firefly.js';
+import {firefly} from 'firefly/Firefly.js';
 import {timeSeriesButton} from './actions.jsx';
-// import {HELP_LOAD} from 'firefly/core/AppDataCntlr.js';
+import {mergeObjectOnly} from 'firefly/util/WebUtil.js';
 
 
 /**
  * This entry point is customized for LSST suit.  Refer to FFEntryPoint.js for information on 
  * what could be used in defaults.
  */
-const defaults = {
-    div: 'app',
+var props = {
     showUserInfo: true,
-    appTitle: '',
     appIcon: 'images/lsst_logo.png',
-    template: 'FireflyViewer',
+    showViewsSwitch: true,
+    rightButtons: [timeSeriesButton],
     menu: [
         {label: 'LSST Data', action: 'LsstCatalogDropDown'},
         {label: 'External Images', action: 'ImageSelectDropDownCmd'},
         {label: 'External Catalogs', action: 'IrsaCatalogDropDown'},
         {label: 'Add Chart', action: 'ChartSelectDropDownCmd'}
     ], 
-    options: {
-        MenuItemKeys: {maskOverlay: true},
-        imageTabs: ['fileUpload', 'url', '2mass', 'wise', 'sdss', 'msx', 'dss', 'iras'],
-        irsaCatalogFilter: 'lsstFilter',
-        catalogSpacialOp: 'polygonWhenPlotExist'
-    },
-    rightButtons: [timeSeriesButton]
 };
 
-const app = get(window, 'firefly.app', {});
-const options = Object.assign({}, defaults.options, app.options);
+var options = {
+    MenuItemKeys: {maskOverlay: true},
+    imageTabs: ['fileUpload', 'url', '2mass', 'wise', 'sdss', 'msx', 'dss', 'iras'],
+    irsaCatalogFilter: 'lsstFilter',
+    catalogSpacialOp: 'polygonWhenPlotExist',
+    charts: {chartEngine: 'plotly', multitrace: true}
+};
 
-var viewer, props;
-if (app.template) {
-    if (app.template === 'LightCurveViewer') {
-        defaults.menu = [
-            {label:'Upload', action:'LCUpload'},
-            {label:'Help', action:'app_data.helpLoad', type:'COMMAND'},
-        ];
-    }
-    props = Object.assign({}, defaults, app);
-    viewer = Templates[props.template];
-}
 
-firefly.bootstrap(options, viewer, props);
+props = mergeObjectOnly(props, get(window, 'firefly.app', {}));
+options = mergeObjectOnly(options, get(window, 'firefly.options', {}));
+firefly.bootstrap(props, options);
