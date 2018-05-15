@@ -11,7 +11,7 @@ import {mergeObjectOnly} from 'firefly/util/WebUtil.js';
 
 
 /**
- * This entry point is customized for LSST suit.  Refer to FFEntryPoint.js for information on 
+ * This entry point is customized for LSST suit.  Refer to FFEntryPoint.js for information on
  * what could be used in defaults.
  */
 var props = {
@@ -24,7 +24,7 @@ var props = {
         {label: 'External Images', action: 'ImageSelectDropDownCmd'},
         {label: 'External Catalogs', action: 'IrsaCatalogDropDown'},
         {label: 'Add Chart', action: 'ChartSelectDropDownCmd'}
-    ], 
+    ],
 };
 
 var options = {
@@ -32,7 +32,10 @@ var options = {
     imageTabs: ['fileUpload', 'url', '2mass', 'wise', 'sdss', 'msx', 'dss', 'iras'],
     irsaCatalogFilter: 'lsstFilter',
     catalogSpacialOp: 'polygonWhenPlotExist',
-    charts: {chartEngine: 'plotly', multitrace: true}
+    // hips : {useForCoverage: false, useForImageSearch: true,
+    //     hipsSources: 'all',
+    //     defHipsSources: {source: 'irsa', label: 'Featured'},
+    //     mergedListPriority: 'irsa'}
 };
 
 
