@@ -1,12 +1,10 @@
-import React, {PureComponent} from 'react';
-import PropTypes from 'prop-types';
+import React from 'react';
 import {get, set, has, cloneDeep, omitBy, isNil} from 'lodash';
 import {ActiveTableButton} from 'firefly/tables/ui/ActiveTableButton.jsx';
 import {getTblById, getTblRowAsObj} from 'firefly/tables/TableUtil.js';
 import {makeTblRequest} from 'firefly/tables/TableRequestUtil.js';
 import {getViewer} from 'firefly/api/ApiViewer.js';
 import {LC} from 'firefly/templates/lightcurve/LcManager.js';
-import {FORCEDSOURCE, SOURCE, LSSTCatalogTableType} from 'firefly/visualize/ui/LSSTCatalogSelectViewPanel.jsx';
 
 
 export function timeSeriesButton() {
@@ -69,18 +67,15 @@ function checkForTimeSeriesData({tbl_id, highlightedRow}) {
         let   noteForSDSS = '';
 
         const hasForcedSource = (tt) => {
-                var ttype = !tt ? -1 :
-                            [SOURCE, FORCEDSOURCE]
-                                .findIndex((v) => LSSTCatalogTableType[v].toLowerCase() === tt.toLowerCase());
+                const ttype = !tt ? -1 :
+                            ['source', 'forcedSource']
+                                .findIndex((v) => v.toLowerCase() === tt.toLowerCase());
 
                 return ttype !== -1;
         };
 
         const showView = () => {
-                if (!mission || !hasForcedSource(tableType)) {
-                   return false;
-                }
-                return true;
+                return !(!mission || !hasForcedSource(tableType));
         };
 
         const showEnable = () => {   // disable the button for sdss, object, and not i band
