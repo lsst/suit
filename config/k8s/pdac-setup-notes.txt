@@ -1,0 +1,29 @@
+SUIT on PDAC Kubernetes  (7/2018)
+
+kubectl is only available to suiadmin on lsst-sui-proxy01
+
+add lsst-sui-proxy01, lsst-sui-tomcat01, and lsst-sui-tomcat02 into PDAC cluster
+
+add label to tomcat1&2 so suit know where to deploy to
+$ kubectl label node lsst-sui-tomcat01 lsst.lsp.nodes=portal
+$ kubectl label node lsst-sui-tomcat02 lsst.lsp.nodes=portal
+
+in suit.yaml, add nodeSelector block to select the labeled nodes
+    spec:
+      nodeSelector:
+        lsst.lsp.nodes: portal
+...
+
+create suit-secret for tomcat admin user
+create namespace ‘portal’ for portal related pod, svc, ing
+
+deploy suit as https://lsst-pdac.ncsa.illinois.edu/portal/suit/
+- 2 pods from ipac/suit:lsst-dev
+- each with 24GB of memory
+
+point workarea to shared filesystem using ‘hostPath’.
+
+replication is working as usual.
+
+login is disabled until we can get oauth2 working properly.
+

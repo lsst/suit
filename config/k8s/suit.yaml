@@ -1,0 +1,96 @@
+apiVersion: apps/v1beta2 # for versions before 1.8.0 use apps/v1beta1
+kind: Deployment
+metadata:
+  name: suit
+  namespace: portal
+spec:
+  selector:
+    matchLabels:
+      app: suit
+  replicas: 2 # tells deployment to run 1 pods matching the template
+  template: # create pods using pod definition in this template
+    metadata:
+      labels:
+        app: suit
+    spec:
+      nodeSelector:
+        lsst.lsp.nodes: portal
+      containers:
+      - name: suit
+        image: ipac/suit:lsst-dev
+        imagePullPolicy: Always
+        resources:
+          limits:
+            memory: "24Gi"
+        ports:
+        - containerPort: 8080
+        volumeMounts:
+        - mountPath: /firefly/workarea
+          name: firefly-workarea
+        env:
+        - name: MANAGER
+          value: "TRUE"
+        - name: ADMIN_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: suit-secret
+              key: ADMIN_PASSWORD
+        - name: FIREFLY_OPTS
+          value: "-Dvisualize.fits.search.path=/datasets"
+        - name: FIREFLY_WORK_DIR
+          value: /firefly/workarea
+        - name: MAX_JVM_SIZE
+          value: "23G"
+        - name: DEBUG
+          value: "FALSE"
+      volumes:
+      - name: firefly-workarea
+        hostPath:
+          path: /sui/firefly/workarea
+          type: Directory
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: suit
+  namespace: portal
+spec:
+  selector:
+    app: suit
+  type: NodePort
+  ports:
+  - protocol: TCP
+    port: 8080 # the port that this service should serve on
+    targetPort: 8080
+
+---
+
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: suit
+  namespace: portal
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    nginx.ingress.kubernetes.io/affinity: "cookie"
+    nginx.ingress.kubernetes.io/proxy-body-size: "0m"
+    nginx.ingress.kubernetes.io/rewrite-target: /suit
+    nginx.ingress.kubernetes.io/proxy-redirect-from: ~^(http[s]?://[^/]+)/(.+)$
+    nginx.ingress.kubernetes.io/proxy-redirect-to: $1/portal/$2
+    nginx.ingress.kubernetes.io/proxy-cookie-path: /suit /portal/suit
+    nginx.ingress.kubernetes.io/configuration-snippet: |
+      proxy_set_header X-Forwarded-Proto https;
+      proxy_set_header X-Forwarded-Port 443;
+      proxy_set_header X-Forwarded-Path /portal/suit;
+spec:
+  rules:
+  - host: lsst-pdac.ncsa.illinois.edu
+    http:
+      paths:
+      - path: "/portal/suit"
+        backend:
+          serviceName: suit
+          servicePort: 8080
+
