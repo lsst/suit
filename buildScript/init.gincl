@@ -1,3 +1,4 @@
+project.ext.onlinehelp_dir = "$rootDir/../suit-onlinehelp/"
 
 repositories {
     flatDir {
