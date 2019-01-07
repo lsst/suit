@@ -41,6 +41,6 @@ oidc_client_secret = @oidc_client_secret@
 oidc_redirect_uri = @sso_redirect_uri@
 __$sso_redirect_uri = @sso_redirect_uri@
 
-help.base.url=@help.base.url@
+help.base.url=@__$help.base.url@
 
 visualize.fits.MaxSizeInBytes= @visualize.fits.MaxSizeInBytes@
