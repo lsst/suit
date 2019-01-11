@@ -2,7 +2,7 @@ apiVersion: apps/v1beta2 # for versions before 1.8.0 use apps/v1beta1
 kind: Deployment
 metadata:
   name: suit
-  namespace: portal
+  namespace: portal-int
 spec:
   selector:
     matchLabels:
@@ -71,7 +71,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: suit
-  namespace: portal
+  namespace: portal-int
 spec:
   selector:
     app: suit
@@ -87,7 +87,7 @@ apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
   name: suit
-  namespace: portal
+  namespace: portal-int
   annotations:
     kubernetes.io/ingress.class: "nginx"
     nginx.ingress.kubernetes.io/affinity: "cookie"
@@ -101,6 +101,10 @@ metadata:
       proxy_set_header X-Forwarded-Port 443;
       proxy_set_header X-Forwarded-Path /portal/suit;
 spec:
+  tls:
+  - hosts:
+    - lsst-lsp-int.ncsa.illinois.edu
+    secretName: tls-certificate-lsp-stable
   rules:
   - host: lsst-lsp-int.ncsa.illinois.edu
     http:

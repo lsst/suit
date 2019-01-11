@@ -12,6 +12,14 @@ data:
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: portal
+  name: portal-int
+
+
+---
+
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: portal-stable
 
 
