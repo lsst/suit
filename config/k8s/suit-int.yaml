@@ -14,7 +14,15 @@ spec:
         app: suit
     spec:
       nodeSelector:
-        lsst.lsp.nodes: portal
+        environment: portal-int
+      tolerations:
+      - key: "dedicated"
+        operator: "Equal"
+        value: "portal"
+        effect: "NoSchedule"
+      securityContext:
+        runAsUser: 101
+        fsGroup: 101
       containers:
       - name: suit
         image: ipac/suit:lsst-dev
@@ -27,6 +35,8 @@ spec:
         volumeMounts:
         - mountPath: /firefly/workarea
           name: firefly-workarea
+        - mountPath: /firefly/config
+          name: firefly-config
         env:
         - name: MANAGER
           value: "TRUE"
@@ -37,8 +47,10 @@ spec:
               key: ADMIN_PASSWORD
         - name: FIREFLY_OPTS
           value: "-Dvisualize.fits.search.path=/datasets"
-        - name: FIREFLY_WORK_DIR
+        - name: FIREFLY_SHARED_WORK_DIR
           value: /firefly/workarea
+        - name: SERVER_CONFIG_DIR
+          value: /firefly/config
         - name: MAX_JVM_SIZE
           value: "23G"
         - name: DEBUG
@@ -47,6 +59,10 @@ spec:
       - name: firefly-workarea
         hostPath:
           path: /sui/firefly/workarea
+          type: Directory
+      - name: firefly-config
+        hostPath:
+          path: /sui/firefly/config
           type: Directory
 
 ---
@@ -86,7 +102,7 @@ metadata:
       proxy_set_header X-Forwarded-Path /portal/suit;
 spec:
   rules:
-  - host: lsst-pdac.ncsa.illinois.edu
+  - host: lsst-lsp-int.ncsa.illinois.edu
     http:
       paths:
       - path: "/portal/suit"

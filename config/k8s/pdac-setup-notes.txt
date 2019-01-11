@@ -1,29 +1,81 @@
-SUIT on PDAC Kubernetes  (7/2018)
+SUIT on PDAC Kubernetes
+updated on 1/11/2019 to reflect changes needed to setup portal/suit deployment on 'k8s commons'
 
-kubectl is only available to suiadmin on lsst-sui-proxy01
+kubectl is available to designated user on lsst-lsp-int and lsst-lsp-stable
 
-add lsst-sui-proxy01, lsst-sui-tomcat01, and lsst-sui-tomcat02 into PDAC cluster
+To ensure portal nodes are reserved for portal's pods:
+add taint to portal nodes
+$ kubectl taint nodes lsst-sui-proxy01  dedicated=portal:NoSchedule
+$ kubectl taint nodes lsst-sui-tomcat01 dedicated=portal:NoSchedule
+$ kubectl taint nodes lsst-sui-tomcat02 dedicated=portal:NoSchedule
 
-add label to tomcat1&2 so suit know where to deploy to
-$ kubectl label node lsst-sui-tomcat01 lsst.lsp.nodes=portal
-$ kubectl label node lsst-sui-tomcat02 lsst.lsp.nodes=portal
+To designate 1 node for 'int' environment and 2 nodes for 'stable' environment
 
-in suit.yaml, add nodeSelector block to select the labeled nodes
+add label environment=portal-int to node reserved for 'int' env
+$ kubectl label node lsst-sui-proxy01  environment=portal-int
+
+add label environment=portal-stable to node reserved for 'stable' env
+$ kubectl label node lsst-sui-tomcat01 environment=portal-stable
+$ kubectl label node lsst-sui-tomcat02 environment=portal-stable
+
+NOTE: multiple firefly pods required a 'shared' directory on its host.
+As is, tomcat01-2 has a filesystem mounted at /sui/firefly/workarea for this purpose
+
+from suit-pdac-setup.yaml:
+- create namespace ‘portal’ for portal related pod, svc, ing
+- create suit-secret for tomcat admin user
+
+
+yaml files are located in config/k8s/ on GitHub: https://github.com/lsst/suit
+suit-int.yaml is for the 'int' environment
+suit-stable.yaml: is for the 'stable' environment
+They are mostly the same with only a few differences.  In the future, we may want to
+further customize each one to better fit its usage/environment.
+
+
+Below is specific to the 'int' environment.  But, it's similar for 'stable' as well.
+from suit-int.yaml:
+
+add tolerations block to allow this pod to run on portal nodes
     spec:
+    ...
+      tolerations:
+      - key: "dedicated"
+        operator: "Equal"
+        value: "portal"
+        effect: "NoSchedule"
+
+add nodeSelector block to select portal node reserved for 'int'
+change this to portal-stable when deploying on 'stable' env
+    spec:
+    ...
       nodeSelector:
-        lsst.lsp.nodes: portal
-...
+        environment: portal-int
 
-create suit-secret for tomcat admin user
-create namespace ‘portal’ for portal related pod, svc, ing
+add securityContext block to run as suiadmin
+    spec:
+    ...
+      securityContext:
+        runAsUser: 101
+        fsGroup: 101
 
-deploy suit as https://lsst-pdac.ncsa.illinois.edu/portal/suit/
+
+point 'FIREFLY_SHARED_WORK_DIR' and 'SERVER_CONFIG_DIR' to /sui/firefly/{workarea,config} on the host filesystem using ‘hostPath’.
+      volumes:
+      - name: firefly-workarea
+        hostPath:
+          path: /sui/firefly/workarea
+          type: Directory
+      - name: firefly-config
+        hostPath:
+          path: /sui/firefly/config
+          type: Directory
+
+
+deploy suit as https://lsst-lsp-int.ncsa.illinois.edu/portal/suit/
 - 2 pods from ipac/suit:lsst-dev
 - each with 24GB of memory
 
-point workarea to shared filesystem using ‘hostPath’.
-
-replication is working as usual.
 
 login is disabled until we can get oauth2 working properly.
 
