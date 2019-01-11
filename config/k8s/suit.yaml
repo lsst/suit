@@ -86,7 +86,7 @@ metadata:
       proxy_set_header X-Forwarded-Path /portal/suit;
 spec:
   rules:
-  - host: lsst-pdac.ncsa.illinois.edu
+  - host: lsst-lsp-int.ncsa.illinois.edu
     http:
       paths:
       - path: "/portal/suit"
