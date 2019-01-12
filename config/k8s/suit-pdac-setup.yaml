@@ -2,7 +2,7 @@ apiVersion: v1
 kind: Secret
 metadata:
   name: suit-secret
-  namespace: portal
+  namespace: portal-int
 type: Opaque
 data:
   ADMIN_PASSWORD: bHNzdA==
@@ -12,6 +12,24 @@ data:
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: portal
+  name: portal-int
+
+
+---
+
+apiVersion: v1
+kind: Secret
+metadata:
+  name: suit-secret
+  namespace: portal-stable
+type: Opaque
+data:
+  ADMIN_PASSWORD: bHNzdA==
+
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: portal-stable
 
 

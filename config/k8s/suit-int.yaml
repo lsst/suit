@@ -2,7 +2,7 @@ apiVersion: apps/v1beta2 # for versions before 1.8.0 use apps/v1beta1
 kind: Deployment
 metadata:
   name: suit
-  namespace: portal
+  namespace: portal-int
 spec:
   selector:
     matchLabels:
@@ -14,7 +14,15 @@ spec:
         app: suit
     spec:
       nodeSelector:
-        lsst.lsp.nodes: portal
+        environment: portal-int
+      tolerations:
+      - key: "dedicated"
+        operator: "Equal"
+        value: "portal"
+        effect: "NoSchedule"
+      securityContext:
+        runAsUser: 101
+        fsGroup: 101
       containers:
       - name: suit
         image: ipac/suit:lsst-dev
@@ -27,6 +35,8 @@ spec:
         volumeMounts:
         - mountPath: /firefly/workarea
           name: firefly-workarea
+        - mountPath: /firefly/config
+          name: firefly-config
         env:
         - name: MANAGER
           value: "TRUE"
@@ -37,8 +47,10 @@ spec:
               key: ADMIN_PASSWORD
         - name: FIREFLY_OPTS
           value: "-Dvisualize.fits.search.path=/datasets"
-        - name: FIREFLY_WORK_DIR
+        - name: FIREFLY_SHARED_WORK_DIR
           value: /firefly/workarea
+        - name: SERVER_CONFIG_DIR
+          value: /firefly/config
         - name: MAX_JVM_SIZE
           value: "23G"
         - name: DEBUG
@@ -48,6 +60,10 @@ spec:
         hostPath:
           path: /sui/firefly/workarea
           type: Directory
+      - name: firefly-config
+        hostPath:
+          path: /sui/firefly/config
+          type: Directory
 
 ---
 
@@ -55,7 +71,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: suit
-  namespace: portal
+  namespace: portal-int
 spec:
   selector:
     app: suit
@@ -71,7 +87,7 @@ apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
   name: suit
-  namespace: portal
+  namespace: portal-int
   annotations:
     kubernetes.io/ingress.class: "nginx"
     nginx.ingress.kubernetes.io/affinity: "cookie"
@@ -81,10 +97,15 @@ metadata:
     nginx.ingress.kubernetes.io/proxy-redirect-to: $1/portal/$2
     nginx.ingress.kubernetes.io/proxy-cookie-path: /suit /portal/suit
     nginx.ingress.kubernetes.io/configuration-snippet: |
+      proxy_set_header X-Original-URI $request_uri;
       proxy_set_header X-Forwarded-Proto https;
       proxy_set_header X-Forwarded-Port 443;
       proxy_set_header X-Forwarded-Path /portal/suit;
 spec:
+  tls:
+  - hosts:
+    - lsst-lsp-int.ncsa.illinois.edu
+    secretName: tls-certificate-lsp-stable
   rules:
   - host: lsst-lsp-int.ncsa.illinois.edu
     http:
