@@ -6,6 +6,10 @@ BuildType=@BuildType@
 BuildNumber=@BuildNumber@
 BuildDate=@build_time@
 
+lsst.dax.dbservURL = @lsst.dax.dbservURL@
+lsst.dax.metaservURL = @lsst.dax.metaservURL@
+lsst.dax.imgservURL = @lsst.dax.imgservURL@
+lsst.dax.imgserv.repository = @lsst.dax.imgserv.repository@
 
 #==========================================================
 # app.prop env sensitive properties
