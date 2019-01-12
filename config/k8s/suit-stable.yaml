@@ -97,6 +97,7 @@ metadata:
     nginx.ingress.kubernetes.io/proxy-redirect-to: $1/portal/$2
     nginx.ingress.kubernetes.io/proxy-cookie-path: /suit /portal/suit
     nginx.ingress.kubernetes.io/configuration-snippet: |
+      proxy_set_header X-Original-URI $request_uri;
       proxy_set_header X-Forwarded-Proto https;
       proxy_set_header X-Forwarded-Port 443;
       proxy_set_header X-Forwarded-Path /portal/suit;
