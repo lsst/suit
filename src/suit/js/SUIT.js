@@ -8,6 +8,7 @@ import {get} from 'lodash';
 import {firefly} from 'firefly/Firefly.js';
 import {timeSeriesButton} from './actions.jsx';
 import {mergeObjectOnly} from 'firefly/util/WebUtil.js';
+import './suit.css';
 
 
 /**

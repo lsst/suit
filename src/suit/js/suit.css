@@ -1,0 +1,6 @@
+
+
+/* override the dropdown panel style to make room for user info */
+.DD-ToolBar__content {
+    margin-top: 25px;
+}

@@ -3,7 +3,6 @@
  */
 package edu.caltech.ipac.lsst.security;
 
-import edu.caltech.ipac.firefly.data.userdata.RoleList;
 import edu.caltech.ipac.firefly.data.userdata.UserInfo;
 import edu.caltech.ipac.firefly.server.RequestAgent;
 import edu.caltech.ipac.firefly.server.ServerContext;
@@ -14,9 +13,7 @@ import edu.caltech.ipac.util.AppProperties;
 import edu.caltech.ipac.util.StringUtils;
 import org.json.simple.parser.JSONParser;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.Base64;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -28,7 +25,8 @@ import java.util.stream.Collectors;
  */
 public class LsstSsoAdapter implements SsoAdapter {
     private static Logger.LoggerImpl LOGGER = Logger.getLogger();
-    private static String LOGIN_URL = AppProperties.getProperty("sso.login.url", "oauth2/start?rd=/portal/suit/");
+    private static String LOGIN_URL = AppProperties.getProperty("sso.login.url", "/oauth2/start?rd=/portal/suit/");
+    private static String LOGOUT_URL = AppProperties.getProperty("sso.logout.url", "/oauth2/sign_in");
 
     private static final String ID_TOKEN = "X-Auth-Request-Token";
 
@@ -103,6 +101,9 @@ public class LsstSsoAdapter implements SsoAdapter {
         return ServerContext.resolveUrl(LOGIN_URL);
     }
 
+    public String getLogoutUrl(String backTo) {
+        return ServerContext.resolveUrl(LOGOUT_URL);
+    }
 
 //====================================================================
 //

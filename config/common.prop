@@ -37,6 +37,7 @@ ArrayRenderer.padding=\
 
 sso.server.url=@sso.server.url@
 sso.login.url=@sso.login.url@
+sso.logout.url=@sso.logout.url@
 sso.user.profile.url=@sso.user.profile.url@
 
 sso.framework.adapter=@sso.framework.adapter@
