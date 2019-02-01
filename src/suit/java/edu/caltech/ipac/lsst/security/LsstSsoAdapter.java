@@ -13,6 +13,7 @@ import edu.caltech.ipac.util.AppProperties;
 import edu.caltech.ipac.util.StringUtils;
 import org.json.simple.parser.JSONParser;
 
+import java.util.Arrays;
 import java.util.Base64;
 import java.util.List;
 import java.util.Map;
@@ -25,8 +26,9 @@ import java.util.stream.Collectors;
  */
 public class LsstSsoAdapter implements SsoAdapter {
     private static Logger.LoggerImpl LOGGER = Logger.getLogger();
-    private static String LOGIN_URL = AppProperties.getProperty("sso.login.url", "/oauth2/start?rd=/portal/suit/");
-    private static String LOGOUT_URL = AppProperties.getProperty("sso.logout.url", "/oauth2/sign_in");
+    private static String LOGIN_URL         = AppProperties.getProperty("sso.login.url", "/oauth2/start?rd=/portal/suit/");
+    private static String LOGOUT_URL        = AppProperties.getProperty("sso.logout.url", "/oauth2/sign_in");
+    private static String REQ_AUTH_HOSTS    = AppProperties.getProperty("sso.req.auth.hosts", ".ncsa.illinois.edu");
 
     private static final String ID_TOKEN = "X-Auth-Request-Token";
 
@@ -36,6 +38,7 @@ public class LsstSsoAdapter implements SsoAdapter {
     private static final String NAME = "name";
     private static final String EMAIL = "email";
     private static final String EXPIRES = "exp";
+    private static final String[] reqAuthHosts = REQ_AUTH_HOSTS.split(",");
 
     private Token token = null;
 
@@ -93,7 +96,10 @@ public class LsstSsoAdapter implements SsoAdapter {
     public void setAuthCredential(HttpServiceInput inputs) {
         Token token = getAuthToken();
         if (token != null && token.get(ID_TOKEN) != null) {
-            inputs.setHeader("Authorization", "Bearer " + token.get(ID_TOKEN));
+            if (SsoAdapter.requireAuthCredential(inputs.getRequestUrl(), reqAuthHosts)) {
+                inputs.setHeader("Authorization", "Bearer " + token.get(ID_TOKEN));
+
+            }
         }
     }
 
