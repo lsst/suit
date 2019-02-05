@@ -36,9 +36,11 @@ pct.vis.shared.mem.size=@pct.vis.shared.mem.size@
 ArrayRenderer.padding=\
 
 sso.server.url=@sso.server.url@
+sso.login.url=@sso.login.url@
+sso.logout.url=@sso.logout.url@
 sso.user.profile.url=@sso.user.profile.url@
 
-sso.framework.name=@sso.framework.name@
+sso.framework.adapter=@sso.framework.adapter@
 sso.auth.required=@sso.auth.required@
 oidc_client_id = @oidc_client_id@
 oidc_client_secret = @oidc_client_secret@
