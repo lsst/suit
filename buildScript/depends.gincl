@@ -40,3 +40,24 @@ if (!Files.exists(lockf)) {
     System.err.println(ex);
   }
 }
+
+Path test_config = Paths.get("${rootDir.path}/config/test");
+if (!Files.exists(test_config)) {
+  try {
+// creates config/test symlink
+    Files.createSymbolicLink(test_config, Paths.get("${fireflyPath}/config/test"));
+  } catch (Exception ex) {
+    System.err.println(ex);
+  }
+}
+
+Path jest = Paths.get("${rootDir.path}/__jest__");
+if (!Files.exists(jest)) {
+  try {
+// creates __jest__ symlink
+    Path target_jest = Paths.get("${fireflyPath}/__jest__");
+    Files.createSymbolicLink(jest, target_jest);
+  } catch (Exception ex) {
+    System.err.println(ex);
+  }
+}

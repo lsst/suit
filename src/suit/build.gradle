@@ -13,6 +13,9 @@ jar {
   includes = ['edu/caltech/ipac/**/*']
 }
 
+sourceSets {
+  test.java.srcDir "${fireflyPath}/src/firefly/test"
+}
 
 ext.appConfig = {
   BuildMajor  = "1"

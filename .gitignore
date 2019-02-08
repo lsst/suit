@@ -19,6 +19,7 @@
 # -- ignore the build directories
 build/
 .gradle/
+__jest__
 
 # ------- ignore these configuration files
 
