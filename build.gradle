@@ -1,35 +1,31 @@
 import java.nio.file.*;
 
 ext.fireflyPath = "$rootDir.path/../firefly/"
-
-
+ext.onlinehelp_dir = "$rootDir/../suit-onlinehelp/"
 
 allprojects {
-  defaultTasks 'build'
-  apply from: "$fireflyPath/buildScript/init.gincl"
-  apply from: "$rootDir.path/buildScript/init.gincl"
+  defaultTasks 'preselect'
 }
 
 subprojects {
-
   apply plugin: "java"
-  apply from: "$fireflyPath/buildScript/depends.gincl"
-  apply from: "$rootDir.path/buildScript/depends.gincl"
-
+  apply from: "$fireflyPath/buildScript/global.gincl"
+  apply from: "$fireflyPath/buildScript/tasks.gincl"
+  apply from: "$rootDir.path/buildScript/global.gincl"
 }
-
-
-
-apply from: "$fireflyPath/buildScript/utils.gincl"
 
 task purge << {
   println('Removes all build directories.')
   delete "${rootDir}/build", "${rootDir}/jars/build", "${rootDir}/node_modules"
   Files.delete(Paths.get("${rootDir}/yarn.lock"));
   Files.delete(Paths.get("${rootDir}/package.json"));
+  Files.delete(Paths.get("${rootDir}/config/test"));
 }
 
 task clean << {
   println('Removes all build directories.')
   delete "${rootDir}/build", "${rootDir}/jars/build"
 }
+
+
+task preselect

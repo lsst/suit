@@ -1,6 +1,14 @@
 dependencies {
 }
 
+repositories {
+  flatDir {
+    name 'suit_repo'
+    dirs  "$rootDir/jars/build"
+  }
+}
+
+
 // make sure node_modules exists.  if it does not, use the one from firefly's
 import java.nio.file.*;
 

@@ -7,10 +7,6 @@
     "test-debug": "node --inspect-brk ../../node_modules/jest/bin/jest --runInBand --passWithNoTests"
   },
   "jest": {
-    "projects": [
-      "<rootDir>",
-      "<rootDir>/../../../firefly/src/firefly"
-    ],
     "moduleFileExtensions": [
       "js",
       "jsx"

@@ -1,9 +1,0 @@
-project.ext.onlinehelp_dir = "$rootDir/../suit-onlinehelp/"
-
-repositories {
-    flatDir {
-        name 'suit_repo'
-        dirs  "$rootDir/jars/build"
-    }
-}
-
