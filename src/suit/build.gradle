@@ -1,18 +1,17 @@
 
 ext["app-name"] = 'suit'
 
-apply from: "$fireflyPath/buildScript/gwt_webapp.gincl"
-
+apply from: "$fireflyPath/buildScript/app.gincl"
 
 dependencies {
   compile project(':firefly')
   webappLib oidc_lib, FIREFLY_RUNTIME + firefly_lib + ":suit"
+  testCompile project(path: ':firefly', configuration: 'tests')
 }
 
 jar {
   includes = ['edu/caltech/ipac/**/*']
 }
-
 
 ext.appConfig = {
   BuildMajor  = "1"

@@ -1,35 +1,38 @@
 import java.nio.file.*;
 
 ext.fireflyPath = "$rootDir.path/../firefly/"
-
-
+ext.onlinehelp_dir = "$rootDir/../suit-onlinehelp/"
 
 allprojects {
-  defaultTasks 'build'
-  apply from: "$fireflyPath/buildScript/init.gincl"
-  apply from: "$rootDir.path/buildScript/init.gincl"
+  defaultTasks 'preselect'
 }
 
 subprojects {
-
   apply plugin: "java"
-  apply from: "$fireflyPath/buildScript/depends.gincl"
-  apply from: "$rootDir.path/buildScript/depends.gincl"
-
+  apply from: "$fireflyPath/buildScript/global.gincl"
+  apply from: "$fireflyPath/buildScript/tasks.gincl"
+  apply from: "$rootDir.path/buildScript/global.gincl"
 }
 
-
-
-apply from: "$fireflyPath/buildScript/utils.gincl"
-
-task purge << {
-  println('Removes all build directories.')
-  delete "${rootDir}/build", "${rootDir}/jars/build", "${rootDir}/node_modules"
-  Files.delete(Paths.get("${rootDir}/yarn.lock"));
-  Files.delete(Paths.get("${rootDir}/package.json"));
+task purge {
+  description= 'Removes all build files from this project, including node_module.'
+  doLast {
+    println('Removing build directories.')
+    delete "${rootDir}/build", "${rootDir}/jars/build", "${rootDir}/node_modules"
+    Files.delete(Paths.get("${rootDir}/yarn.lock"));
+    Files.delete(Paths.get("${rootDir}/package.json"));
+    Files.delete(Paths.get("${rootDir}/config/test"));
+  }
 }
 
-task clean << {
-  println('Removes all build directories.')
-  delete "${rootDir}/build", "${rootDir}/jars/build"
+task clean {
+  description= 'Removes all build files except node_module(installed JS libraries).'
+  doLast {
+    println('Removing all build directories.')
+    delete "${rootDir}/build", "${rootDir}/jars/build"
+  }
+}
+
+task preselect {
+  description= 'A placeholder task to designate the task to run for each project.  Similar to defaultTasks.'
 }
