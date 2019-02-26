@@ -6,6 +6,7 @@ visualize.fits.search.path=@alerts.dir@:@work.directory@:@visualize.fits.search.
 FireflyTools.Advertise= @FireflyTools.Advertise@
 
 irsa.gator.hostname=@irsa.gator.hostname@
+irsa.gator.dd.hostname=@irsa.gator.dd.hostname@
 wise.ibe.host=@wise.ibe.host@
 
 # IRSA Periodogram API
