@@ -1,15 +1,38 @@
 # SUIT 
 
+
+#### Description
 SUIT (Science User Interface and Tools) repository contains applications build on the Firefly Toolkit.  It is meant to be used with [Firefly] (https://github.com/Caltech-IPAC/firefly)
 
 
-## Setup (todo: These are simplified steps, need to add more here)
+#### Build Instuctions
+ 
+ - Install [JDK 8](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)   
+   
+ - Install [Gradle 4.x](https://gradle.org/install/)
+ 
+ - Install [Node.js 8.x](https://nodejs.org/en/download/)
+ 
+ - Install [yarn](https://yarnpkg.com/)
+ 
+       npm install yarn -g
 
- - clone [Firefly] (https://github.com/Caltech-IPAC/firefly) and go the the [Firefly setup] (https://github.com/Caltech-IPAC/firefly#setup)
- - If you went though the firefly setup you have downloaded and installed: tomcat, gradle, java 1.8 or later and node
- - cd to suit and build suit using command: `gradle :suit:war`
- - Start tomcat
- - Deploy build/libs/suit.war to tomcat
- - From a web browser on localhost: localhost:8080/suit/   
+ - Install [HTMLDOC](https://www.msweet.org/htmldoc/)
+
+ - Clone `firefly`, `suit`, and `suit-onlinehelp' repositories:
+
+        git clone https://github.com/Caltech-IPAC/firefly
+        git clone https://github.com/lsst/suit
+        git clone https://github.com/lsst/suit-onlinehelp
+      
+ - Switch to the git branch you want to build on.  This should be done on all repositories.  
+   Refer to https://github.com/Caltech-IPAC/firefly/blob/dev/docs/tags-and-branches.md for `firefly` branching scheme.
+   
+ - In a terminal/console/command prompt, enter:
+ 
+        cd suit
+        gradle :suit:onlinehelp :suit:warAll
+   
+ 
 
 

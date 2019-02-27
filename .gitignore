@@ -19,6 +19,7 @@
 # -- ignore the build directories
 build/
 .gradle/
+config/test
 __jest__
 
 # ------- ignore these configuration files

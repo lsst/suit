@@ -13,6 +13,10 @@ jar {
   includes = ['edu/caltech/ipac/**/*']
 }
 
+onlinehelp {
+  onlinehelp_dir = "$rootDir/../suit-onlinehelp/"
+}
+
 ext.appConfig = {
   BuildMajor  = "1"
   BuildMinor  = "0"
