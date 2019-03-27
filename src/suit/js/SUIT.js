@@ -39,6 +39,9 @@ var options = {
     //     hipsSources: 'all',
     //     defHipsSources: {source: 'irsa', label: 'Featured'},
     //     mergedListPriority: 'irsa'},
+    tables : {
+        showInfoButton: true // info about table : title, table links, etc.
+    },
     tap : {
         services: [
             { label: 'LSST lsp-stable https://lsst-lsp-stable.ncsa.illinois.edu/api/tap',
