@@ -39,9 +39,6 @@ var options = {
     //     hipsSources: 'all',
     //     defHipsSources: {source: 'irsa', label: 'Featured'},
     //     mergedListPriority: 'irsa'},
-    tables : {
-        showInfoButton: true // info about table : title, table links, etc.
-    },
     tap : {
         services: [
             { label: 'LSST lsp-stable https://lsst-lsp-stable.ncsa.illinois.edu/api/tap',
@@ -52,13 +49,16 @@ var options = {
                 value: 'https://www.cadc-ccda.hia-iha.nrc-cnrc.gc.ca/tap' },
             { label: 'GAIA https://gea.esac.esa.int/tap-server/tap',
                 value: 'https://gea.esac.esa.int/tap-server/tap' },
+            { label: 'GAVO http://dc.g-vo.org/tap',
+                value: 'http://dc.g-vo.org/tap'},
             { label: 'IRSA https://irsa.ipac.caltech.edu/TAP',
                 value: 'https://irsa.ipac.caltech.edu/TAP' },
             { label: 'MAST https://vao.stsci.edu/CAOMTAP/TapService.aspx',
                 value: 'https://vao.stsci.edu/CAOMTAP/TapService.aspx' },
             { label: 'NED https://ned.ipac.caltech.edu/tap',
                 value: 'https://ned.ipac.caltech.edu/tap/' },
-        ]
+        ],
+        defaultMaxrec: 50000
     }
 };
 
