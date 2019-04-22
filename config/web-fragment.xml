@@ -1,0 +1,12 @@
+<web-fragment>
+<!--url mapper-->
+    <servlet>
+        <servlet-name>timeseries</servlet-name>
+        <jsp-file>/ts.html</jsp-file>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>timeseries</servlet-name>
+        <url-pattern>/timeseries</url-pattern>
+    </servlet-mapping>
+
+</web-fragment>

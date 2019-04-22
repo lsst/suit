@@ -2,6 +2,7 @@
 ext["app-name"] = 'suit'
 
 apply from: "$fireflyPath/buildScript/app.gincl"
+apply from: "$fireflyPath/buildScript/dep-init.gincl"
 
 dependencies {
   compile project(':firefly')
