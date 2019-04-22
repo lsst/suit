@@ -145,7 +145,7 @@ spec:
         fsGroup: 101
       containers:
         - name: redis-srv
-          image: redis
+          image: redis:5
           imagePullPolicy: Always
           resources:
             limits:
