@@ -8,9 +8,9 @@ allprojects {
 
 subprojects {
   apply plugin: "java"
+  apply from: "$rootDir.path/buildScript/global.gincl"
   apply from: "$fireflyPath/buildScript/global.gincl"
   apply from: "$fireflyPath/buildScript/tasks.gincl"
-  apply from: "$rootDir.path/buildScript/global.gincl"
 }
 
 task purge {
