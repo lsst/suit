@@ -32,5 +32,9 @@ oidc_client_id = @oidc_client_id@
 oidc_client_secret = @oidc_client_secret@
 oidc_redirect_uri = @sso_redirect_uri@
 __$sso_redirect_uri = @sso_redirect_uri@
+workspace.host.url = @workspace.host.url@
+workspace.protocol.webdav = @workspace.protocol.webdav@
+workspace.root.path = @workspace.root.path@
+workspace.propfind.infinity = @__$workspace.propfind.infinity@
 
 redis.host = @redis.host@
