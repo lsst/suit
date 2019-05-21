@@ -1,22 +1,22 @@
 SUIT on PDAC Kubernetes
-updated on 1/11/2019 to reflect changes needed to setup portal/suit deployment on 'k8s commons'
+updated on 5/19/2019 to reflect changes needed to setup portal/app deployment on 'k8s commons'
 
 kubectl is available to designated user on lsst-lsp-int and lsst-lsp-stable
 
 To ensure portal nodes are reserved for portal's pods:
 add taint to portal nodes
-$ kubectl taint nodes lsst-sui-proxy01  dedicated=portal:NoSchedule
-$ kubectl taint nodes lsst-sui-tomcat01 dedicated=portal:NoSchedule
-$ kubectl taint nodes lsst-sui-tomcat02 dedicated=portal:NoSchedule
+$ kubectl taint nodes lsst-portal-tomcat01 dedicated=portal:NoSchedule
+$ kubectl taint nodes lsst-portal-tomcat02 dedicated=portal:NoSchedule
+$ kubectl taint nodes lsst-portal-tomcat03  dedicated=portal:NoSchedule
 
 To designate 1 node for 'int' environment and 2 nodes for 'stable' environment
 
 add label environment=portal-int to node reserved for 'int' env
-$ kubectl label node lsst-sui-proxy01  environment=portal-int
+$ kubectl label node lsst-portal-tomcat03  environment=portal-int
 
 add label environment=portal-stable to node reserved for 'stable' env
-$ kubectl label node lsst-sui-tomcat01 environment=portal-stable
-$ kubectl label node lsst-sui-tomcat02 environment=portal-stable
+$ kubectl label node lsst-portal-tomcat01 environment=portal-stable
+$ kubectl label node lsst-portal-tomcat02 environment=portal-stable
 
 NOTE: multiple firefly pods required a 'shared' directory on its host.
 As is, tomcat01-2 has a filesystem mounted at /sui/firefly/workarea for this purpose
@@ -72,10 +72,7 @@ point 'FIREFLY_SHARED_WORK_DIR' and 'SERVER_CONFIG_DIR' to /sui/firefly/{workare
           type: Directory
 
 
-deploy suit as https://lsst-lsp-int.ncsa.illinois.edu/portal/suit/
+deploy suit as https://lsst-lsp-int.ncsa.illinois.edu/portal/app/
 - 2 pods from ipac/suit:lsst-dev
 - each with 24GB of memory
-
-
-login is disabled until we can get oauth2 working properly.
 
