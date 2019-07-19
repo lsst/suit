@@ -1,7 +1,6 @@
 package edu.caltech.ipac.lsst;
 
 import edu.caltech.ipac.firefly.data.WspaceMeta;
-import edu.caltech.ipac.firefly.server.ServerContext;
 import edu.caltech.ipac.firefly.server.WebDAVWorkspaceManagerBase;
 import edu.caltech.ipac.firefly.server.network.HttpServiceInput;
 import edu.caltech.ipac.firefly.server.ws.WsCredentials;
@@ -23,7 +22,7 @@ public class LsstWebDAVWorkspaceManager extends WebDAVWorkspaceManagerBase {
 
     public LsstWebDAVWorkspaceManager(String wsId) {
 
-        Map<String, String> cookies = HttpServiceInput.createWithCredential(WS_HOST_URL).getCookies();          // should look at this again.
+        Map<String, String> cookies = HttpServiceInput.createWithCredential(getWsHostUrl()).getCookies();          // should look at this again.
         // for development from a local machine, set wsId to your user name
         // if (wsId == null || wsId.equals("Guest")) wsId = "tatianag";
         this.creds = new WsCredentials(wsId, cookies);
@@ -54,6 +53,6 @@ public class LsstWebDAVWorkspaceManager extends WebDAVWorkspaceManagerBase {
 
     @Override
     protected String getNamespaceUri() {
-        return WS_HOST_URL+"/namespace/";
+        return getWsHostUrl()+"/namespace/";
     }
 }
