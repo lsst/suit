@@ -13,7 +13,6 @@ import edu.caltech.ipac.util.AppProperties;
 import edu.caltech.ipac.util.StringUtils;
 import org.json.simple.parser.JSONParser;
 
-import java.util.Arrays;
 import java.util.Base64;
 import java.util.List;
 import java.util.Map;
@@ -32,8 +31,10 @@ public class LsstSsoAdapter implements SsoAdapter {
 
     private static final String ID_TOKEN = "X-Auth-Request-Token";
 
-    private static final String USER_NAME = "sub";
-    private static final String UID = "uidNumber";
+    // the keywords are listed in https://confluence.lsstcorp.org/display/LAAIM/Web+SSO
+    private static final String USER_NAME = "sub"; // ex.value "http://cilogon.org/serverT/users/123456'
+    private static final String UID_NUMBER = "uidNumber"; // ex.value "01234"
+    private static final String UID = "uid"; // ex.value "username"
     private static final String MEMBER_OF = "isMemberOf";
     private static final String NAME = "name";
     private static final String EMAIL = "email";
@@ -49,11 +50,14 @@ public class LsstSsoAdapter implements SsoAdapter {
                 String id_token = getString(ra, ID_TOKEN, "");      // this is a 3-parts base64 encoded JWT token
                 String[] parts = id_token.split("\\.");
                 if (parts.length == 3) {
-                    Map claims = (Map) new JSONParser().parse(new String(Base64.getDecoder().decode(parts[1])));
+                    String jsonContent = new String(Base64.getDecoder().decode(parts[1]));
+                    //LOGGER.debug("CILogon User Info: " + jsonContent);
+                    Map claims = (Map) new JSONParser().parse(jsonContent);
                     token = new Token(String.valueOf(claims.get(USER_NAME)));
                     token.setExpiresOn(StringUtils.getInt(claims.get(EXPIRES), 0));
                     token.set(EMAIL, String.valueOf(claims.get(EMAIL)));
                     token.set(NAME, String.valueOf(claims.get(NAME)));
+                    token.set(UID_NUMBER, String.valueOf(claims.get(UID_NUMBER)));
                     token.set(UID, String.valueOf(claims.get(UID)));
                     token.set(ID_TOKEN, id_token);
 
@@ -80,7 +84,8 @@ public class LsstSsoAdapter implements SsoAdapter {
         Token token = getAuthToken();
         if (token != null) {
             UserInfo user = new UserInfo();
-            user.setLoginName(token.getId());
+            //user.setLoginName(token.getId());
+            user.setLoginName(token.get(UID));
             user.setEmail(token.get(EMAIL));
             String name = token.get(NAME) == null ? "" : token.get(NAME);
             String[] parts = name.split(" ");
@@ -94,11 +99,14 @@ public class LsstSsoAdapter implements SsoAdapter {
     }
 
     public void setAuthCredential(HttpServiceInput inputs) {
+//        // to test from a local machine, obtain temptoken and set it directly,
+//        // you also need to set
+//        String tempToken = "short token here";
+//        inputs.setHeader("Authorization", "Bearer " + tempToken);
         Token token = getAuthToken();
         if (token != null && token.get(ID_TOKEN) != null) {
             if (SsoAdapter.requireAuthCredential(inputs.getRequestUrl(), reqAuthHosts)) {
                 inputs.setHeader("Authorization", "Bearer " + token.get(ID_TOKEN));
-
             }
         }
     }

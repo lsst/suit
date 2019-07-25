@@ -59,7 +59,8 @@ var options = {
                 value: 'https://ned.ipac.caltech.edu/tap/' },
         ],
         defaultMaxrec: 50000
-    }
+    },
+    workspace: {showOptions: true}
 };
 
 
