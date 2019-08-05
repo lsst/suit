@@ -97,9 +97,9 @@ metadata:
     nginx.ingress.kubernetes.io/proxy-body-size: "0m"
     nginx.ingress.kubernetes.io/proxy-buffer-size: "24k"
     nginx.ingress.kubernetes.io/client-header-buffer-size: "24k"
-    nginx.ingress.kubernetes.io/rewrite-target: /suit
-    nginx.ingress.kubernetes.io/proxy-redirect-from: ~^(http[s]?://[^/]+)/suit/(.+)$
-    nginx.ingress.kubernetes.io/proxy-redirect-to: $1/portal/app/$2
+    nginx.ingress.kubernetes.io/rewrite-target: /suit$1$2
+    nginx.ingress.kubernetes.io/proxy-redirect-from: /suit/
+    nginx.ingress.kubernetes.io/proxy-redirect-to: /portal/app/
     nginx.ingress.kubernetes.io/proxy-cookie-path: /suit /portal/app
     nginx.ingress.kubernetes.io/configuration-snippet: |
       proxy_set_header X-Original-URI $request_uri;
@@ -116,7 +116,7 @@ spec:
   - host: lsst-lsp-stable.ncsa.illinois.edu
     http:
       paths:
-      - path: "/portal/app"
+      - path: "/portal/app(/|$)(.*)"
         backend:
           serviceName: suit-app
           servicePort: 8080
