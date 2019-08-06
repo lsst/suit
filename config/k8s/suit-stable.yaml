@@ -45,6 +45,8 @@ spec:
             secretKeyRef:
               name: suit-secret
               key: ADMIN_PASSWORD
+        - name: REDIS_PASSWORD
+          value: "$(ADMIN_PASSWORD)"
         - name: FIREFLY_OPTS
           value: "-Dvisualize.fits.search.path=/datasets"
         - name: FIREFLY_SHARED_WORK_DIR
@@ -141,22 +143,30 @@ spec:
       nodeSelector:
         environment: portal-stable
       tolerations:
-        - key: "dedicated"
-          operator: "Equal"
-          value: "portal"
-          effect: "NoSchedule"
+      - key: "dedicated"
+        operator: "Equal"
+        value: "portal"
+        effect: "NoSchedule"
       securityContext:
         runAsUser: 101
         fsGroup: 101
       containers:
-        - name: redis-srv
-          image: redis:5
-          imagePullPolicy: Always
-          resources:
-            limits:
-              memory: "20Mi"
-          ports:
-            - containerPort: 6379
+      - name: redis-srv
+        image: redis:5
+        env:
+        - name: REDIS_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: suit-secret
+              key: ADMIN_PASSWORD
+        command: ["redis-server"]
+        args: ["--requirepass", "$(REDIS_PASSWORD)"]
+        imagePullPolicy: Always
+        resources:
+          limits:
+            memory: "20Mi"
+        ports:
+          - containerPort: 6379
 ---
 
 apiVersion: v1
