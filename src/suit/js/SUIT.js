@@ -8,6 +8,7 @@ import {get} from 'lodash';
 import {firefly} from 'firefly/Firefly.js';
 import {timeSeriesButton} from './actions.jsx';
 import {mergeObjectOnly} from 'firefly/util/WebUtil.js';
+import {showInfoPopup} from 'firefly/ui/PopupUtil.jsx';
 import './suit.css';
 
 
@@ -30,25 +31,26 @@ var props = {
     ],
 };
 
+function findCorrectTapService() {
+    const url= window.location.href;
+    const idx= url.indexOf('/portal');
+    if (idx===-1) return;
+    return `${url.substr(0,idx)}/api/tap`;
+}
+
 var options = {
     MenuItemKeys: {maskOverlay: true},
     imageTabs: ['fileUpload', 'url', '2mass', 'wise', 'sdss', 'msx', 'dss', 'iras'],
     irsaCatalogFilter: 'lsstFilter',
     catalogSpacialOp: 'polygonWhenPlotExist',
-    // hips : {useForCoverage: false, useForImageSearch: true,
-    //     hipsSources: 'all',
-    //     defHipsSources: {source: 'irsa', label: 'Featured'},
-    //     mergedListPriority: 'irsa'},
     tap : {
         services: [
-            { label: 'LSST lsp-stable https://lsst-lsp-stable.ncsa.illinois.edu/api/tap',
-                value: 'https://lsst-lsp-stable.ncsa.illinois.edu/api/tap' },
-            { label: 'LSST lsp-int https://lsst-lsp-int.ncsa.illinois.edu/api/tap',
-                value: 'https://lsst-lsp-int.ncsa.illinois.edu/api/tap' },
             { label: 'CADC https://www.cadc-ccda.hia-iha.nrc-cnrc.gc.ca/tap',
                 value: 'https://www.cadc-ccda.hia-iha.nrc-cnrc.gc.ca/tap' },
             { label: 'GAIA https://gea.esac.esa.int/tap-server/tap',
                 value: 'https://gea.esac.esa.int/tap-server/tap' },
+            { label: 'HSA https://archives.esac.esa.int/hsa/whsa-tap-server/tap',
+                value: 'https://archives.esac.esa.int/hsa/whsa-tap-server/tap' },
             { label: 'GAVO http://dc.g-vo.org/tap',
                 value: 'http://dc.g-vo.org/tap'},
             { label: 'IRSA https://irsa.ipac.caltech.edu/TAP',
@@ -63,6 +65,17 @@ var options = {
     workspace: {showOptions: true}
 };
 
+const lsstTapService= findCorrectTapService();
+if (lsstTapService) {
+    options.tap.services= [
+        { label: `LSST LSP ${lsstTapService}`, value: lsstTapService },
+        ...options.tap.services
+    ];
+}
+else {
+    setTimeout(
+        () => showInfoPopup('Could not auto-detect the location of the TAP service for this LSP instance.'), 5000)
+}
 
 props = mergeObjectOnly(props, get(window, 'firefly.app', {}));
 options = mergeObjectOnly(options, get(window, 'firefly.options', {}));
