@@ -24,6 +24,9 @@ ext.appConfig = {
   BuildRev    = "1"
 
   ehcache.multicast.port = "4077"
+
+  firefly.tag.file = "../../config/firefly_build.tag"
+
   environments {
     dev {
       ehcache.multicast.port = "5077"
