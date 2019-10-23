@@ -31,11 +31,47 @@ var props = {
     ],
 };
 
-function findCorrectTapService() {
-    const url= window.location.href;
-    const idx= url.indexOf('/portal');
-    if (idx===-1) return;
-    return `${url.substr(0,idx)}/api/tap`;
+const tapEntry= (label,url) => ({ label: `${label} ${url}`, value: url });
+const lsstEntry= (url) => tapEntry('LSST LSP',url);
+
+let tapServices= [
+    tapEntry('CADC', 'https://www.cadc-ccda.hia-iha.nrc-cnrc.gc.ca/tap'),
+    tapEntry('GAIA', 'https://gea.esac.esa.int/tap-server/tap'),
+    tapEntry('GAVO', 'http://dc.g-vo.org/tap'),
+    tapEntry('HSA',  'https://archives.esac.esa.int/hsa/whsa-tap-server/tap'),
+    tapEntry('IRSA', 'https://irsa.ipac.caltech.edu/TAP'),
+    tapEntry('MAST', 'https://vao.stsci.edu/CAOMTAP/TapService.aspx'),
+    tapEntry('NED', 'https://ned.ipac.caltech.edu/tap/'),
+];
+
+
+
+const TAP_PATH= 'api/tap';
+
+/**
+ * @param {String} url
+ * @return {{tapUrl:String, confident:Boolean}} the tapUrl is the computed url, confident is true if the url was computed
+ * by finding the protal stirng and replacing, otherwise a url might be returned bug confident will be false
+ */
+function findCorrectLSSTTapService(url) {
+    try {
+        const {origin,pathname}= new URL(url);
+        const idx= pathname.indexOf('/portal');
+        if (idx===-1) return {tapUrl:`${origin}/${TAP_PATH}`, confident:false};
+        return {tapUrl:`${origin}${pathname.substr(0,idx)}/${TAP_PATH}`, confident:true};
+    } catch (e) {
+        return {tapUrl:undefined,confident:false};
+    }
+}
+
+const {tapUrl,confident}= findCorrectLSSTTapService(window.location.href);
+if (tapUrl) { // if a url is produced with confidence put it at the top otherwise put it at the bottom
+    tapServices=  confident ? [ lsstEntry(tapUrl), ...tapServices ] : [ ...tapServices, lsstEntry(tapUrl) ];
+}
+
+if (!tapUrl || !confident) {
+    setTimeout(
+        () => showInfoPopup('Could not auto-detect the location of the TAP service for this LSP instance.'), 5000)
 }
 
 var options = {
@@ -44,38 +80,12 @@ var options = {
     irsaCatalogFilter: 'lsstFilter',
     catalogSpacialOp: 'polygonWhenPlotExist',
     tap : {
-        services: [
-            { label: 'CADC https://www.cadc-ccda.hia-iha.nrc-cnrc.gc.ca/tap',
-                value: 'https://www.cadc-ccda.hia-iha.nrc-cnrc.gc.ca/tap' },
-            { label: 'GAIA https://gea.esac.esa.int/tap-server/tap',
-                value: 'https://gea.esac.esa.int/tap-server/tap' },
-            { label: 'HSA https://archives.esac.esa.int/hsa/whsa-tap-server/tap',
-                value: 'https://archives.esac.esa.int/hsa/whsa-tap-server/tap' },
-            { label: 'GAVO http://dc.g-vo.org/tap',
-                value: 'http://dc.g-vo.org/tap'},
-            { label: 'IRSA https://irsa.ipac.caltech.edu/TAP',
-                value: 'https://irsa.ipac.caltech.edu/TAP' },
-            { label: 'MAST https://vao.stsci.edu/CAOMTAP/TapService.aspx',
-                value: 'https://vao.stsci.edu/CAOMTAP/TapService.aspx' },
-            { label: 'NED https://ned.ipac.caltech.edu/tap',
-                value: 'https://ned.ipac.caltech.edu/tap/' },
-        ],
+        services: tapServices,
         defaultMaxrec: 50000
     },
     workspace: {showOptions: true}
 };
 
-const lsstTapService= findCorrectTapService();
-if (lsstTapService) {
-    options.tap.services= [
-        { label: `LSST LSP ${lsstTapService}`, value: lsstTapService },
-        ...options.tap.services
-    ];
-}
-else {
-    setTimeout(
-        () => showInfoPopup('Could not auto-detect the location of the TAP service for this LSP instance.'), 5000)
-}
 
 props = mergeObjectOnly(props, get(window, 'firefly.app', {}));
 options = mergeObjectOnly(options, get(window, 'firefly.options', {}));
