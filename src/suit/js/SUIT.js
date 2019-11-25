@@ -75,8 +75,7 @@ if (tapUrl) { // if a url is produced with confidence put it at the top otherwis
 if (!tapUrl || !confident) {
     setTimeout( () =>
             showInfoPopup(
-                `Could not auto-detect the location of the TAP service for this LSP instance using url: ${window.location.href}`),
-        5000)
+                `Could not infer the location of the TAP service for this LSP instance from the window, URL: ${window.location.href}`, 5000);
 }
 
 var options = {
