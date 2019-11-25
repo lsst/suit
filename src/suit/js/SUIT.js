@@ -8,9 +8,11 @@ import {get} from 'lodash';
 import {firefly} from 'firefly/Firefly.js';
 import {timeSeriesButton} from './actions.jsx';
 import {mergeObjectOnly} from 'firefly/util/WebUtil.js';
+import {getRootURL} from 'firefly/util/BrowserUtil.js';
 import {showInfoPopup} from 'firefly/ui/PopupUtil.jsx';
 import './suit.css';
 
+// import SUIT_ICO from 'html/images/lsst_logo.png';
 
 /**
  * This entry point is customized for LSST suit.  Refer to FFEntryPoint.js for information on
@@ -18,7 +20,7 @@ import './suit.css';
  */
 var props = {
     showUserInfo: true,
-    appIcon: 'images/lsst_logo.png',
+    appIcon: getRootURL() +'images/lsst_logo.png',
     showViewsSwitch: true,
     rightButtons: [timeSeriesButton],
     menu: [
@@ -56,7 +58,8 @@ const TAP_PATH= 'api/tap';
 function findCorrectLSSTTapService(url) {
     try {
         const {origin,pathname}= new URL(url);
-        const idx= pathname.indexOf('/portal');
+        let idx= pathname.indexOf('/portal');
+        if (idx===-1) idx= pathname.indexOf('/nb');
         if (idx===-1) return {tapUrl:`${origin}/${TAP_PATH}`, confident:false};
         return {tapUrl:`${origin}${pathname.substr(0,idx)}/${TAP_PATH}`, confident:true};
     } catch (e) {
@@ -70,8 +73,9 @@ if (tapUrl) { // if a url is produced with confidence put it at the top otherwis
 }
 
 if (!tapUrl || !confident) {
-    setTimeout(
-        () => showInfoPopup('Could not auto-detect the location of the TAP service for this LSP instance.'), 5000)
+    setTimeout( () =>
+            showInfoPopup(
+                `Could not infer the location of the TAP service for this LSP instance from the window, URL: ${window.location.href}`, 5000);
 }
 
 var options = {
