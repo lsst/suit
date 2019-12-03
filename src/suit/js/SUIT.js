@@ -52,8 +52,12 @@ const TAP_PATH= 'api/tap';
 
 /**
  * @param {String} url
- * @return {{tapUrl:String, confident:Boolean}} the tapUrl is the computed url, confident is true if the url was computed
- * by finding the protal stirng and replacing, otherwise a url might be returned bug confident will be false
+ * @return {{tapUrl:String, confident:Boolean}} the tapUrl is the computed url, where "confident" is true if the url 
+ * was computed by successfully finding the pathname component consistent with the LSP URL conventions -- under
+ * which Firefly might be invoked either as the Portal Aspect application (i.e., under /portal), or as a JupyterLab
+ * extension within the Notebook Aspect (i.e., under /nb) -- and substituting the pathname as appropriate to find
+ * the TAP service (under /api).  Otherwise "confident" will be set to false and a guess at a possible local TAP
+ * service URL will be made.
  */
 function findCorrectLSSTTapService(url) {
     try {
@@ -69,13 +73,13 @@ function findCorrectLSSTTapService(url) {
 
 const {tapUrl,confident}= findCorrectLSSTTapService(window.location.href);
 if (tapUrl) { // if a url is produced with confidence put it at the top otherwise put it at the bottom
-    tapServices=  confident ? [ lsstEntry(tapUrl), ...tapServices ] : [ ...tapServices, lsstEntry(tapUrl) ];
+    tapServices=  confident ? [ lsstEntry(tapUrl), ...tapServices ] : [ ...tapServices, tapEntry('(possible local service)',tapUrl) ];
 }
 
 if (!tapUrl || !confident) {
     setTimeout( () =>
             showInfoPopup(
-                `Could not infer the location of the TAP service for this LSP instance from the window, URL: ${window.location.href}`, 5000));
+                `Could not infer the location of the TAP service for this LSP instance from the window URL: ${window.location.href}`, 5000));
 }
 
 var options = {
