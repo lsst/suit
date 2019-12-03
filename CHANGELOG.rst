@@ -2,7 +2,7 @@
 Change log
 ##########
 
-1.1.0 (2019-12-03)
+1.1.1 (2019-12-03)
 ==================
 
 - Activated Firefly-release-pinning mechanism (NB: only on release branches of ``suit``).  Improved messaging when the LSP-local TAP service cannot be reliably inferred.
