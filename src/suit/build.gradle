@@ -15,7 +15,13 @@ jar {
 }
 
 onlinehelp {
-  onlinehelp_dir = "$rootDir/../suit-onlinehelp/"
+  onlineHelpDir = "$rootDir/../suit-onlinehelp/"
+  doLast {
+    copy {
+      from("${onlineHelpDir}/build/suit/war/")
+      into "${buildDir}/war/onlinehelp"
+    }
+  }
 }
 
 ext.appConfig = {

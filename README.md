@@ -36,7 +36,7 @@ is used for Python-based image and table visualizations.
  - In a terminal/console/command prompt, enter:
  
         cd suit
-        gradle :suit:onlinehelp :suit:warAll
+        gradle :suit:warAll
    
 ### Release configuration management
 
