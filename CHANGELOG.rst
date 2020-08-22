@@ -2,6 +2,34 @@
 Change log
 ##########
 
+2.0.0 (2020-08-24)
+==================
+
+- **Uses Firefly release-2020.2.0.**  See the `Firefly release notes <https://github.com/Caltech-IPAC/firefly/blob/dev/docs/release-notes.md>`.  Key LSST-relevant features:
+
+  - Better management of Web Sockets
+    [`Firefly-521 <https://jira.ipac.caltech.edu/browse/FIREFLY-521>`_]
+
+  - Change tri-view Layout
+    [`Firefly-533 <https://jira.ipac.caltech.edu/browse/FIREFLY-533>`_]
+
+  - Table Options UI Improvements (from release-2020.1): New Advanced Filter tab enabling SQL-like filtering; New Table Meta tab showing meta information that was once not accessible; Added additional column metadata when available.
+    [`Firefly-471 <https://jira.ipac.caltech.edu/browse/FIREFLY-471>`_]
+
+  - Significant improvements in Data Products Viewing (from release-2020.1): Can choose from any HDU in FITS; Table HDUs are show as table and Charts; Firefly now reads 1D FITS images and shows as a chart; Choice of table with VO Tables; PDF and TAR are recognized and downloadable.
+    [`Firefly-460 <https://jira.ipac.caltech.edu/browse/FIREFLY-460>`_]
+
+  - Table data is now formatted on the client side (from release-2019.4.0).
+    [`DM-20248 <https://jira.lsst.org/browse/DM-20248>`_]  Enables:
+
+  - Fixed bug in LSST footprint visualization, introduced in last release.
+    [Firefly-435 and `DM-22124 <https://jira.lsst.org/browse/DM-22124>`_]
+
+  - Significant improvements in the distance tool.
+    [`Firefly-56 <https://jira.ipac.caltech.edu/browse/FIREFLY-56>`_]
+
+- Applied migration needed for move of ``getRootURL`` to ``firefly/util/WebUtil.js`` in the underlying Firefly release.
+
 1.1.1 (2019-12-03)
 ==================
 
