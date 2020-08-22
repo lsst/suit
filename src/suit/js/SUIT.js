@@ -7,8 +7,7 @@ import {get} from 'lodash';
 
 import {firefly} from 'firefly/Firefly.js';
 import {timeSeriesButton} from './actions.jsx';
-import {mergeObjectOnly} from 'firefly/util/WebUtil.js';
-import {getRootURL} from 'firefly/util/BrowserUtil.js';
+import {mergeObjectOnly, getRootURL} from 'firefly/util/WebUtil.js';
 import {showInfoPopup} from 'firefly/ui/PopupUtil.jsx';
 import './suit.css';
 
