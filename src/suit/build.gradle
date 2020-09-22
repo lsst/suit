@@ -15,11 +15,11 @@ jar {
 }
 
 onlinehelp {
-  onlineHelpDir = "$rootDir/../suit-onlinehelp/"
+  onlineHelpDir = "$fireflyPath/../suit-help/"
   doLast {
     copy {
-      from("${onlineHelpDir}/build/suit/war/")
-      into "${buildDir}/war/onlinehelp"
+      from("$onlineHelpDir/build/suit/")
+      into "$buildDir/war/onlinehelp"
     }
   }
 }
