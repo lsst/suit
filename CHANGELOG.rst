@@ -30,6 +30,8 @@ Change log
 
 - Applied migration needed for move of ``getRootURL`` to ``firefly/util/WebUtil.js`` in the underlying Firefly release.
 
+- Switched to new online help system
+
 1.1.1 (2019-12-03)
 ==================
 
