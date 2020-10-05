@@ -2,6 +2,23 @@
 Change log
 ##########
 
+2.1.0 (2020-10-05)
+==================
+
+- **Uses Firefly release-2020.3.0**  See the `Firefly release notes <https://github.com/Caltech-IPAC/firefly/blob/dev/docs\
+/release-notes.md>`.  Key LSST-relevant features:
+
+  - Bug fixes for Python-driven plotting and Slate
+
+  - Improvements to the TAP query interface ADQL-creation screen UI
+    [`Firefly-596 <https://jira.ipac.caltech.edu/browse/FIREFLY-596>`_]
+
+  - Initial version of URL API
+    [`Firefly-568 <https://jira.ipac.caltech.edu/browse/FIREFLY-568>`_]
+
+  - Improvements to handling of long table cell values
+    [`Firefly-524 <https://jira.ipac.caltech.edu/browse/FIREFLY-524>`_]
+
 2.0.0 (2020-08-24)
 ==================
 
