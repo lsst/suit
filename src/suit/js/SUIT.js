@@ -1,10 +1,6 @@
 /*
  * License information at https://github.com/Caltech-IPAC/firefly/blob/master/License.txt
  */
-
-
-import {get} from 'lodash';
-
 import {firefly} from 'firefly/Firefly.js';
 import {timeSeriesButton} from './actions.jsx';
 import {mergeObjectOnly, getRootURL} from 'firefly/util/WebUtil.js';
@@ -26,23 +22,24 @@ var props = {
         {label: 'LSST TAP', action: 'TAPSearch'},
         {label: 'Legacy PDAC', action: 'LsstCatalogDropDown'},
         {label: 'External Images', action: 'ImageSelectDropDownCmd'},
-        {label: 'External Catalogs', action: 'IrsaCatalogDropDown'},
+        {label: 'External Catalogs', action: 'MultiTableSearchCmd'},
         {label: 'Add Chart', action: 'ChartSelectDropDownCmd'},
         {label: 'Upload', action: 'FileUploadDropDownCmd'}
     ],
 };
 
-const tapEntry= (label,url) => ({ label: `${label} ${url}`, value: url });
+const tapEntry= (label,url) => ({ label, value: url});
 const lsstEntry= (url) => tapEntry('LSST LSP',url);
 
 let tapServices= [
     tapEntry('CADC', 'https://www.cadc-ccda.hia-iha.nrc-cnrc.gc.ca/tap'),
-    tapEntry('GAIA', 'https://gea.esac.esa.int/tap-server/tap'),
+    tapEntry('Gaia', 'https://gea.esac.esa.int/tap-server/tap'),
     tapEntry('GAVO', 'http://dc.g-vo.org/tap'),
     tapEntry('HSA',  'https://archives.esac.esa.int/hsa/whsa-tap-server/tap'),
     tapEntry('IRSA', 'https://irsa.ipac.caltech.edu/TAP'),
-    tapEntry('MAST', 'https://vao.stsci.edu/CAOMTAP/TapService.aspx'),
+    tapEntry('MAST Images', 'https://vao.stsci.edu/CAOMTAP/TapService.aspx'),
     tapEntry('NED', 'https://ned.ipac.caltech.edu/tap/'),
+    tapEntry('NASA Exoplanet Archive', 'https://exoplanetarchive.ipac.caltech.edu/TAP/'),
 ];
 
 
@@ -81,7 +78,12 @@ if (!tapUrl || !confident) {
                 `Could not infer the location of the TAP service for this LSP instance from the window URL: ${window.location.href}`, 5000));
 }
 
-var options = {
+let options = {
+    multiTableSearchCmdOptions: [
+        {id: 'irsacat', title: 'IRSA Catalogs'},
+        {id: 'vocat'},
+        {id: 'nedcat'}
+    ],
     MenuItemKeys: {maskOverlay: true},
     imageTabs: ['fileUpload', 'url', '2mass', 'wise', 'sdss', 'msx', 'dss', 'iras'],
     irsaCatalogFilter: 'lsstFilter',
@@ -94,6 +96,6 @@ var options = {
 };
 
 
-props = mergeObjectOnly(props, get(window, 'firefly.app', {}));
-options = mergeObjectOnly(options, get(window, 'firefly.options', {}));
+props = mergeObjectOnly(props, window.firefly?.app ?? {});
+options = mergeObjectOnly(options, window.firefly?.options ?? {});
 firefly.bootstrap(props, options);
