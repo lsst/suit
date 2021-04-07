@@ -109,7 +109,7 @@ metadata:
       proxy_set_header X-Forwarded-Proto https;
       proxy_set_header X-Forwarded-Port 443;
       proxy_set_header X-Forwarded-Path /portal/app;
-      error_page 403 = "https://lsst-lsp-stable.ncsa.illinois.edu/oauth2/start?rd=$request_uri";
+      error_page 403 = "https://lsst-lsp-stable.ncsa.illinois.edu/login?rd=$request_uri";
 spec:
   tls:
   - hosts:

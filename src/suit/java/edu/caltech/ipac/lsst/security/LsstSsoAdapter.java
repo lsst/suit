@@ -25,8 +25,8 @@ import java.util.stream.Collectors;
  */
 public class LsstSsoAdapter implements SsoAdapter {
     private static Logger.LoggerImpl LOGGER = Logger.getLogger();
-    private static String LOGIN_URL         = AppProperties.getProperty("sso.login.url", "/oauth2/start?rd=/portal/suit/");
-    private static String LOGOUT_URL        = AppProperties.getProperty("sso.logout.url", "/oauth2/sign_in");
+    private static String LOGIN_URL         = AppProperties.getProperty("sso.login.url", "/login?rd=/portal/suit/");
+    private static String LOGOUT_URL        = AppProperties.getProperty("sso.logout.url", "/logout");
     private static String REQ_AUTH_HOSTS    = AppProperties.getProperty("sso.req.auth.hosts", ".ncsa.illinois.edu");
 
     private static final String ID_TOKEN = "X-Auth-Request-Token";
