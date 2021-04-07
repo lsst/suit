@@ -2,11 +2,20 @@
 Change log
 ##########
 
+2.1.1 (2021-04-07)
+==================
+
+- **Uses Firefly release-2020.3.3**  See the `Firefly release notes <https://github.com/Caltech-IPAC/firefly/blob/dev/docs/release-notes.md>`.  Key LSST-relevant fix:
+
+  - Charts in "expanded mode" do not update after options changes
+    [`FIREFLY-525 <https://jira.ipac.caltech.edu/browse/FIREFLY-525>`_]
+
+- Changes URLs for interaction with the authentication to use Gafaelfawr ones.
+
 2.1.0 (2020-10-05)
 ==================
 
-- **Uses Firefly release-2020.3.0**  See the `Firefly release notes <https://github.com/Caltech-IPAC/firefly/blob/dev/docs\
-/release-notes.md>`.  Key LSST-relevant features:
+- **Uses Firefly release-2020.3.0**  See the `Firefly release notes <https://github.com/Caltech-IPAC/firefly/blob/dev/docs/release-notes.md>`.  Key LSST-relevant features:
 
   - Bug fixes for Python-driven plotting and Slate
 
