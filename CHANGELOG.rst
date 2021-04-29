@@ -2,6 +2,13 @@
 Change log
 ##########
 
+2.2.0 (2021-04-28)
+==================
+
+- Updates to compatibility with Gafaelfawr 2.0; understood to remain compatible with the previous production version as well.
+
+- No change to Firefly version.
+
 2.1.1 (2021-04-07)
 ==================
 
