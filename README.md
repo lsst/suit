@@ -1,4 +1,4 @@
-# SUIT - The Rubin Science Platform Portal Aspect application
+# SUIT - the Rubin Science Platform Portal Aspect application
 
 ## Description
 The SUIT (Science User Interface and Tools) repository contains applications built on the Firefly Toolkit.
