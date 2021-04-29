@@ -27,18 +27,21 @@ public class LsstSsoAdapter implements SsoAdapter {
     private static Logger.LoggerImpl LOGGER = Logger.getLogger();
     private static String LOGIN_URL         = AppProperties.getProperty("sso.login.url", "/login?rd=/portal/suit/");
     private static String LOGOUT_URL        = AppProperties.getProperty("sso.logout.url", "/logout");
-    private static String REQ_AUTH_HOSTS    = AppProperties.getProperty("sso.req.auth.hosts", ".ncsa.illinois.edu");
+    private static String REQ_AUTH_HOSTS    = AppProperties.getProperty("sso.req.auth.hosts", ".ncsa.illinois.edu,.lsst.cloud,.lsst.codes");
 
-    private static final String ID_TOKEN = "X-Auth-Request-Token";
+    private static final String GROUPS_HEADER = "X-Auth-Request-Groups";
+    private static final String EMAIL_HEADER = "X-Auth-Request-Email";
+    private static final String NAME_HEADER = "X-Auth-Request-Name";
+    private static final String TOKEN_HEADER = "X-Auth-Request-Token";
+    private static final String USERNAME_HEADER = "X-Auth-Request-Username";
 
     // the keywords are listed in https://confluence.lsstcorp.org/display/LAAIM/Web+SSO
     private static final String USER_NAME = "sub"; // ex.value "http://cilogon.org/serverT/users/123456'
-    private static final String UID_NUMBER = "uidNumber"; // ex.value "01234"
     private static final String UID = "uid"; // ex.value "username"
-    private static final String MEMBER_OF = "isMemberOf";
     private static final String NAME = "name";
     private static final String EMAIL = "email";
     private static final String EXPIRES = "exp";
+    private static final String ID_TOKEN = "X-Auth-Request-Token";
     private static final String[] reqAuthHosts = REQ_AUTH_HOSTS.split(",");
 
     private Token token = null;
@@ -47,7 +50,7 @@ public class LsstSsoAdapter implements SsoAdapter {
         if (token == null) {
             try {
                 RequestAgent ra = ServerContext.getRequestOwner().getRequestAgent();
-                String id_token = getString(ra, ID_TOKEN, "");      // this is a 3-parts base64 encoded JWT token
+                String id_token = getString(ra, TOKEN_HEADER, "");      // this is a 3-parts base64 encoded JWT token
                 String[] parts = id_token.split("\\.");
                 if (parts.length == 3) {
                     String jsonContent = new String(Base64.getDecoder().decode(parts[1]));
@@ -57,20 +60,20 @@ public class LsstSsoAdapter implements SsoAdapter {
                     token.setExpiresOn(StringUtils.getInt(claims.get(EXPIRES), 0));
                     token.set(EMAIL, String.valueOf(claims.get(EMAIL)));
                     token.set(NAME, String.valueOf(claims.get(NAME)));
-                    token.set(UID_NUMBER, String.valueOf(claims.get(UID_NUMBER)));
                     token.set(UID, String.valueOf(claims.get(UID)));
                     token.set(ID_TOKEN, id_token);
 
-                    try {
-                        List<Map<String,String>> memberOf = (List<Map<String,String>>) claims.get(MEMBER_OF);
-                        if (memberOf != null && memberOf.size() > 0) {
-                            String val = memberOf.stream().filter(e -> e.containsKey("id"))
-                                    .map(e -> e.get("name")).collect(Collectors.joining(","));
-                            token.set(MEMBER_OF, val);
-                        }
-                    } catch (Exception ex) {
-                        // ignore for now.
-                    }
+                    return token;
+                } else {
+                    String username = getString(ra, USERNAME_HEADER, "");
+
+                    token = new Token(username);
+                    token.setExpiresOn(0);
+                    token.set(EMAIL, getString(ra, EMAIL_HEADER, null));
+                    token.set(NAME, getString(ra, NAME_HEADER, null));
+                    token.set(UID, username);
+                    token.set(ID_TOKEN, id_token);
+
                     return token;
                 }
             } catch (Exception e) {
