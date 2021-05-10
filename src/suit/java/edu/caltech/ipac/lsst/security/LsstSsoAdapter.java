@@ -27,7 +27,7 @@ public class LsstSsoAdapter implements SsoAdapter {
     private static Logger.LoggerImpl LOGGER = Logger.getLogger();
     private static String LOGIN_URL         = AppProperties.getProperty("sso.login.url", "/login?rd=/portal/suit/");
     private static String LOGOUT_URL        = AppProperties.getProperty("sso.logout.url", "/logout");
-    private static String REQ_AUTH_HOSTS    = AppProperties.getProperty("sso.req.auth.hosts", ".ncsa.illinois.edu,.lsst.cloud,.lsst.codes");
+    private static String REQ_AUTH_HOSTS    = AppProperties.getProperty("sso.req.auth.hosts", ".ncsa.illinois.edu,.lsst.cloud");
 
     private static final String GROUPS_HEADER = "X-Auth-Request-Groups";
     private static final String EMAIL_HEADER = "X-Auth-Request-Email";
