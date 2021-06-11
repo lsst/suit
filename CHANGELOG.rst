@@ -5,6 +5,8 @@ Change log
 2.3.0 (2021-06-10)
 ==================
 
+- Remove "Legacy PDAC" button from UI (invokes LsstCatalogDropDown); permanently retired
+
 - **Uses Firefly release-2021.2.1**  See the `Firefly release notes <https://github.com/Caltech-IPAC/firefly/blob/dev/docs/release-notes.md>`.  Key LSST-relevant features:
 
   - ObsTAP-specific search capabilities
