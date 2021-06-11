@@ -11,9 +11,11 @@ Change log
 
   - Spectral data viewer (based on IVOA SpectrumDM v1.1 with IRSA enhancements that have been proposed to the IVOA)
 
-  - Clarifications to the multi-trace UI for working with multiple charts and multiple plot traces per chart.  Improvements in color selection.
+  - Clarifications to the multi-trace UI for working with multiple charts and multiple plot traces per chart; improvements in color selection
 
-  - Improvements to the cleanup interval for Docker deployments.
+  - Improvements to the cleanup interval for Docker deployments
+
+  - Updates to the standard list of TAP services
 
 - Updates for compatibility of `suit` with that release.
 
