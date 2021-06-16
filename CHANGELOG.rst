@@ -2,6 +2,13 @@
 Change log
 ##########
 
+
+2.3.2-3 (2021-06-16)
+====================
+
+- Replaces logo with transparent colored Rubin version.
+
+
 2.3.1 (2021-06-15)
 ==================
 

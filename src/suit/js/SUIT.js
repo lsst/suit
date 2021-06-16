@@ -7,7 +7,7 @@ import {mergeObjectOnly, getRootURL} from 'firefly/util/WebUtil.js';
 import {showInfoPopup} from 'firefly/ui/PopupUtil.jsx';
 import './suit.css';
 
-// import SUIT_ICO from 'html/images/lsst_logo.png';
+// import SUIT_ICO from 'html/images/rubin_logo_transparent-70.png';
 
 /**
  * This entry point is customized for LSST suit.  Refer to FFEntryPoint.js for information on
@@ -15,7 +15,7 @@ import './suit.css';
  */
 var props = {
     showUserInfo: true,
-    appIcon: getRootURL() +'images/lsst_logo.png',
+    appIcon: getRootURL() +'images/rubin_logo_transparent-70.png',
     showViewsSwitch: true,
     rightButtons: [timeSeriesButton],
     menu: [
