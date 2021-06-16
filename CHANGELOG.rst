@@ -2,6 +2,18 @@
 Change log
 ##########
 
+2.3.1 (2021-06-15)
+==================
+
+- **Uses Firefly release-2021.2.2**  See the `Firefly release notes <https://github.com/Caltech-IPAC/firefly/blob/dev/docs/release-notes.md>`.  Key LSST-relevant features:
+
+  - Fixed: mouse wheel / trackpad scrolling performance issue (Firefly-793)
+    [`FIREFLY-793 <https://jira.ipac.caltech.edu/browse/FIREFLY-793>`_]
+
+  - Fixed: Handle redirects when retrieving TAP errors (DM-30073)
+    [`DM-30073 <https://jira.lsstcorp.org/browse/DM-30073>`_]
+
+
 2.3.0 (2021-06-10)
 ==================
 
@@ -28,6 +40,7 @@ Change log
 - Updates to compatibility with Gafaelfawr 2.0; understood to remain compatible with the previous production version as well.
 
 - No change to Firefly version.
+
 
 2.1.1 (2021-04-07)
 ==================
