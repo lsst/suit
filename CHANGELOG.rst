@@ -2,17 +2,27 @@
 Change log
 ##########
 
+2.3.3 (2021-06-22)
+==================
 
-2.3.2-3 (2021-06-16)
+- **Uses Firefly release-2021.2.3**  See the `Firefly release notes <https://github.com/Caltech-IPAC/firefly/blob/dev/docs/release-notes.md>`.  Key RSP-relevant features:
+
+  - Fixed: initialization of userInfo object
+  - Fixed: refinement to redirect/auth handling when retrieving TAP error documents
+  - Fixed: Simbad name resolution issue (Firefly-797)
+  - Fixed: Mouse zoom not working correctly (Firefly-803)
+
+
+2.3.2 (2021-06-16)
 ====================
 
-- Replaces logo with transparent colored Rubin version.
+- Replace original LSST logo with transparent colored Rubin version.
 
 
 2.3.1 (2021-06-15)
 ==================
 
-- **Uses Firefly release-2021.2.2**  See the `Firefly release notes <https://github.com/Caltech-IPAC/firefly/blob/dev/docs/release-notes.md>`.  Key LSST-relevant features:
+- **Uses Firefly release-2021.2.2**  See the `Firefly release notes <https://github.com/Caltech-IPAC/firefly/blob/dev/docs/release-notes.md>`.  Key RSP-relevant features:
 
   - Fixed: mouse wheel / trackpad scrolling performance issue (Firefly-793)
     [`FIREFLY-793 <https://jira.ipac.caltech.edu/browse/FIREFLY-793>`_]
@@ -26,7 +36,7 @@ Change log
 
 - Remove "Legacy PDAC" button from UI (invokes LsstCatalogDropDown); permanently retired
 
-- **Uses Firefly release-2021.2.1**  See the `Firefly release notes <https://github.com/Caltech-IPAC/firefly/blob/dev/docs/release-notes.md>`.  Key LSST-relevant features:
+- **Uses Firefly release-2021.2.1**  See the `Firefly release notes <https://github.com/Caltech-IPAC/firefly/blob/dev/docs/release-notes.md>`.  Key RSP-relevant features:
 
   - ObsTAP-specific search capabilities
 
