@@ -2,12 +2,62 @@
 Change log
 ##########
 
+2.3.3 (2021-06-22)
+==================
+
+- **Uses Firefly release-2021.2.3**  See the `Firefly release notes <https://github.com/Caltech-IPAC/firefly/blob/dev/docs/release-notes.md>`.  Key RSP-relevant features:
+
+  - Fixed: initialization of userInfo object
+  - Fixed: refinement to redirect/auth handling when retrieving TAP error documents
+  - Fixed: Simbad name resolution issue (Firefly-797)
+  - Fixed: Mouse zoom not working correctly (Firefly-803)
+
+
+2.3.2 (2021-06-16)
+====================
+
+- Replace original LSST logo with transparent colored Rubin version.
+
+
+2.3.1 (2021-06-15)
+==================
+
+- **Uses Firefly release-2021.2.2**  See the `Firefly release notes <https://github.com/Caltech-IPAC/firefly/blob/dev/docs/release-notes.md>`.  Key RSP-relevant features:
+
+  - Fixed: mouse wheel / trackpad scrolling performance issue (Firefly-793)
+    [`FIREFLY-793 <https://jira.ipac.caltech.edu/browse/FIREFLY-793>`_]
+
+  - Fixed: Handle redirects when retrieving TAP errors (DM-30073)
+    [`DM-30073 <https://jira.lsstcorp.org/browse/DM-30073>`_]
+
+
+2.3.0 (2021-06-10)
+==================
+
+- Remove "Legacy PDAC" button from UI (invokes LsstCatalogDropDown); permanently retired
+
+- **Uses Firefly release-2021.2.1**  See the `Firefly release notes <https://github.com/Caltech-IPAC/firefly/blob/dev/docs/release-notes.md>`.  Key RSP-relevant features:
+
+  - ObsTAP-specific search capabilities
+
+  - Spectral data viewer (based on IVOA SpectrumDM v1.1 with IRSA enhancements that have been proposed to the IVOA)
+
+  - Clarifications to the multi-trace UI for working with multiple charts and multiple plot traces per chart; improvements in color selection
+
+  - Improvements to the cleanup interval for Docker deployments
+
+  - Updates to the standard list of TAP services
+
+- Updates for compatibility of `suit` with that release.
+
+
 2.2.0 (2021-04-28)
 ==================
 
 - Updates to compatibility with Gafaelfawr 2.0; understood to remain compatible with the previous production version as well.
 
 - No change to Firefly version.
+
 
 2.1.1 (2021-04-07)
 ==================

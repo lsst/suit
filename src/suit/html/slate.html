@@ -4,7 +4,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="apple-mobile-web-app-capable" content="yes" />
-    <title>LSST Portal</title>
+    <title>Rubin Science Platform Portal</title>
 
     <script>
         var pOpts = window.firefly && window.firefly.options || {};
@@ -12,10 +12,11 @@
             app: {
                 template: 'FireflySlate',
                 menu: [
-                    {label:'Images', action:'ImageSelectDropDownSlateCmd'},
-                    {label:'Catalogs', action:'IrsaCatalogDropDown'},
-                    {label:'Charts', action:'ChartSelectDropDownCmd'},
-                    {label:'Upload', action: 'FileUploadDropDownCmd'},
+                    {label: 'RSP TAP Search', action: 'TAPSearch'},
+                    {label: 'External Images', action: 'ImageSelectDropDownCmd'},
+                    {label: 'External Catalogs', action: 'MultiTableSearchCmd'},
+                    {label: 'Add Chart', action: 'ChartSelectDropDownCmd'},
+                    {label: 'Upload', action: 'FileUploadDropDownCmd'}
                 ],
                 showBgMonitor: false
             },
@@ -34,10 +35,6 @@
 <body style="margin: 0; background-color: rgb(200,200,200)">
 <!-- attached location for firefly app -->
 <div id='app'/>
-
-
-
-
 </body>
 
 </html>

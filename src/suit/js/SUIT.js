@@ -1,17 +1,13 @@
 /*
  * License information at https://github.com/Caltech-IPAC/firefly/blob/master/License.txt
  */
-
-
-import {get} from 'lodash';
-
 import {firefly} from 'firefly/Firefly.js';
 import {timeSeriesButton} from './actions.jsx';
 import {mergeObjectOnly, getRootURL} from 'firefly/util/WebUtil.js';
 import {showInfoPopup} from 'firefly/ui/PopupUtil.jsx';
 import './suit.css';
 
-// import SUIT_ICO from 'html/images/lsst_logo.png';
+// import SUIT_ICO from 'html/images/rubin_logo_transparent-70.png';
 
 /**
  * This entry point is customized for LSST suit.  Refer to FFEntryPoint.js for information on
@@ -19,30 +15,30 @@ import './suit.css';
  */
 var props = {
     showUserInfo: true,
-    appIcon: getRootURL() +'images/lsst_logo.png',
+    appIcon: getRootURL() +'images/rubin_logo_transparent-70.png',
     showViewsSwitch: true,
     rightButtons: [timeSeriesButton],
     menu: [
-        {label: 'LSST TAP', action: 'TAPSearch'},
-        {label: 'Legacy PDAC', action: 'LsstCatalogDropDown'},
+        {label: 'RSP TAP Search', action: 'TAPSearch'},
         {label: 'External Images', action: 'ImageSelectDropDownCmd'},
-        {label: 'External Catalogs', action: 'IrsaCatalogDropDown'},
+        {label: 'External Catalogs', action: 'MultiTableSearchCmd'},
         {label: 'Add Chart', action: 'ChartSelectDropDownCmd'},
         {label: 'Upload', action: 'FileUploadDropDownCmd'}
     ],
 };
 
-const tapEntry= (label,url) => ({ label: `${label} ${url}`, value: url });
-const lsstEntry= (url) => tapEntry('LSST LSP',url);
+const tapEntry= (label,url) => ({ label, value: url});
+const lsstEntry= (url) => tapEntry('RSP',url);
 
 let tapServices= [
+    tapEntry('IRSA', 'https://irsa.ipac.caltech.edu/TAP'),
+    tapEntry('Gaia', 'https://gea.esac.esa.int/tap-server/tap'),
     tapEntry('CADC', 'https://www.cadc-ccda.hia-iha.nrc-cnrc.gc.ca/tap'),
-    tapEntry('GAIA', 'https://gea.esac.esa.int/tap-server/tap'),
+    tapEntry('MAST Images', 'https://vao.stsci.edu/CAOMTAP/TapService.aspx'),
     tapEntry('GAVO', 'http://dc.g-vo.org/tap'),
     tapEntry('HSA',  'https://archives.esac.esa.int/hsa/whsa-tap-server/tap'),
-    tapEntry('IRSA', 'https://irsa.ipac.caltech.edu/TAP'),
-    tapEntry('MAST', 'https://vao.stsci.edu/CAOMTAP/TapService.aspx'),
     tapEntry('NED', 'https://ned.ipac.caltech.edu/tap/'),
+    tapEntry('NASA Exoplanet Archive', 'https://exoplanetarchive.ipac.caltech.edu/TAP/'),
 ];
 
 
@@ -52,7 +48,7 @@ const TAP_PATH= 'api/tap';
 /**
  * @param {String} url
  * @return {{tapUrl:String, confident:Boolean}} the tapUrl is the computed url, where "confident" is true if the url 
- * was computed by successfully finding the pathname component consistent with the LSP URL conventions -- under
+ * was computed by successfully finding the pathname component consistent with the RSP URL conventions -- under
  * which Firefly might be invoked either as the Portal Aspect application (i.e., under /portal), or as a JupyterLab
  * extension within the Notebook Aspect (i.e., under /nb) -- and substituting the pathname as appropriate to find
  * the TAP service (under /api).  Otherwise "confident" will be set to false and a guess at a possible local TAP
@@ -78,10 +74,15 @@ if (tapUrl) { // if a url is produced with confidence put it at the top otherwis
 if (!tapUrl || !confident) {
     setTimeout( () =>
             showInfoPopup(
-                `Could not infer the location of the TAP service for this LSP instance from the window URL: ${window.location.href}`, 5000));
+                `Could not infer the location of the TAP service for this RSP instance from the window URL: ${window.location.href}`, 5000));
 }
 
-var options = {
+let options = {
+    multiTableSearchCmdOptions: [
+        {id: 'irsacat', title: 'IRSA Catalogs'},
+        {id: 'vocat'},
+        {id: 'nedcat'}
+    ],
     MenuItemKeys: {maskOverlay: true},
     imageTabs: ['fileUpload', 'url', '2mass', 'wise', 'sdss', 'msx', 'dss', 'iras'],
     irsaCatalogFilter: 'lsstFilter',
@@ -94,6 +95,6 @@ var options = {
 };
 
 
-props = mergeObjectOnly(props, get(window, 'firefly.app', {}));
-options = mergeObjectOnly(options, get(window, 'firefly.options', {}));
+props = mergeObjectOnly(props, window.firefly?.app ?? {});
+options = mergeObjectOnly(options, window.firefly?.options ?? {});
 firefly.bootstrap(props, options);
