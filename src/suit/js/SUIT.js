@@ -5,6 +5,8 @@ import {firefly} from 'firefly/Firefly.js';
 import {timeSeriesButton} from './actions.jsx';
 import {mergeObjectOnly, getRootURL} from 'firefly/util/WebUtil.js';
 import {showInfoPopup} from 'firefly/ui/PopupUtil.jsx';
+import {getTAPServices} from 'firefly/ui/tap/TapKnownServices.js';
+import {getFireflyViewerWebApiCommands} from 'firefly/api/webApiCommands/ViewerWebApiCommands.js';
 import './suit.css';
 
 // import SUIT_ICO from 'html/images/rubin_logo_transparent-70.png';
@@ -27,20 +29,40 @@ var props = {
     ],
 };
 
-const tapEntry= (label,url) => ({ label, value: url});
-const lsstEntry= (url) => tapEntry('RSP',url);
+const lsstEntry= (label, url) => (
+    {
+        label,
+        value: url,
+        examples: [
+            {
+                description: 'Query the object table to get positions and composite model magnitudes and their errors in three filters using a CONE search to define a region on the sky.  Filter on good sources  only',
+                statement:
+`SELECT objectId, ra, dec, good, mag_g_cModel as gmag, mag_i_cModel as imag, mag_r_cModel as rmag,
+magerr_g_cModel as gmag_err, magerr_i_cModel as imag_err, magerr_r_cModel as rmag_err
+FROM dp01_dc2_catalogs.object
+WHERE CONTAINS (POINT('ICRS', ra, dec), CIRCLE('ICRS', 62.0, -37.0, 0.1 )) = 1 AND good = 1`
+            },
+            {
+                description: 'Select all SNe from the truth match table at redshift < 1',
+                statement:
+`SELECT * FROM dp01_dc2_catalogs.truth_match
+WHERE dp01_dc2_catalogs.truth_match.truth_type = 3
+AND dp01_dc2_catalogs.truth_match.redshift < 1`
+            },
+            {
+                description: 'Execute a cone search centered on (RA, Dec) = (61.863, -35.79) with a radius of 20 arcseconds and applying a cut on magnitude. Join with the truth catalog  and add in some quality filters on the match. Apply quality cuts on the match to return only those objects with a match in the truth catalog. Filter also on  sources satisfying the “is_good_match” flag',
+                statement:
+`SELECT obj.objectId, obj.ra, obj.dec, obj.mag_r_cModel, obj.cModelFlux_r, truth.mag_r, truth.flux_r, truth.truth_type
+FROM dp01_dc2_catalogs.object as obj JOIN dp01_dc2_catalogs.truth_match as truth ON truth.match_objectId = obj.objectId
+WHERE CONTAINS(POINT('ICRS', obj.ra, obj.dec),CIRCLE('ICRS', 62.0, -37.0, 0.1 )) = 1
+AND truth.match_objectid >= 0 
+AND truth.is_good_match = 1`,
+            },
+        ]
+    })
 
-let tapServices= [
-    tapEntry('IRSA', 'https://irsa.ipac.caltech.edu/TAP'),
-    tapEntry('Gaia', 'https://gea.esac.esa.int/tap-server/tap'),
-    tapEntry('CADC', 'https://www.cadc-ccda.hia-iha.nrc-cnrc.gc.ca/tap'),
-    tapEntry('MAST Images', 'https://vao.stsci.edu/CAOMTAP/TapService.aspx'),
-    tapEntry('GAVO', 'http://dc.g-vo.org/tap'),
-    tapEntry('HSA',  'https://archives.esac.esa.int/hsa/whsa-tap-server/tap'),
-    tapEntry('NED', 'https://ned.ipac.caltech.edu/tap/'),
-    tapEntry('NASA Exoplanet Archive', 'https://exoplanetarchive.ipac.caltech.edu/TAP/'),
-];
-
+let tapServices= getTAPServices( ['IRSA', 'Gaia', 'CADC', 'MAST Images',
+    'GAVO', 'HSA', 'NED', 'NASA Exoplanet Archive']);
 
 
 const TAP_PATH= 'api/tap';
@@ -68,7 +90,7 @@ function findCorrectLSSTTapService(url) {
 
 const {tapUrl,confident}= findCorrectLSSTTapService(window.location.href);
 if (tapUrl) { // if a url is produced with confidence put it at the top otherwise put it at the bottom
-    tapServices=  confident ? [ lsstEntry(tapUrl), ...tapServices ] : [ ...tapServices, tapEntry('(possible local service)',tapUrl) ];
+    tapServices=  confident ? [ lsstEntry('LSST RSP', tapUrl), ...tapServices ] : [ ...tapServices, lsstEntry('(possible local service)',tapUrl)];
 }
 
 if (!tapUrl || !confident) {
@@ -84,6 +106,7 @@ let options = {
         {id: 'nedcat'}
     ],
     MenuItemKeys: {maskOverlay: true},
+    RequireWebSocketUptime : true,
     imageTabs: ['fileUpload', 'url', '2mass', 'wise', 'sdss', 'msx', 'dss', 'iras'],
     irsaCatalogFilter: 'lsstFilter',
     catalogSpacialOp: 'polygonWhenPlotExist',
@@ -91,10 +114,16 @@ let options = {
         services: tapServices,
         defaultMaxrec: 50000
     },
-    workspace: {showOptions: true}
+    hips: {
+        readoutShowsPixel : true,
+    },
+    workspace: {showOptions: true},
+    targetPanelExampleRow1: [`'62, -37'`, `'60.4 -35.1'`, `'4h11m59s -32d51m59s equ j2000'`, `'239.2 -47.6 gal'`],
+    targetPanelExampleRow2: [`'NGC 1532' (NB: DC2 is a simulated sky, so names are not useful)`],
 };
 
+const apiCommands= getFireflyViewerWebApiCommands();
 
 props = mergeObjectOnly(props, window.firefly?.app ?? {});
 options = mergeObjectOnly(options, window.firefly?.options ?? {});
-firefly.bootstrap(props, options);
+firefly.bootstrap(props, options,getFireflyViewerWebApiCommands());
