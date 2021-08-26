@@ -14,40 +14,40 @@ export function timeSeriesButton() {
                 title = 'Launch Time Series Viewer'
                 type = 'highlight'
                 onChange = {checkForTimeSeriesData}
-                onClick = {launchTimeSeries}
+                onClick = {() => console.log('add a new launchTimeSeries function')}
                 style= {{maxWidth: 220}}
             />
         </div>
     );
 }
 
-function launchTimeSeries({tbl_id, highlightedRow}) {
-    const tableModel = getTblById(tbl_id) || {};
-    let req;
-
-    if (isTimeSeriesTable(tableModel)) {
-        req = cloneDeep(get(tableModel, 'request'));
-        req.tbl_id = LC.RAW_TABLE;
-        set(req, 'META_INFO.tbl_id', LC.RAW_TABLE);
-        req && getViewer(undefined, 'timeseries').showTable(req);
-    } else {
-        const row = getTblRowAsObj(getTblById(tbl_id), highlightedRow) || {};
-        const {mission, tableName, database, objectIdColumn} = get(tableModel, 'tableMeta') || {};
-        const objectId = objectIdColumn ? get(row, objectIdColumn, undefined) : undefined;
-
-        if (!isNil(objectId)) {
-            const META_INFO = {[LC.META_MISSION]: mission};
-
-            req = makeTblRequest('LSSTLightCurveQuery', objectId, {objectId, table_name: tableName, database}, {tbl_id: LC.RAW_TABLE, META_INFO});
-
-            if (mission.toLowerCase().includes('wise')) {
-                req = req && addExistingConstraints(tableModel, req);
-            }
-
-            req && getViewer(undefined, 'timeseries').showTable(req);
-        }
-    }
-}
+// function launchTimeSeries({tbl_id, highlightedRow}) {
+//     const tableModel = getTblById(tbl_id) || {};
+//     let req;
+//
+//     if (isTimeSeriesTable(tableModel)) {
+//         req = cloneDeep(get(tableModel, 'request'));
+//         req.tbl_id = LC.RAW_TABLE;
+//         set(req, 'META_INFO.tbl_id', LC.RAW_TABLE);
+//         req && getViewer(undefined, 'timeseries').showTable(req);
+//     } else {
+//         const row = getTblRowAsObj(getTblById(tbl_id), highlightedRow) || {};
+//         const {mission, tableName, database, objectIdColumn} = get(tableModel, 'tableMeta') || {};
+//         const objectId = objectIdColumn ? get(row, objectIdColumn, undefined) : undefined;
+//
+//         if (!isNil(objectId)) {
+//             const META_INFO = {[LC.META_MISSION]: mission};
+//
+//             req = makeTblRequest('LSSTLightCurveQuery', objectId, {objectId, table_name: tableName, database}, {tbl_id: LC.RAW_TABLE, META_INFO});
+//
+//             if (mission.toLowerCase().includes('wise')) {
+//                 req = req && addExistingConstraints(tableModel, req);
+//             }
+//
+//             req && getViewer(undefined, 'timeseries').showTable(req);
+//         }
+//     }
+// }
 
 function addExistingConstraints(tableModel, req) {
     const {SearchMethod, UserTargetWorldPt, constraints, radius, size, ratio, polygon, posang,  sizeUnit} = get(tableModel, ['request']);

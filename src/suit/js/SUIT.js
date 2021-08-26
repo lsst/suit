@@ -17,9 +17,9 @@ import './suit.css';
  */
 var props = {
     showUserInfo: true,
-    appIcon: getRootURL() +'images/rubin_logo_transparent-70.png',
+    appIcon: getRootURL() +'images/rubin_logo_transparent-40.png',
     showViewsSwitch: true,
-    rightButtons: [timeSeriesButton],
+    // rightButtons: [timeSeriesButton],
     menu: [
         {label: 'RSP TAP Search', action: 'TAPSearch'},
         {label: 'External Images', action: 'ImageSelectDropDownCmd'},
@@ -28,6 +28,9 @@ var props = {
         {label: 'Upload', action: 'FileUploadDropDownCmd'}
     ],
 };
+
+props = mergeObjectOnly(props, window.firefly?.app ?? {});
+const {template}= props;
 
 const lsstEntry= (label, url) => (
     {
@@ -110,6 +113,9 @@ let options = {
     imageTabs: ['fileUpload', 'url', '2mass', 'wise', 'sdss', 'msx', 'dss', 'iras'],
     irsaCatalogFilter: 'lsstFilter',
     catalogSpacialOp: 'polygonWhenPlotExist',
+    image : {
+        canCreateExtractionTable: (template==='FireflyViewer' || template==='FireflySlate'),
+    },
     tap : {
         services: tapServices,
         defaultMaxrec: 50000
@@ -122,8 +128,5 @@ let options = {
     targetPanelExampleRow2: [`'NGC 1532' (NB: DC2 is a simulated sky, so names are not useful)`],
 };
 
-const apiCommands= getFireflyViewerWebApiCommands();
-
-props = mergeObjectOnly(props, window.firefly?.app ?? {});
 options = mergeObjectOnly(options, window.firefly?.options ?? {});
 firefly.bootstrap(props, options,getFireflyViewerWebApiCommands());
