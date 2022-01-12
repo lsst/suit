@@ -1,0 +1,15 @@
+version: '3'
+services:
+  suit:
+    image: ipac/suit:${BUILD_TAG:-latest}  # value taken from shell, or latest
+    build:
+      context: ../
+      dockerfile: firefly/docker/Dockerfile
+      args:
+        build_dir: suit
+        target: -Pehcache.multicast.ttl=32 -Psso.auth.required=false suit:checkoutFirefly :suit:warAll
+    restart: always
+    ports:
+      - "8080:8080"
+    environment: # any variable listed in catalina.sh and usually set in tomcat's setenv.sh, could be set here
+      - ADMIN_PASSWORD      # value taken from shell
