@@ -8,7 +8,6 @@ services:
       args:
         build_dir: suit
         target: -Pehcache.multicast.ttl=32 -Psso.auth.required=false suit:checkoutFirefly :suit:warAll
-    restart: always
     ports:
       - "8080:8080"
     environment: # any variable listed in catalina.sh and usually set in tomcat's setenv.sh, could be set here
