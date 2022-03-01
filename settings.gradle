@@ -1,10 +1,8 @@
 rootProject.name = 'suit'
 
-include 'firefly','simbad','xstream', 'firefly_data', 'suit'
+include 'firefly', 'firefly_data', 'suit'
 
 project(":suit").projectDir = file("src/suit")
 
 project(":firefly").projectDir  = file("../firefly/src/firefly")
-project(":simbad").projectDir   = file('../firefly/src/external/simbad')
-project(":xstream").projectDir  = file('../firefly/src/external/xstream')
 project(":firefly_data").projectDir = file('../firefly/src/firefly_data')
