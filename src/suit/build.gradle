@@ -5,9 +5,9 @@ apply from: "$fireflyPath/buildScript/app.gincl"
 apply from: "$fireflyPath/buildScript/dep-init.gincl"
 
 dependencies {
-  compile project(':firefly')
+  implementation project(':firefly')
   webappLib oidc_lib, FIREFLY_RUNTIME + firefly_lib + ":suit"
-  testCompile project(path: ':firefly', configuration: 'tests')
+  testImplementation project(path: ':firefly', configuration: 'tests')
 }
 
 jar {
