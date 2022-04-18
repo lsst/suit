@@ -112,7 +112,7 @@ let options = {
     RequireWebSocketUptime : true,
     imageTabs: ['fileUpload', 'url', '2mass', 'wise', 'sdss', 'msx', 'dss', 'iras'],
     irsaCatalogFilter: 'lsstFilter',
-    catalogSpacialOp: 'polygonWhenPlotExist',
+    catalogSpatialOp: 'polygonWhenPlotExist',
     image : {
         canCreateExtractionTable: (template==='FireflyViewer' || template==='FireflySlate'),
     },
