@@ -17,7 +17,9 @@ import './suit.css';
  */
 var props = {
     showUserInfo: true,
-    appIcon: getRootURL() +'images/rubin_logo_transparent-40.png',
+    // appIcon: getRootURL() +'images/rubin_logo_transparent-40.png',
+    appIcon: getRootURL() +'images/rubin-favicon-transparent-45px.png',
+    bannerLeftStyle:{margin: '-2px 5px 0 10px'},
     showViewsSwitch: true,
     // rightButtons: [timeSeriesButton],
     menu: [
@@ -62,7 +64,7 @@ AND truth.match_objectid >= 0
 AND truth.is_good_match = 1`,
             },
         ]
-    })
+    });
 
 let tapServices= getTAPServices( ['IRSA', 'Gaia', 'CADC', 'MAST Images',
     'GAVO', 'HSA', 'NED', 'NASA Exoplanet Archive']);
@@ -124,8 +126,10 @@ let options = {
         readoutShowsPixel : true,
     },
     workspace: {showOptions: true},
+    /* eslint-disable quotes */
     targetPanelExampleRow1: [`'62, -37'`, `'60.4 -35.1'`, `'4h11m59s -32d51m59s equ j2000'`, `'239.2 -47.6 gal'`],
     targetPanelExampleRow2: [`'NGC 1532' (NB: DC2 is a simulated sky, so names are not useful)`],
+    /* eslint-enable quotes */
 };
 
 options = mergeObjectOnly(options, window.firefly?.options ?? {});
