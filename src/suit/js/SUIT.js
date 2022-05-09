@@ -110,13 +110,13 @@ let options = {
         {id: 'vocat'},
         {id: 'nedcat'}
     ],
-    MenuItemKeys: {maskOverlay: true},
+    MenuItemKeys: {maskOverlay: true, imageSelect:false},
     RequireWebSocketUptime : true,
     imageTabs: ['fileUpload', 'url', '2mass', 'wise', 'sdss', 'msx', 'dss', 'iras'],
     irsaCatalogFilter: 'lsstFilter',
     catalogSpatialOp: 'polygonWhenPlotExist',
     image : {
-        canCreateExtractionTable: (template==='FireflyViewer' || template==='FireflySlate'),
+        canCreateExtractionTable: true,
     },
     tap : {
         services: tapServices,

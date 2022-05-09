@@ -14,14 +14,14 @@
                 menu: [
                     {label: 'RSP TAP Search', action: 'TAPSearch'},
                     {label: 'External Images', action: 'ImageSelectDropDownCmd'},
-                    {label: 'External Catalogs', action: 'MultiTableSearchCmd'},
+                    {label: 'Eternal Catalogs', action: 'MultiTableSearchCmd'},
                     {label: 'Add Chart', action: 'ChartSelectDropDownCmd'},
                     {label: 'Upload', action: 'FileUploadDropDownCmd'}
                 ],
                 showBgMonitor: false
             },
             options : Object.assign(pOpts, {
-                MenuItemKeys: {maskOverlay:true},
+                MenuItemKeys: {maskOverlay:true, imageSelect:false},
                 catalogSpatialOp: 'polygonWhenPlotExist',
                 disableDefaultDropDown: true,
                 charts: {defaultDeletable: true},
