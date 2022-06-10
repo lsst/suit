@@ -29,6 +29,22 @@ var props = {
         {label: 'Add Chart', action: 'ChartSelectDropDownCmd'},
         {label: 'Upload', action: 'FileUploadDropDownCmd'}
     ],
+    coverage : { // example of using DSS and wise combination for coverage (not that anyone would want to combination)
+        // hipsSourceURL : 'http://alasky.u-strasbg.fr/DSS/DSSColor',
+        hipsSourceURL : 'ivo://CDS/P/2MASS/color',
+        fovDegFallOver: .00001, // small number will never show an image only a HiPS
+        // imageSourceParams: { //use wise if the user forces an image request
+        //     Service : 'WISE',
+        //     SurveyKey: '1b',
+        //     SurveyKeyBand: '4'
+        // },
+        imageSourceParams: { //use 2mass if the user forces an image request
+            Service : 'TWOMASS',
+            SurveyKey: 'asky',
+            SurveyKeyBand: 'k',
+            title : '2MASS K_s'
+        },
+    }
 };
 
 props = mergeObjectOnly(props, window.firefly?.app ?? {});
