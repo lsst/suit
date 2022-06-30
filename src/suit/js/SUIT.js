@@ -28,23 +28,7 @@ var props = {
         {label: 'External Catalogs', action: 'MultiTableSearchCmd'},
         {label: 'Add Chart', action: 'ChartSelectDropDownCmd'},
         {label: 'Upload', action: 'FileUploadDropDownCmd'}
-    ],
-    coverage : { // example of using DSS and wise combination for coverage (not that anyone would want to combination)
-        // hipsSourceURL : 'http://alasky.u-strasbg.fr/DSS/DSSColor',
-        hipsSourceURL : 'ivo://CDS/P/2MASS/color',
-        fovDegFallOver: .00001, // small number will never show an image only a HiPS
-        // imageSourceParams: { //use wise if the user forces an image request
-        //     Service : 'WISE',
-        //     SurveyKey: '1b',
-        //     SurveyKeyBand: '4'
-        // },
-        imageSourceParams: { //use 2mass if the user forces an image request
-            Service : 'TWOMASS',
-            SurveyKey: 'asky',
-            SurveyKeyBand: 'k',
-            title : '2MASS K_s'
-        },
-    }
+    ]
 };
 
 props = mergeObjectOnly(props, window.firefly?.app ?? {});
@@ -146,6 +130,24 @@ let options = {
     catalogSpatialOp: 'polygonWhenPlotExist',
     image : {
         canCreateExtractionTable: true,
+    },
+    coverage : { // example of using DSS and wise combination for coverage (not that anyone would want to combination)
+        // hipsSourceURL : 'http://alasky.u-strasbg.fr/DSS/DSSColor',
+        // hipsSourceURL : 'ivo://CDS/P/2MASS/color',
+        // Use a server that is purely internal to the RSP, pending authentication-flow changes:
+        hipsSourceURL : 'http://hips.hips.svc.cluster.local:8080/api/hips/images/color_gri',
+        fovDegFallOver: .00001, // small number will never show an image only a HiPS
+        // imageSourceParams: { //use wise if the user forces an image request
+        //     Service : 'WISE',
+        //     SurveyKey: '1b',
+        //     SurveyKeyBand: '4'
+        // },
+        imageSourceParams: { //use 2mass if the user forces an image request
+            Service : 'TWOMASS',
+            SurveyKey: 'asky',
+            SurveyKeyBand: 'k',
+            title : '2MASS K_s'
+        },
     },
     charts : {
         maxRowsForScatter: 20000,
