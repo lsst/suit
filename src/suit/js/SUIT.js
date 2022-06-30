@@ -134,6 +134,9 @@ let options = {
     image : {
         canCreateExtractionTable: true,
     },
+    charts : {
+        maxRowsForScatter: 20000,
+    },
     tap : {
         services: tapServices,
         defaultMaxrec: 50000
