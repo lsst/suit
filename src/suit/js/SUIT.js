@@ -2,11 +2,12 @@
  * License information at https://github.com/Caltech-IPAC/firefly/blob/master/License.txt
  */
 import {firefly} from 'firefly/Firefly.js';
-import {timeSeriesButton} from './actions.jsx';
 import {mergeObjectOnly, getRootURL} from 'firefly/util/WebUtil.js';
 import {showInfoPopup} from 'firefly/ui/PopupUtil.jsx';
+import {makeWorldPt} from 'firefly/visualize/Point.js';
 import {getTAPServices} from 'firefly/ui/tap/TapKnownServices.js';
 import {getFireflyViewerWebApiCommands} from 'firefly/api/webApiCommands/ViewerWebApiCommands.js';
+import {getDefaultMOCList} from 'firefly/visualize/HiPSMocUtil.js';
 import './suit.css';
 
 // import SUIT_ICO from 'html/images/rubin_logo_transparent-70.png';
@@ -38,6 +39,9 @@ const lsstEntry= (label, url) => (
     {
         label,
         value: url,
+        fovDeg: 10,
+        centerWP: makeWorldPt(62,-37).toString(),
+        hipsUrl: 'http://hips.hips.svc.cluster.local:8080/api/hips/images/color_gri',
         examples: [
             {
                 description: 'Query the object table to get positions and composite model magnitudes and their errors in three filters using a CONE search to define a region on the sky. Filter on deblended sources with i-band magnitudes brighter than 25 mag.',
@@ -158,6 +162,13 @@ let options = {
     },
     hips: {
         readoutShowsPixel : true,
+        hipsSources: 'lsst,cds',
+        defHipsSources: {source: 'lsst', label: 'Rubin Featured'},
+        adhocMocSource: {
+            sources: getDefaultMOCList(),
+            label: 'Featured MOC '
+        },
+        mergedListPriority: 'lsst'
     },
     workspace: {showOptions: true},
     /* eslint-disable quotes */
