@@ -41,7 +41,7 @@ const lsstEntry= (label, url) => (
         value: url,
         fovDeg: 10,
         centerWP: makeWorldPt(62,-37).toString(),
-        hipsUrl: 'http://hips.hips.svc.cluster.local:8080/api/hips/images/color_gri',
+        hipsUrl: 'https://irsa.ipac.caltech.edu/data/hips/list',
         examples: [
             {
                 description: 'Query the object table to get positions and composite model magnitudes and their errors in three filters using a CONE search to define a region on the sky. Filter on deblended sources with i-band magnitudes brighter than 25 mag.',
