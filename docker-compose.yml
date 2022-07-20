@@ -1,4 +1,4 @@
-version: '3'
+version: '3.4'
 services:
   suit:
     image: ipac/suit:${BUILD_TAG:-latest}  # value taken from shell, or latest
@@ -12,3 +12,24 @@ services:
       - "8080:8080"
     environment: # any variable listed in catalina.sh and usually set in tomcat's setenv.sh, could be set here
       - ADMIN_PASSWORD      # value taken from shell
+  local:
+    build:
+      context: ../
+      dockerfile: firefly/docker/Dockerfile
+      target: dev_env
+    ports:
+      - "8080:8080"
+      - "5050:5050"
+    environment:
+      - work_dir=suit
+      - project=suit
+    volumes:
+      - ../firefly:/opt/work/firefly
+      - ../suit:/opt/work/suit
+      - /opt/work/firefly/.gradle
+      - /opt/work/firefly/build
+      - /opt/work/firefly/jars/build
+      - /opt/work/firefly/node_modules
+      - /opt/work/suit/.gradle
+      - /opt/work/suit/build
+      - /opt/work/suit/jars/build
