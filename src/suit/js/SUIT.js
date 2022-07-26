@@ -157,7 +157,7 @@ let options = {
     hips: {
         readoutShowsPixel : true,
         hipsSources: 'lsst,cds',
-        defHipsSources: {source: 'lsst', label: 'Rubin Featured'},
+        defHipsSources: {source: 'lsst', label: 'Featured'},
         adhocMocSource: {
             sources: getDefaultMOCList(),
             label: 'Featured MOC '
