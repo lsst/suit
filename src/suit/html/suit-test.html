@@ -1,0 +1,49 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <link rel="icon" type="image/x-icon" href="images/rubin-favicon-transparent-45px.png">
+    <title>Rubin Science Platform Portal</title>
+
+    <script>
+        window.firefly = {
+            app: {
+               template: 'FireflyViewer',     // set to app mode, instead of api.
+            },
+            options : {
+                charts: {
+                    useChartWorkArea: true
+                },
+                tap : {
+                    additional: {
+                        services: [
+                            {
+                                label: 'LSST RSP-test',
+                                value: 'https://data-int.lsst.cloud/api/tap',
+                                hipsUrl: 'https://data-int.lsst.cloud/api/hips/images/band_u',
+                                centerWP: '62;-37;EQ_J2000',
+                                fovDeg: 10
+
+                            }
+                        ]
+                    }
+                }
+            },
+        };
+    </script>
+    <script  type="text/javascript" src="firefly_loader.js"></script>
+</head>
+
+<body style="margin: 0; background-color: rgb(200,200,200)">
+<!-- attached location for firefly app -->
+<div id='app'/>
+
+
+
+
+</body>
+
+</html>
+

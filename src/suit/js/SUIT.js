@@ -16,7 +16,7 @@ import './suit.css';
  * This entry point is customized for LSST suit.  Refer to FFEntryPoint.js for information on
  * what could be used in defaults.
  */
-var props = {
+let props = {
     showUserInfo: true,
     // appIcon: getRootURL() +'images/rubin_logo_transparent-40.png',
     appIcon: getRootURL() +'images/rubin-favicon-transparent-45px.png',
@@ -33,12 +33,11 @@ var props = {
 };
 
 props = mergeObjectOnly(props, window.firefly?.app ?? {});
-const {template}= props;
 
-const lsstEntry= (label, url) => (
+const lsstEntry=
     {
-        label,
-        value: url,
+        label:'LSST RSP',
+        value: 'https://data-int.lsst.cloud/api/tap',
         fovDeg: 10,
         centerWP: makeWorldPt(62,-37).toString(),
         hipsUrl: 'https://irsa.ipac.caltech.edu/data/hips/list',
@@ -81,45 +80,13 @@ AND ( t_min <= 61000 AND 60900 <= t_max )
 AND ( 600e-9 BETWEEN em_min AND em_max )`
             },
         ]
-    });
+    };
 
-let tapServices= getTAPServices( ['IRSA', 'Gaia', 'CADC', 'MAST Images',
-    'GAVO', 'HSA', 'NED', 'NASA Exoplanet Archive']);
+const tapServices=  [
+    lsstEntry,
+    getTAPServices( ['IRSA', 'Gaia', 'CADC', 'MAST Images', 'GAVO', 'HSA', 'NED', 'NASA Exoplanet Archive'])
+];
 
-
-const TAP_PATH= 'api/tap';
-
-/**
- * @param {String} url
- * @return {{tapUrl:String, confident:Boolean}} the tapUrl is the computed url, where "confident" is true if the url 
- * was computed by successfully finding the pathname component consistent with the RSP URL conventions -- under
- * which Firefly might be invoked either as the Portal Aspect application (i.e., under /portal), or as a JupyterLab
- * extension within the Notebook Aspect (i.e., under /nb) -- and substituting the pathname as appropriate to find
- * the TAP service (under /api).  Otherwise "confident" will be set to false and a guess at a possible local TAP
- * service URL will be made.
- */
-function findCorrectLSSTTapService(url) {
-    try {
-        const {origin,pathname}= new URL(url);
-        let idx= pathname.indexOf('/portal');
-        if (idx===-1) idx= pathname.indexOf('/nb');
-        if (idx===-1) return {tapUrl:`${origin}/${TAP_PATH}`, confident:false};
-        return {tapUrl:`${origin}${pathname.substr(0,idx)}/${TAP_PATH}`, confident:true};
-    } catch (e) {
-        return {tapUrl:undefined,confident:false};
-    }
-}
-
-const {tapUrl,confident}= findCorrectLSSTTapService(window.location.href);
-if (tapUrl) { // if a url is produced with confidence put it at the top otherwise put it at the bottom
-    tapServices=  confident ? [ lsstEntry('LSST RSP', tapUrl), ...tapServices ] : [ ...tapServices, lsstEntry('(possible local service)',tapUrl)];
-}
-
-if (!tapUrl || !confident) {
-    setTimeout( () =>
-            showInfoPopup(
-                `Could not infer the location of the TAP service for this RSP instance from the window URL: ${window.location.href}`, 5000));
-}
 
 let options = {
     multiTableSearchCmdOptions: [
@@ -157,12 +124,16 @@ let options = {
     hips: {
         readoutShowsPixel : true,
         hipsSources: 'lsst,cds',
-        defHipsSources: {source: 'lsst', label: 'Featured'},
+        defHipsSources: {source: 'lsst', label: 'Rubin Featured'},
+        mergedListPriority: 'lsst',
         adhocMocSource: {
-            sources: getDefaultMOCList(),
-            label: 'Featured MOC '
+            sources: [
+                'temp://lsst/dp02_dc2/hips/images/color_gri',
+                'temp://lsst/dp02_dc2/hips/images/band_u',
+                'temp://lsst/dp02_dc2/hips/images/band_g',
+            ],
+            label: 'Rubin Featured MOC '
         },
-        mergedListPriority: 'lsst'
     },
     workspace: {showOptions: true},
     /* eslint-disable quotes */
