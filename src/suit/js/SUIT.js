@@ -84,7 +84,7 @@ AND ( 600e-9 BETWEEN em_min AND em_max )`
 
 const tapServices=  [
     lsstEntry,
-    getTAPServices( ['IRSA', 'Gaia', 'CADC', 'MAST Images', 'GAVO', 'HSA', 'NED', 'NASA Exoplanet Archive'])
+    ...getTAPServices( ['IRSA', 'Gaia', 'CADC', 'MAST Images', 'GAVO', 'HSA', 'NED', 'NASA Exoplanet Archive'])
 ];
 
 
