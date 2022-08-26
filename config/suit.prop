@@ -31,4 +31,5 @@ workspace.protocol.webdav = @workspace.protocol.webdav@
 workspace.root.path = @workspace.root.path@
 workspace.propfind.infinity = @__$workspace.propfind.infinity@
 
+lsst.hips.masterUrl=@lsst.hips.masterUrl@
 redis.host = @redis.host@
