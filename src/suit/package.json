@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "build": "NODE_ENV=development ../../node_modules/webpack/bin/webpack.js",
+    "build": "../../node_modules/webpack/bin/webpack.js",
     "lint": "DO_LINT=true yarn run build",
     "dev": "DEV_MODE=true yarn run build -w --no-color",
     "test-unit": "node ../../node_modules/jest/bin/jest --passWithNoTests",
