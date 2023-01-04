@@ -10,15 +10,15 @@ services:
         target: -Psso.auth.required=false :suit:warAll    # use this for production build: -Pehcache.multicast.ttl=32 -Psso.auth.required=false suit:checkoutFirefly :suit:warAll
     ports:
       - "8080:8080"
-    environment: # any variable listed in catalina.sh and usually set in tomcat's setenv.sh, could be set here
-      - ADMIN_PASSWORD      # value taken from shell
+    env_file:
+      - ./suit-docker.env
   dev:
     build:
       context: ../
       dockerfile: firefly/docker/Dockerfile
       target: dev_env
     ports:
-      - "8080:8080"
+      - "8090:8080"
       - "5050:5050"
     environment:
       - work_dir=suit
