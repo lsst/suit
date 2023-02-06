@@ -25,7 +25,6 @@ onlinehelp {
 }
 
 ext.appConfig = {
-  firefly.tag.file = "../../config/firefly_build.tag"
 
   environments {
     dev {

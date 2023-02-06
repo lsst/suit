@@ -16,44 +16,17 @@ Please see the Rubin Observatory document [DMTN-136](https://dmtn-136.lsst.io/) 
 The SUIT build process provides for the ability to include in a release of the SUIT source code an explicit statement of the Firefly release (GitHub tag) against which it is to be built.
 
 The philosophy of use of this feature is that `suit:master` will **not** use that feature, so that a standard build of the package from the tip of `master` will by default be performed against the tip of the Firefly default branch (which is `dev` for Firefly, not `main` or `master`).
-However, in a release branch of `suit`, the feature will be used to constrain the build to a released version of Firefly, by setting that tag in a `config/firefly_build.tag` file in the repo.
+However, in a release branch of `suit`, the feature will be used to constrain the build to a released version of Firefly, by setting that tag in a `firefly.tag.name` property in the file `config/app.config` in the repo.
 **Edits to that file should always be performed in separate commits** and not commingled with any code, documentation, or release note changes, so that these commits can rigorously be excluded from merging to `suit:master`.
 
-Test builds of `suit` against specific non-release versions of Firefly can be made by creating a `suit` branch in which the `config/firefly_build.tag` file is set appropriately.
-
-### Details on the Firefly tag control
-
-There are 2 ways to specify the tag:
-
-1. set it in `firefly.tag.name` property
-2. set it in a file referenced by a `firefly.tag.file` property
+Test builds of `suit` against specific non-release versions of Firefly can be made by creating a `suit` branch in which the `firefly.tag.name` property is set appropriately.
 
 **Examples:**
 
-`gradle -Pfirefly.tag.name=abc123 suit:checkoutFirefly`
+`gradle -Pfirefly.tag.name=release-2022.1.0 firefly:checkoutFirefly`
 
-The build will rightfully complain that 'abc123' does not match any tag or branch.
+This will checkout Firefly at the given tag `release-2022.1.0`.
 
-The default value of `firefly.tag.file` is set to `config/firefly_build.tag`.
-Let's try using that file.
-
-`gradle suit:checkoutFirefly`
-
-This produces a "tag not found" error, because there's nothing in the file.
-Now try placing a tag into the file and run it again.
-
-```
-echo 'master' > config/firefly_build.tag
-gradle suit:checkoutFirefly
-git -C ../firefly branch
-```
-
-This sets the Firefly version to use to "master", easily verified by running `git branch` in the `firefly` directory after this.
-
-As demonstrated, there are many ways to use this.
-It can be passed in at the command line.
-It can be specified in a file.
-You can also have different tags or different files for each of the environments if needed.
 
 ## Local Build Instuctions
 
