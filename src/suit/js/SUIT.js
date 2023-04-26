@@ -62,9 +62,10 @@ let options = {
     },
     coverage : { // example of using DSS and wise combination for coverage (not that anyone would want to combination)
         // Use a server that is purely internal to the RSP, pending authentication-flow changes:
-        hipsSourceURL : 'http://hips.hips.svc.cluster.local:8080/api/hips/images/color_gri',
+        hipsSourceURL : 'https://data-int.lsst.cloud/api/hips/images/color_gri',
         hipsSource360URL : 'http://hips.hips.svc.cluster.local:8080/api/hips/images/color_gri', // url
         fovDegFallOver: .00001, // small number will never show an image only a HiPS
+        exclusiveHiPS: true,
         imageSourceParams: { //use 2mass if the user forces an image request
             Service : 'TWOMASS',
             SurveyKey: 'asky',
@@ -80,7 +81,9 @@ let options = {
         defaultMaxrec: 50000
     },
     tapObsCore: {
+        enableObsCoreDownload: true, // enable for other obscore
         [LSST_TAP_LABEL]  : {
+            enableObsCoreDownload: false, //disable for the portal
             filterDefinitions: [
                 {
                     name: 'LSSTCam',
@@ -141,6 +144,7 @@ let options = {
         ...makeLsstClickToAction(),
     ],
     searchActionsCmdMask: [
+        'tableTapUpload',
         'nedRadius', 'simbadRadius', 'gotoSimbadRadius',
         'tableNed', 'tableSimbad', 'tableSimbadGoto', 'imageFits', 'tableHiPS',
         'tapRadius', 'tapArea', 'tableTapRadius',
