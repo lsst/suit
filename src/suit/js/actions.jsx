@@ -128,11 +128,11 @@ export function makeLsstClickToAction() {
                 showTapSearchPanel( {corners, serviceUrl: getLsstTapServiceUrl(),
                     schema:'dp02_dc2_catalogs', table:'dp02_dc2_catalogs.TruthSummary'});
             }, 'Search TruthSummary table within the specified polygon'),
-        makeSearchAction('lsstObsCoreTapTable', 'lsst_tap', 'Obscore TAP', 'TAP Search',
+        makeSearchAction('lsstObsCoreTapTable', 'lsst-tap', 'Obscore TAP', 'TAP Search',
             SearchTypes.point_table_only, undefined, undefined,
             (sa, wp) => showTapSearchPanel( {wp, serviceUrl: getLsstTapServiceUrl(), schema:'ivoa', table:'ivoa.ObsCore'}),
             'Search ObsTAP for images at row'),
-        makeSearchAction('lsstTruthSummaryRadiusTable', 'lsst_tap', 'TAP', 'Truth Summary TAP',
+        makeSearchAction('lsstTruthSummaryRadiusTable', 'lsst-tap', 'TAP', 'Truth Summary TAP',
             SearchTypes.point_table_only, undefined, undefined,
             (sa, wp) => showTapSearchPanel( {wp, radiusInArcSec: 5/3600,
                 serviceUrl: getLsstTapServiceUrl(), schema:'dp02_dc2_catalogs', table:'dp02_dc2_catalogs.TruthSummary'}),
