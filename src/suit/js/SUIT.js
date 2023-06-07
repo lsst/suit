@@ -34,7 +34,7 @@ let props = {
     ],
 };
 
-const LSST_TAP_LABEL= 'LSST RSP';
+const LSST_TAP_LABEL= 'LSST DP0.2 DC2';
 
 props = mergeObjectOnly(props, window.firefly?.app ?? {});
 

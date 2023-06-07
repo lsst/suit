@@ -103,7 +103,7 @@ function isTimeSeriesTable(tableModel) {
 
 }
 
-const LSST_TAP_LABEL= 'LSST RSP';
+const LSST_TAP_LABEL= 'LSST DP0.2 DC2';
 
 function getLsstTapServiceUrl() {
     const url= getTapServices().filter( ({label}) => label===LSST_TAP_LABEL)?.[0]?.value;
