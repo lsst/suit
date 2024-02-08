@@ -32,6 +32,7 @@ let props = {
         {label: 'Add Chart', action: 'ChartSelectDropDownCmd'},
         {label: 'Upload', action: 'FileUploadDropDownCmd'}
     ],
+    appTitle: 'Rubin Portal'
 };
 
 const LSST_TAP_LABEL= 'LSST DP0.2 DC2';

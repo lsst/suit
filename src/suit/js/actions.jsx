@@ -151,7 +151,7 @@ export function makeLsstTapEntry() {
             value: 'https://data-int.lsst.cloud/api/tap',
             fovDeg: 10,
             centerWP: makeWorldPt(62,-37).toString(),
-            hipsUrl: 'https://irsa.ipac.caltech.edu/data/hips/list',
+             // hipsUrl: 'https://data-int.lsst.cloud/api/hips/images/color_gri',
             examples: [
                 {
                     description: 'Query the object table to get positions and composite model magnitudes and their errors in three filters using a CONE search to define a region on the sky. Filter on deblended sources with i-band magnitudes brighter than 25 mag.',
