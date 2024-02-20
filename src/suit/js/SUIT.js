@@ -1,6 +1,8 @@
 /*
  * License information at https://github.com/Caltech-IPAC/firefly/blob/master/License.txt
  */
+import {TapSearchPanel} from 'firefly/ui/tap/TapSearchRootPanel.jsx';
+import React from 'react';
 import {firefly} from 'firefly/Firefly.js';
 import {
     makeDefImageSearchActions,
@@ -10,10 +12,17 @@ import {mergeObjectOnly, getRootURL} from 'firefly/util/WebUtil.js';
 import {getTAPServices} from 'firefly/ui/tap/TapKnownServices.js';
 import {getFireflyViewerWebApiCommands} from 'firefly/api/webApiCommands/ViewerWebApiCommands.js';
 import './suit.css';
-import {makeLsstClickToAction, makeLsstTapEntry} from './actions.jsx';
+import {makeLsstClickToAction, makeLsstTapEntry, LSST_TAP_LABEL} from './actions.jsx';
+import {RubinLanding} from './RubinLanding.jsx';
 
 // import SUIT_ICO from 'html/images/rubin_logo_transparent-70.png';
 
+const OTHER_CAT= 'Other archive searches';
+
+const RUBIN= 'Rubin searches';
+const LSST_TAP_IMAGES= LSST_TAP_LABEL+'-images';
+
+// const LSST_TAP_LABEL= 'LSST DP0.2 DC2';
 /**
  * This entry point is customized for LSST suit.  Refer to FFEntryPoint.js for information on
  * what could be used in defaults.
@@ -26,16 +35,36 @@ let props = {
     showViewsSwitch: true,
     // rightButtons: [timeSeriesButton],
     menu: [
-        {label: 'RSP TAP Search', action: 'TAPSearch'},
-        {label: 'External Images', action: 'ImageSelectDropDownCmd'},
-        {label: 'External Catalogs', action: 'MultiTableSearchCmd'},
-        {label: 'Add Chart', action: 'ChartSelectDropDownCmd'},
-        {label: 'Upload', action: 'FileUploadDropDownCmd'}
+        {label: 'RSP Search', action: LSST_TAP_LABEL, primary:true, category:RUBIN},
+        {label: 'RSP Images', action: LSST_TAP_IMAGES, primary:true, category:RUBIN},
+        {label: 'External Images', action: 'ImageSelectDropDownCmd', category: OTHER_CAT},
+        {label: 'External Catalogs', action: 'MultiTableSearchCmd', category: OTHER_CAT},
+        {label:'NED', action: 'ClassicNedSearchCmd', primary: false, category:OTHER_CAT},
+        {label:'VO SCS Search', action: 'ClassicVOCatalogPanelCmd', primary: false, category: OTHER_CAT},
+        {label:'General TAP', action: 'TAPSearch', primary: false, category:OTHER_CAT},
+        // {label: 'Add Chart', action: 'ChartSelectDropDownCmd'},
+        {label: 'Upload', action: 'FileUploadDropDownCmd', primary:true}
     ],
-    appTitle: 'Rubin Portal'
+    appTitle: 'Rubin Portal',
+    landingPage: <RubinLanding/>,
+    fileDropEventAction: 'FileUploadDropDownCmd',
+
+
+    dropdownPanels: [
+        <TapSearchPanel lockService={true} lockedServiceName={LSST_TAP_LABEL} groupKey={LSST_TAP_LABEL}
+                        layout= {{width: '100%'}}
+                        name={LSST_TAP_LABEL}/>,
+        <TapSearchPanel lockService={true} lockedServiceName={LSST_TAP_IMAGES} groupKey={LSST_TAP_IMAGES}
+                        lockObsCore={true}
+                        layout= {{width: '100%'}}
+                        name={LSST_TAP_IMAGES}/>,
+    ],
+
+
+
 };
 
-const LSST_TAP_LABEL= 'LSST DP0.2 DC2';
+// const LSST_TAP_LABEL= 'LSST DP0.2 DC2';
 
 props = mergeObjectOnly(props, window.firefly?.app ?? {});
 
