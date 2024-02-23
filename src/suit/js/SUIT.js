@@ -31,7 +31,7 @@ let props = {
     showUserInfo: true,
     // appIcon: getRootURL() +'images/rubin_logo_transparent-40.png',
     appIcon: getRootURL() +'images/rubin-favicon-transparent-45px.png',
-    bannerLeftStyle:{margin: '-2px 5px 0 10px'},
+    bannerLeftStyle:{margin: '3px 10px 0 10px'},
     showViewsSwitch: true,
     // rightButtons: [timeSeriesButton],
     menu: [
