@@ -35,8 +35,10 @@ let props = {
     showViewsSwitch: true,
     // rightButtons: [timeSeriesButton],
     menu: [
-        {label: 'RSP Search', action: LSST_TAP_LABEL, primary:true, category:RUBIN},
-        {label: 'RSP Images', action: LSST_TAP_IMAGES, primary:true, category:RUBIN},
+        {label: 'RSP Search', action: LSST_TAP_LABEL, primary:true, category:RUBIN,
+               title: 'Do the RSP Search'},
+        {label: 'RSP Images', action: LSST_TAP_IMAGES, primary:true, category:RUBIN,
+            title: 'Do the RSP Images Search'},
         {label: 'External Images', action: 'ImageSelectDropDownCmd', category: OTHER_CAT},
         {label: 'External Catalogs', action: 'MultiTableSearchCmd', category: OTHER_CAT},
         {label:'NED', action: 'ClassicNedSearchCmd', primary: false, category:OTHER_CAT},
