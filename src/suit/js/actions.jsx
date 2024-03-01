@@ -103,10 +103,11 @@ function isTimeSeriesTable(tableModel) {
 
 }
 
-export const LSST_TAP_LABEL= 'LSST DP0.2 DC2';
+export const LSST_DP02_DC2= 'LSST DP0.2 DC2';
+export const LSST_DP03_SSO='LSST DP0.3 SSO';
 
 function getLsstTapServiceUrl() {
-    const url= getTapServices().filter( ({label}) => label===LSST_TAP_LABEL)?.[0]?.value;
+    const url= getTapServices().filter( ({label}) => label===LSST_DP02_DC2)?.[0]?.value;
     return url;
 }
 
@@ -147,7 +148,7 @@ export function makeLsstTapEntry() {
 
     return (
         {
-            label: LSST_TAP_LABEL,
+            label: LSST_DP02_DC2,
             value: 'https://data-int.lsst.cloud/api/tap',
             fovDeg: 10,
             centerWP: makeWorldPt(62,-37).toString(),

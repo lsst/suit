@@ -12,7 +12,7 @@ import {mergeObjectOnly, getRootURL} from 'firefly/util/WebUtil.js';
 import {getTAPServices} from 'firefly/ui/tap/TapKnownServices.js';
 import {getFireflyViewerWebApiCommands} from 'firefly/api/webApiCommands/ViewerWebApiCommands.js';
 import './suit.css';
-import {makeLsstClickToAction, makeLsstTapEntry, LSST_TAP_LABEL} from './actions.jsx';
+import {makeLsstClickToAction, makeLsstTapEntry, LSST_DP02_DC2, LSST_DP03_SSO} from './actions.jsx';
 import {RubinLanding} from './RubinLanding.jsx';
 
 // import SUIT_ICO from 'html/images/rubin_logo_transparent-70.png';
@@ -20,9 +20,9 @@ import {RubinLanding} from './RubinLanding.jsx';
 const OTHER_CAT= 'Other archive searches';
 
 const RUBIN= 'Rubin searches';
-const LSST_TAP_IMAGES= LSST_TAP_LABEL+'-images';
+const LSST_DP02_DC2_IMAGES= LSST_DP02_DC2+'-images';
+// const LSST_DP03_SSO_IMAGES=LSST_DP03_SSO+'-images';
 
-// const LSST_TAP_LABEL= 'LSST DP0.2 DC2';
 /**
  * This entry point is customized for LSST suit.  Refer to FFEntryPoint.js for information on
  * what could be used in defaults.
@@ -33,18 +33,20 @@ let props = {
     appIcon: getRootURL() +'images/rubin-favicon-transparent-45px.png',
     bannerLeftStyle:{margin: '3px 10px 0 10px'},
     showViewsSwitch: true,
-    // rightButtons: [timeSeriesButton],
     menu: [
-        {label: 'RSP Search', action: LSST_TAP_LABEL, primary:true, category:RUBIN,
-               title: 'Do the RSP Search'},
-        {label: 'RSP Images', action: LSST_TAP_IMAGES, primary:true, category:RUBIN,
-            title: 'Do the RSP Images Search'},
-        {label: 'External Images', action: 'ImageSelectDropDownCmd', category: OTHER_CAT},
-        {label: 'External Catalogs', action: 'MultiTableSearchCmd', category: OTHER_CAT},
-        {label:'NED', action: 'ClassicNedSearchCmd', primary: false, category:OTHER_CAT},
-        {label:'VO SCS Search', action: 'ClassicVOCatalogPanelCmd', primary: false, category: OTHER_CAT},
-        {label:'General TAP', action: 'TAPSearch', primary: false, category:OTHER_CAT},
-        // {label: 'Add Chart', action: 'ChartSelectDropDownCmd'},
+        {label: 'DP0.2 Images', action: LSST_DP02_DC2_IMAGES, primary:true, category:RUBIN,
+            title: 'Search DP0.2 Images'},
+        {label: 'DP0.2 Catalogs', action: LSST_DP02_DC2, primary:true, category:RUBIN,
+            title: 'Search DP0.2 catalogs'},
+        {label: 'DP0.3 Catalogs', action: LSST_DP03_SSO, primary:true, category:RUBIN,
+            title: 'Search DP0.3 catalogs'},
+
+        {label:'General TAP', action: 'TAPSearch', category:OTHER_CAT},
+        {label: 'IRSA Images', action: 'ImageSelectDropDownCmd', category: OTHER_CAT},
+        {label: 'IRSA Catalogs', action: 'MultiTableSearchCmd', category: OTHER_CAT},
+        {label:'NED Objects', action: 'ClassicNedSearchCmd', primary: false, category:OTHER_CAT},
+        {label:'VO Cone Search', action: 'ClassicVOCatalogPanelCmd', primary: false, category: OTHER_CAT},
+
         {label: 'Upload', action: 'FileUploadDropDownCmd', primary:true}
     ],
     appTitle: 'Rubin Portal',
@@ -53,13 +55,20 @@ let props = {
 
 
     dropdownPanels: [
-        <TapSearchPanel lockService={true} lockedServiceName={LSST_TAP_LABEL} groupKey={LSST_TAP_LABEL}
+        <TapSearchPanel lockService={true} lockedServiceName={LSST_DP02_DC2} groupKey={LSST_DP02_DC2}
                         layout= {{width: '100%'}}
-                        name={LSST_TAP_LABEL}/>,
-        <TapSearchPanel lockService={true} lockedServiceName={LSST_TAP_IMAGES} groupKey={LSST_TAP_IMAGES}
-                        lockObsCore={true}
+                        name={LSST_DP02_DC2}/>,
+        <TapSearchPanel lockService={true} lockedServiceName={LSST_DP02_DC2_IMAGES} groupKey={LSST_DP02_DC2_IMAGES}
+                        lockObsCore={true} obsCoreLockTitle='DP0.2 Image Search via ObsTAP'
                         layout= {{width: '100%'}}
-                        name={LSST_TAP_IMAGES}/>,
+                        name={LSST_DP02_DC2_IMAGES}/>,
+        <TapSearchPanel lockService={true} lockedServiceName={LSST_DP03_SSO} groupKey={LSST_DP03_SSO}
+                        layout= {{width: '100%'}}
+                        name={LSST_DP03_SSO}/>,
+        // <TapSearchPanel lockService={true} lockedServiceName={LSST_DP03_SSO_IMAGES} groupKey={LSST_DP03_SSO_IMAGES}
+        //                 lockObsCore={true}
+        //                 layout= {{width: '100%'}}
+        //                 name={LSST_DP03_SSO_IMAGES}/>,
     ],
 
 
@@ -114,7 +123,7 @@ let options = {
     },
     tapObsCore: {
         enableObsCoreDownload: true, // enable for other obscore
-        [LSST_TAP_LABEL]  : {
+        [LSST_DP02_DC2]  : {
             enableObsCoreDownload: false, //disable for the portal
             filterDefinitions: [
                 {
