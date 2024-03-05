@@ -2,27 +2,8 @@ import {makeSearchAction, SearchTypes} from 'firefly/core/ClickToAction.js';
 import {showTapSearchPanel} from 'firefly/ui/DefaultSearchActions.js';
 import {getTapServices} from 'firefly/ui/tap/TapUtil.js';
 import {makeWorldPt} from 'firefly/visualize/Point.js';
-import React from 'react';
-import {get, omitBy, isNil} from 'lodash';
-import {ActiveTableButton} from 'firefly/tables/ui/ActiveTableButton.jsx';
-import {getTblById, getTblRowAsObj} from 'firefly/tables/TableUtil.js';
-import {LC} from 'firefly/templates/lightcurve/LcManager.js';
 
 
-// export function timeSeriesButton() {
-//     return (
-//         <div key='launchTimeSeries'>
-//             <ActiveTableButton
-//                 title = 'Launch Time Series Viewer'
-//                 type = 'highlight'
-//                 onChange = {checkForTimeSeriesData}
-//                 onClick = {() => console.log('add a new launchTimeSeries function')}
-//                 style= {{maxWidth: 220}}
-//             />
-//         </div>
-//     );
-// }
-//
 // function launchTimeSeries({tbl_id, highlightedRow}) {
 //     const tableModel = getTblById(tbl_id) || {};
 //     let req;
@@ -51,57 +32,57 @@ import {LC} from 'firefly/templates/lightcurve/LcManager.js';
 //     }
 // }
 
-function addExistingConstraints(tableModel, req) {
-    const {SearchMethod, UserTargetWorldPt, constraints, radius, size, ratio, polygon, posang,  sizeUnit} = get(tableModel, ['request']);
+// function addExistingConstraints(tableModel, req) {
+//     const {SearchMethod, UserTargetWorldPt, constraints, radius, size, ratio, polygon, posang,  sizeUnit} = get(tableModel, ['request']);
+//
+//     return omitBy(Object.assign(req, {SearchMethod, UserTargetWorldPt, constraints, radius, size, ratio, polygon, posang,  sizeUnit}), isNil);
+// }
 
-    return omitBy(Object.assign(req, {SearchMethod, UserTargetWorldPt, constraints, radius, size, ratio, polygon, posang,  sizeUnit}), isNil);
-}
+// function checkForTimeSeriesData({tbl_id, highlightedRow}) {
+//     const tableModel = getTblById(tbl_id) || {};
+//
+//     if (isTimeSeriesTable(tableModel)) {
+//         return {show: true, title: 'View table as Time Series'};
+//     } else {
+//         const row = getTblRowAsObj(getTblById(tbl_id), highlightedRow) || {};
+//         const {mission, tableType, filterIdColumn, objectIdColumn} = get(tableModel, 'tableMeta', {});
+//         const objectId = objectIdColumn ? get(row, objectIdColumn, '') : '';
+//         let   noteForSDSS = '';
+//
+//         const hasForcedSource = (tt) => {
+//                 const ttype = !tt ? -1 :
+//                             ['source', 'forcedSource']
+//                                 .findIndex((v) => v.toLowerCase() === tt.toLowerCase());
+//
+//                 return ttype !== -1;
+//         };
+//
+//         const showView = () => {
+//                 return !(!mission || !hasForcedSource(tableType));
+//         };
+//
+//         const showEnable = () => {   // disable the button for sdss, object, and not i band
+//                  if (mission.toLowerCase().includes('wise')) return true;
+//                  const sdssBand = {u: '0', g: '1', r:'2', i: '3', z: '4'};
+//                  const bShow = filterIdColumn ? get(row, filterIdColumn) === sdssBand.i : true;
+//
+//                  if (!bShow) {
+//                      noteForSDSS = ', forced photometry is limited to i-band objects only.';
+//                  }
+//                  return bShow;
+//         };
+//
+//         const show = showView();
+//
+//         return {show, enable:(!!objectId)&&show&&showEnable(),  title: `View Time Series: ${objectId}${noteForSDSS}`};
+//     }
+// }
 
-function checkForTimeSeriesData({tbl_id, highlightedRow}) {
-    const tableModel = getTblById(tbl_id) || {};
-
-    if (isTimeSeriesTable(tableModel)) {
-        return {show: true, title: 'View table as Time Series'};
-    } else {
-        const row = getTblRowAsObj(getTblById(tbl_id), highlightedRow) || {};
-        const {mission, tableType, filterIdColumn, objectIdColumn} = get(tableModel, 'tableMeta', {});
-        const objectId = objectIdColumn ? get(row, objectIdColumn, '') : '';
-        let   noteForSDSS = '';
-
-        const hasForcedSource = (tt) => {
-                const ttype = !tt ? -1 :
-                            ['source', 'forcedSource']
-                                .findIndex((v) => v.toLowerCase() === tt.toLowerCase());
-
-                return ttype !== -1;
-        };
-
-        const showView = () => {
-                return !(!mission || !hasForcedSource(tableType));
-        };
-
-        const showEnable = () => {   // disable the button for sdss, object, and not i band
-                 if (mission.toLowerCase().includes('wise')) return true;
-                 const sdssBand = {u: '0', g: '1', r:'2', i: '3', z: '4'};
-                 const bShow = filterIdColumn ? get(row, filterIdColumn) === sdssBand.i : true;
-
-                 if (!bShow) {
-                     noteForSDSS = ', forced photometry is limited to i-band objects only.';
-                 }
-                 return bShow;
-        };
-
-        const show = showView();
-
-        return {show, enable:(!!objectId)&&show&&showEnable(),  title: `View Time Series: ${objectId}${noteForSDSS}`};
-    }
-}
-
-function isTimeSeriesTable(tableModel) {
-    return Object.keys(get(tableModel, 'tableMeta', {}))
-                 .findIndex( (k) => [LC.META_TIME_CNAME, LC.META_FLUX_CNAME, LC.META_MISSION].includes(k)) >=0;
-
-}
+// function isTimeSeriesTable(tableModel) {
+//     return Object.keys(get(tableModel, 'tableMeta', {}))
+//                  .findIndex( (k) => [LC.META_TIME_CNAME, LC.META_FLUX_CNAME, LC.META_MISSION].includes(k)) >=0;
+//
+// }
 
 export const LSST_DP02_DC2= 'LSST DP0.2 DC2';
 export const LSST_DP03_SSO='LSST DP0.3 SSO';
