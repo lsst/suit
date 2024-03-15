@@ -4,6 +4,8 @@
 import {TapSearchPanel} from 'firefly/ui/tap/TapSearchRootPanel.jsx';
 import {defaultTheme} from 'firefly/ui/ThemeSetup.js';
 import React from 'react';
+import {set} from 'lodash';
+
 import {firefly} from 'firefly/Firefly.js';
 import {
     makeDefImageSearchActions,
@@ -15,6 +17,7 @@ import {getFireflyViewerWebApiCommands} from 'firefly/api/webApiCommands/ViewerW
 import './suit.css';
 import {makeLsstClickToAction, makeLsstTapEntry, LSST_DP02_DC2, LSST_DP03_SSO} from './actions.jsx';
 import {RubinLanding} from './RubinLanding.jsx';
+import APP_ICON from '../html/images/rubin-favicon-transparent-45px.png';
 
 // import SUIT_ICO from 'html/images/rubin_logo_transparent-70.png';
 
@@ -30,9 +33,7 @@ const LSST_DP02_DC2_IMAGES= LSST_DP02_DC2+'-images';
  */
 let props = {
     showUserInfo: true,
-    // appIcon: getRootURL() +'images/rubin_logo_transparent-40.png',
-    appIcon: getRootURL() +'images/rubin-favicon-transparent-45px.png',
-    bannerLeftStyle:{margin: '3px 10px 0 10px'},
+    appIcon: <img src={APP_ICON}/>,
     showViewsSwitch: true,
     menu: [
         {label: 'DP0.2 Images', action: LSST_DP02_DC2_IMAGES, primary:true, category:RUBIN,
@@ -53,6 +54,7 @@ let props = {
     appTitle: 'Rubin Portal',
     landingPage: <RubinLanding/>,
     fileDropEventAction: 'FileUploadDropDownCmd',
+    slotProps: set({}, 'banner.slotProps.icon.style', {margin: '3px 10px 0 10px'}),
 
 
     dropdownPanels: [
