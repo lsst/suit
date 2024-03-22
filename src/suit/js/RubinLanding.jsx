@@ -15,8 +15,8 @@ const RubinBranding = ({}) => (
 export function RubinLanding() {
     return (
         <LandingPage
-            slots={{ topSection: RubinBranding }}
             slotProps={{
+                topSection: {component: RubinBranding},
                 bgMonitorHint: {sx: {right: 80}},
                 bottomSection: {icon: <img src={PORTAL_SYMBOL} alt={'Rubin Portal Symbol'} style={{width: '14rem'}}/>}
         }}/>
