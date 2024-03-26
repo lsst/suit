@@ -242,4 +242,11 @@ let options = {
 };
 
 options = mergeObjectOnly(options, window.firefly?.options ?? {});
-firefly.bootstrap(props, options,getFireflyViewerWebApiCommands());
+firefly.bootstrap(props, options,
+    getFireflyViewerWebApiCommands(undefined,
+        [
+            {desc:LSST_DP02_DC2, name:LSST_DP02_DC2},
+            {desc:LSST_DP02_DC2_IMAGES, name:LSST_DP02_DC2_IMAGES},
+            {desc:LSST_DP03_SSO, name:LSST_DP03_SSO},
+        ],
+    ));
