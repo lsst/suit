@@ -86,7 +86,8 @@ props = mergeObjectOnly(props, window.firefly?.app ?? {});
 
 const tapServices=  [
     makeLsstTapEntry(),
-    ...getTAPServices( ['IRSA', 'Gaia', 'CADC', 'MAST Images', 'GAVO', 'HSA', 'NED', 'NASA Exoplanet Archive'])
+    ...getTAPServices( ['IRSA', 'Gaia', 'CADC', 'MAST Images', 'GAVO', 'HSA', 'NED',
+        'VizieR (CDS)', 'Simbad (CDS)', 'NASA Exoplanet Archive'])
 ];
 
 
