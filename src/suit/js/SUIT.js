@@ -45,7 +45,7 @@ let props = {
 
         {label:'General TAP', action: 'TAPSearch', category:OTHER_CAT},
         {label: 'IRSA Images', action: 'ImageSelectDropDownCmd', category: OTHER_CAT},
-        {label: 'IRSA Catalogs', action: 'MultiTableSearchCmd', category: OTHER_CAT},
+        {label:'IRSA Catalogs', action: 'IrsaCatalog',  category:OTHER_CAT},
         {label:'NED Objects', action: 'ClassicNedSearchCmd', primary: false, category:OTHER_CAT},
         {label:'VO Cone Search', action: 'ClassicVOCatalogPanelCmd', primary: false, category: OTHER_CAT},
 
