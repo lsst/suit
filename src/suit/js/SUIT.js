@@ -43,6 +43,7 @@ let props = {
         {label: 'DP0.3 Catalogs', action: LSST_DP03_SSO, primary:true, category:RUBIN,
             title: 'Search DP0.3 catalogs'},
 
+        {label: 'HiPS and IRSA Images', action: 'ImageSelectDropDownCmd', category: OTHER_CAT},
         {label:'General TAP', action: 'TAPSearch', category:OTHER_CAT},
         {label: 'IRSA Images', action: 'ImageSelectDropDownCmd', category: OTHER_CAT},
         {label:'IRSA Catalogs', action: 'IrsaCatalog',  category:OTHER_CAT},
@@ -96,8 +97,8 @@ let options = {
         customized: () => ({
                 ...defaultTheme(),
                 fontFamily: {
-                    display: 'Source Sans Pro', // applies to `h1`–`h4`
-                    body: 'Source Sans Pro', // applies to `title-*` and `body-*`
+                    display: 'Source Sans Pro, inter', // applies to `h1`–`h4`
+                    body: 'Source Sans Pro, inter', // applies to `title-*` and `body-*`
                 },
                 DISABLED_colorSchemes: {
                     light: {
