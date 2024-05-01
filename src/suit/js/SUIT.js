@@ -33,7 +33,7 @@ const LSST_DP02_DC2_IMAGES= LSST_DP02_DC2+'-images';
  */
 let props = {
     showUserInfo: true,
-    appIcon: <img src={APP_ICON}/>,
+    appIcon: <img src={APP_ICON} style={{width:36}}/>,
     showViewsSwitch: true,
     menu: [
         {label: 'DP0.2 Images', action: LSST_DP02_DC2_IMAGES, primary:true, category:RUBIN,
@@ -42,8 +42,8 @@ let props = {
             title: 'Search DP0.2 catalogs'},
         {label: 'DP0.3 Catalogs', action: LSST_DP03_SSO, primary:true, category:RUBIN,
             title: 'Search DP0.3 catalogs'},
+        {label:'Rubin HiPS Search', action: 'HiPSSearchPanel', primary: false, category:RUBIN},
 
-        {label: 'HiPS and IRSA Images', action: 'ImageSelectDropDownCmd', category: OTHER_CAT},
         {label:'General TAP', action: 'TAPSearch', category:OTHER_CAT},
         {label: 'IRSA Images', action: 'ImageSelectDropDownCmd', category: OTHER_CAT},
         {label:'IRSA Catalogs', action: 'IrsaCatalog',  category:OTHER_CAT},
