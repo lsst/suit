@@ -173,6 +173,7 @@ let options = {
         enableObsCoreDownload: true, // enable for other obscore
         [LSST_DP02_DC2]  : {
             enableObsCoreDownload: false, //disable for the portal
+            enableMetadataLoad: true, // loads metadata for columns to generate input field options
             filterDefinitions: [
                 {
                     name: 'LSSTCam',
@@ -196,13 +197,11 @@ let options = {
                 },
             },
             obsCoreInstrumentName: {
-                tooltip: 'LSSTCam, LSSTCam-imSim',
-                placeholder: 'e.g. LSSTCam-imSim',
+                tooltip: 'Name of instrument',
             },
             obsCoreSubType: {
                 tooltip: 'Specific type of image or other dataset',
-                placeholder: 'e.g. lsst.deepCoadd_calexp',
-                helptext: '"lsst." + Butler Repo Dataset type',
+                helptext: '"lsst." + Butler Repo Dataset type'
             },
         }
     },
