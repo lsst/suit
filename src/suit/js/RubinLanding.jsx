@@ -12,6 +12,14 @@ const RubinBranding = ({}) => (
     </Stack>
 );
 
+const Api = ({}) => (
+    <Stack alignItems='center'>
+        <Typography sx={{fontSize: 'xl4'}} color='neutral'>
+            Firefly Ready
+        </Typography>
+    </Stack>
+);
+
 export function RubinLanding() {
     return (
         <LandingPage
@@ -20,5 +28,25 @@ export function RubinLanding() {
                 bgMonitorHint: {sx: {right: 80}},
                 bottomSection: {icon: <img src={PORTAL_SYMBOL} alt={'Rubin Portal Symbol'} style={{width: '14rem'}}/>}
         }}/>
+    );
+}
+
+export function RubinLandingAPI() {
+    return (
+        <LandingPage
+            slotProps={{
+                topSection: {component: Api},
+                bgMonitorHint: {sx: {right: 80}},
+                bottomSection: {
+                    icon: <img src={PORTAL_SYMBOL} alt={'Rubin Portal Symbol'} style={{width: '14rem'}}/>,
+                    text: '',
+                    subtext: 'Awaiting Python API Commands',
+                    actionItems: [
+                        { text: '', subtext: '' },
+                        { text: '', subtext: '' },
+                        { text: '', subtext: '' },
+                    ],
+                }
+            }}/>
     );
 }

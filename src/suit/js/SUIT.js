@@ -16,7 +16,7 @@ import {getTAPServices} from 'firefly/ui/tap/TapKnownServices.js';
 import {getFireflyViewerWebApiCommands} from 'firefly/api/webApiCommands/ViewerWebApiCommands.js';
 import './suit.css';
 import {makeLsstClickToAction, makeLsstTapEntry, LSST_DP02_DC2, LSST_DP03_SSO} from './actions.jsx';
-import {RubinLanding} from './RubinLanding.jsx';
+import {RubinLanding, RubinLandingAPI} from './RubinLanding.jsx';
 import APP_ICON from '../html/images/rubin-favicon-transparent-45px.png';
 
 // import SUIT_ICO from 'html/images/rubin_logo_transparent-70.png';
@@ -82,6 +82,10 @@ let props = {
 // const LSST_TAP_LABEL= 'LSST DP0.2 DC2';
 
 props = mergeObjectOnly(props, window.firefly?.app ?? {});
+
+if (!props?.template) { // api mode
+    props.landingPage= <RubinLandingAPI/>;
+}
 
 
 
