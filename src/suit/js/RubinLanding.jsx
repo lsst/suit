@@ -41,8 +41,13 @@ export function RubinLandingAPI() {
                     icon: <img src={PORTAL_SYMBOL} alt={'Rubin Portal Symbol'} style={{width: '14rem'}}/>,
                     text: '',
                     subtext: 'Awaiting Python API Commands',
+                    summaryText:
+                        (<Stack alignItems='center'>
+                            <div>Visualizations of the results will appear in this tab</div>
+                            <div>Portal searches are also available from the tabs above</div>
+                        </Stack>),
                     actionItems: [
-                        { text: '', subtext: '' },
+                        {text: '', subtext: ''},
                         { text: '', subtext: '' },
                         { text: '', subtext: '' },
                     ],
