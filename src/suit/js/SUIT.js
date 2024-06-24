@@ -1,25 +1,23 @@
 /*
  * License information at https://github.com/Caltech-IPAC/firefly/blob/master/License.txt
  */
-import {TapSearchPanel} from 'firefly/ui/tap/TapSearchRootPanel.jsx';
-import {defaultTheme} from 'firefly/ui/ThemeSetup.js';
 import React from 'react';
 import {set} from 'lodash';
-
 import {firefly} from 'firefly/Firefly.js';
+import {TapSearchPanel} from 'firefly/ui/tap/TapSearchRootPanel.jsx';
+import {defaultTheme} from 'firefly/ui/ThemeSetup.js';
 import {
     makeDefImageSearchActions,
     makeDefTableSearchActions, makeDefTapSearchActions, makeExternalSearchActions
 } from 'firefly/ui/DefaultSearchActions.js';
-import {mergeObjectOnly, getRootURL} from 'firefly/util/WebUtil.js';
+import {mergeObjectOnly} from 'firefly/util/WebUtil.js';
 import {getTAPServices} from 'firefly/ui/tap/TapKnownServices.js';
 import {getFireflyViewerWebApiCommands} from 'firefly/api/webApiCommands/ViewerWebApiCommands.js';
-import './suit.css';
 import {makeLsstClickToAction, makeLsstTapEntry, LSST_DP02_DC2, LSST_DP03_SSO} from './actions.jsx';
 import {RubinLanding, RubinLandingAPI} from './RubinLanding.jsx';
-import APP_ICON from '../html/images/rubin-favicon-transparent-45px.png';
 
-// import SUIT_ICO from 'html/images/rubin_logo_transparent-70.png';
+import APP_ICON from '../html/images/rubin-favicon-transparent-45px.png';
+import './suit.css';
 
 const OTHER_CAT= 'Other archive searches';
 
