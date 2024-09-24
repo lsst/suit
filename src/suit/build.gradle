@@ -6,7 +6,9 @@ apply from: "$fireflyPath/buildScript/dep-init.gincl"
 
 dependencies {
   implementation project(':firefly')
-  webappLib configurations.runtimeClasspath, ':firefly', ":suit"
+  webappLib files(configurations.runtimeClasspath)
+  webappLib project(":firefly")
+  webappLib project(":suit")
   testImplementation project(path: ':firefly', configuration: 'tests')
 }
 
