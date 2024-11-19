@@ -31,14 +31,12 @@ public class LsstSsoAdapter implements SsoAdapter {
 
     private static final String GROUPS_HEADER = "X-Auth-Request-Groups";
     private static final String EMAIL_HEADER = "X-Auth-Request-Email";
-    private static final String NAME_HEADER = "X-Auth-Request-Name";
     private static final String TOKEN_HEADER = "X-Auth-Request-Token";
     private static final String USERNAME_HEADER = "X-Auth-Request-Username";
 
     // the keywords are listed in https://confluence.lsstcorp.org/display/LAAIM/Web+SSO
     private static final String USER_NAME = "sub"; // ex.value "http://cilogon.org/serverT/users/123456'
     private static final String UID = "uid"; // ex.value "username"
-    private static final String NAME = "name";
     private static final String EMAIL = "email";
     private static final String EXPIRES = "exp";
     private static final String ID_TOKEN = "X-Auth-Request-Token";
@@ -59,7 +57,6 @@ public class LsstSsoAdapter implements SsoAdapter {
                     token = new Token(String.valueOf(claims.get(USER_NAME)));
                     token.setExpiresOn(StringUtils.getInt(claims.get(EXPIRES), 0));
                     token.set(EMAIL, String.valueOf(claims.get(EMAIL)));
-                    token.set(NAME, String.valueOf(claims.get(NAME)));
                     token.set(UID, String.valueOf(claims.get(UID)));
                     token.set(ID_TOKEN, id_token);
 
@@ -70,7 +67,6 @@ public class LsstSsoAdapter implements SsoAdapter {
                     token = new Token(username);
                     token.setExpiresOn(0);
                     token.set(EMAIL, getString(ra, EMAIL_HEADER, null));
-                    token.set(NAME, getString(ra, NAME_HEADER, null));
                     token.set(UID, username);
                     token.set(ID_TOKEN, id_token);
 
@@ -90,12 +86,6 @@ public class LsstSsoAdapter implements SsoAdapter {
             //user.setLoginName(token.getId());
             user.setLoginName(token.get(UID));
             user.setEmail(token.get(EMAIL));
-            String name = token.get(NAME) == null ? "" : token.get(NAME);
-            String[] parts = name.split(" ");
-            String firstName = parts.length > 0 ? parts[0] : "";
-            String lastName = parts.length > 1 ? parts[1] : firstName;
-            user.setFirstName(firstName);
-            user.setLastName(lastName);
             return user;
         }
         return null;
