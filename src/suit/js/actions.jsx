@@ -85,6 +85,7 @@ import {makeWorldPt} from 'firefly/visualize/Point.js';
 // }
 
 export const LSST_DP02_DC2= 'LSST DP0.2 DC2';
+export const LSST_DP02_SIAV2_DC2= 'LSST SIAV2 DP0.2 DC2';
 export const LSST_DP03_SSO='LSST DP0.3 SSO';
 
 function getLsstTapServiceUrl() {
@@ -175,3 +176,27 @@ AND ( 600e-9 BETWEEN em_min AND em_max )`
             ]
         });
 };
+
+
+
+
+export function makeLsstSiaEntry() {
+    return (
+        {
+            label: LSST_DP02_SIAV2_DC2,
+            value: 'https://data-int.lsst.cloud/api/sia/dp02/query',
+            fovDeg: 10,
+            centerWP: makeWorldPt(62,-37).toString(),
+            metaOptions: [
+                {
+                    name: 'CALIB',
+                    options: '0,1,2,3,4',
+                    optionNames: 'Not Used,Raw Data,PVIs,Coadds and Difference Images,Not Used'
+                }
+            ],
+        }
+    );
+
+
+}
+

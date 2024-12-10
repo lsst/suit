@@ -1,6 +1,8 @@
 /*
  * License information at https://github.com/Caltech-IPAC/firefly/blob/master/License.txt
  */
+import {SIAv2SearchPanel} from 'firefly/ui/tap/SIASearchRootPanel';
+import {getSIAv2Services} from 'firefly/ui/tap/SiaUtil';
 import React from 'react';
 import {set} from 'lodash';
 import {firefly} from 'firefly/Firefly.js';
@@ -13,7 +15,9 @@ import {
 import {mergeObjectOnly} from 'firefly/util/WebUtil.js';
 import {getTAPServices} from 'firefly/ui/tap/TapKnownServices.js';
 import {getFireflyViewerWebApiCommands} from 'firefly/api/webApiCommands/ViewerWebApiCommands.js';
-import {makeLsstClickToAction, makeLsstTapEntry, LSST_DP02_DC2, LSST_DP03_SSO} from './actions.jsx';
+import {
+    makeLsstClickToAction, makeLsstTapEntry, LSST_DP02_DC2, LSST_DP03_SSO, makeLsstSiaEntry, LSST_DP02_SIAV2_DC2
+} from './actions.jsx';
 import {RubinLanding, RubinLandingAPI} from './RubinLanding.jsx';
 
 import APP_ICON from '../html/images/rubin-favicon-transparent-45px.png';
@@ -23,6 +27,7 @@ const OTHER_CAT= 'Other archive searches';
 
 const RUBIN= 'Rubin searches';
 const LSST_DP02_DC2_IMAGES= LSST_DP02_DC2+'-images';
+const LSST_DP02_DC2_SIAV2_IMAGES= LSST_DP02_DC2+'-siaV2images';
 // const LSST_DP03_SSO_IMAGES=LSST_DP03_SSO+'-images';
 
 /**
@@ -36,6 +41,8 @@ let props = {
     menu: [
         {label: 'DP0.2 Images', action: LSST_DP02_DC2_IMAGES, primary:true, category:RUBIN,
             title: 'Search DP0.2 Images'},
+        {label: 'DP0.2 Images SIAv2', action: LSST_DP02_DC2_SIAV2_IMAGES, primary:true, category:RUBIN,
+            title: 'Search DP0.2 Images SIAv2'},
         {label: 'DP0.2 Catalogs', action: LSST_DP02_DC2, primary:true, category:RUBIN,
             title: 'Search DP0.2 catalogs'},
         {label: 'DP0.3 Catalogs', action: LSST_DP03_SSO, primary:true, category:RUBIN,
@@ -47,6 +54,7 @@ let props = {
         {label:'IRSA Catalogs', action: 'IrsaCatalog',  category:OTHER_CAT},
         {label:'NED Objects', action: 'ClassicNedSearchCmd', primary: false, category:OTHER_CAT},
         {label:'VO Cone Search', action: 'ClassicVOCatalogPanelCmd', primary: false, category: OTHER_CAT},
+        {label: 'SIAv2 Searches', action: 'SIAv2Search', primary:true, category: OTHER_CAT},
 
         {label: 'Upload', action: 'FileUploadDropDownCmd', primary:true}
     ],
@@ -67,6 +75,10 @@ let props = {
         <TapSearchPanel lockService={true} lockedServiceName={LSST_DP03_SSO} groupKey={LSST_DP03_SSO}
                         layout= {{width: '100%'}}
                         name={LSST_DP03_SSO}/>,
+        <SIAv2SearchPanel lockService={true} lockedServiceName={LSST_DP02_SIAV2_DC2} groupKey='LSST_DP02_DC2_SIAV2_IMAGES'
+                          layout= {{width: '100%'}}
+                          lockTitle='DP0.2 Image Search via SIAv2 Search'
+                          name={LSST_DP02_DC2_SIAV2_IMAGES}/>,
         // <TapSearchPanel lockService={true} lockedServiceName={LSST_DP03_SSO_IMAGES} groupKey={LSST_DP03_SSO_IMAGES}
         //                 lockObsCore={true}
         //                 layout= {{width: '100%'}}
@@ -91,6 +103,11 @@ const tapServices=  [
     makeLsstTapEntry(),
     ...getTAPServices( ['IRSA', 'Gaia', 'CADC', 'MAST Images', 'GAVO', 'HSA', 'NED',
         'VizieR (CDS)', 'Simbad (CDS)', 'NASA Exoplanet Archive'])
+];
+
+const siaServices=  [
+    makeLsstSiaEntry(),
+    ...getSIAv2Services( ['IRSA', 'CADC']),
 ];
 
 
@@ -170,6 +187,10 @@ let options = {
     },
     tap : {
         services: tapServices,
+        defaultMaxrec: 50000
+    },
+    SIAv2 : {
+        services: siaServices,
         defaultMaxrec: 50000
     },
     tapObsCore: {
