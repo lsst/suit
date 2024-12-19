@@ -172,7 +172,7 @@ let options = {
     coverage : { // example of using DSS and wise combination for coverage (not that anyone would want to combination)
         // Use a server that is purely internal to the RSP, pending authentication-flow changes:
         hipsSourceURL : 'https://data-int.lsst.cloud/api/hips/images/color_gri',
-        hipsSource360URL : 'http://hips.hips.svc.cluster.local:8080/api/hips/images/color_gri', // url
+        hipsSource360URL : 'https://data-int.lsst.cloud/api/hips/images/color_gri',
         fovDegFallOver: .00001, // small number will never show an image only a HiPS
         exclusiveHiPS: true,
         imageSourceParams: { //use 2mass if the user forces an image request
