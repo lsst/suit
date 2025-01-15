@@ -195,8 +195,10 @@ let options = {
     },
     tapObsCore: {
         enableObsCoreDownload: true, // enable for other obscore
+        preferCutout: false,
         [LSST_DP02_DC2]  : {
             enableObsCoreDownload: false, //disable for the portal
+            cutoutDefSizeDeg: .02,
             enableMetadataLoad: true, // loads metadata for columns to generate input field options
             filterDefinitions: [
                 {
@@ -261,7 +263,7 @@ let options = {
         'tableNed', 'tableSimbad', 'tableSimbadGoto', 'imageFits', 'tableHiPS',
         'tapRadius', 'tapArea', 'tableTapRadius',
         'imageFits', 'HiPS', 'lsstObsCoreTap', 'lsstTruthSummaryRadius', 'lsstTruthSummaryArea',
-        'lsstObsCoreTapTable', 'lsstTruthSummaryRadiusTable'
+        'lsstObsCoreTapTable', 'lsstTruthSummaryRadiusTable', 'showDatalinkTable'
     ],
 };
 
