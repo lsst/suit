@@ -16,7 +16,8 @@ import {mergeObjectOnly} from 'firefly/util/WebUtil.js';
 import {getTAPServices} from 'firefly/ui/tap/TapKnownServices.js';
 import {getFireflyViewerWebApiCommands} from 'firefly/api/webApiCommands/ViewerWebApiCommands.js';
 import {
-    makeLsstClickToAction, makeLsstTapEntry, LSST_DP02_DC2, LSST_DP03_SSO, makeLsstSiaEntry, LSST_DP02_SIAV2_DC2
+    makeLsstClickToAction, makeLsstTapEntry, LSST_DP02_DC2, LSST_DP03_SSO, makeLsstSiaEntry, LSST_DP02_SIAV2_DC2,
+    LSST_DP02_DC2_ID
 } from './actions.jsx';
 import {RubinLanding, RubinLandingAPI} from './RubinLanding.jsx';
 
@@ -101,8 +102,8 @@ if (!props?.template) { // api mode
 
 const tapServices=  [
     makeLsstTapEntry(),
-    ...getTAPServices( ['IRSA', 'Gaia', 'CADC', 'MAST Images', 'GAVO', 'HSA', 'NED',
-        'VizieR (CDS)', 'Simbad (CDS)', 'NASA Exoplanet Archive'])
+    ...getTAPServices( ['IRSA', 'Gaia', 'CADC', 'MASTImages', 'GAVO', 'HSA', 'NED',
+        'VizieR', 'Simbad', 'ExoplanetArchive'])
 ];
 
 const siaServices=  [
@@ -193,10 +194,14 @@ let options = {
         services: siaServices,
         defaultMaxrec: 50000
     },
-    tapObsCore: {
+    dataServiceOptions: {
+        targetPanelExampleRow1: ['62, -37', '60.4 -35.1', '4h11m59s -32d51m59s equ j2000', '239.2 -47.6 gal'],
+        targetPanelExampleRow2: ['NGC 1532', '(NB: DC2 is a simulated sky, so names are not useful)'],
         enableObsCoreDownload: true, // enable for other obscore
         preferCutout: false,
-        [LSST_DP02_DC2]  : {
+        [LSST_DP02_DC2_ID]  : {
+            targetPanelExampleRow1: ['62, -37', '60.4 -35.1', '4h11m59s -32d51m59s equ j2000', '239.2 -47.6 gal'],
+            targetPanelExampleRow2: ['NGC 1532', '(NB: DC2 is a simulated sky, so names are not useful)'],
             enableObsCoreDownload: false, //disable for the portal
             cutoutDefSizeDeg: .02,
             enableMetadataLoad: true, // loads metadata for columns to generate input field options
