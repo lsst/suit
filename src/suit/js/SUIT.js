@@ -2,7 +2,7 @@
  * License information at https://github.com/Caltech-IPAC/firefly/blob/master/License.txt
  */
 import {SIAv2SearchPanel} from 'firefly/ui/tap/SIASearchRootPanel';
-import {getSIAv2Services} from 'firefly/ui/tap/SiaUtil';
+import {getSIAv2ServicesByName} from 'firefly/ui/tap/SiaUtil';
 import React from 'react';
 import {set} from 'lodash';
 import {firefly} from 'firefly/Firefly.js';
@@ -13,7 +13,7 @@ import {
     makeDefTableSearchActions, makeDefTapSearchActions, makeExternalSearchActions
 } from 'firefly/ui/DefaultSearchActions.js';
 import {mergeObjectOnly} from 'firefly/util/WebUtil.js';
-import {getTAPServices} from 'firefly/ui/tap/TapKnownServices.js';
+import {getTAPServicesByName} from 'firefly/ui/tap/TapKnownServices.js';
 import {getFireflyViewerWebApiCommands} from 'firefly/api/webApiCommands/ViewerWebApiCommands.js';
 import {
     makeLsstClickToAction, makeLsstTapEntry, LSST_DP02_DC2, LSST_DP03_SSO, makeLsstSiaEntry, LSST_DP02_SIAV2_DC2,
@@ -102,13 +102,13 @@ if (!props?.template) { // api mode
 
 const tapServices=  [
     makeLsstTapEntry(),
-    ...getTAPServices( ['IRSA', 'Gaia', 'CADC', 'MASTImages', 'GAVO', 'HSA', 'NED',
+    ...getTAPServicesByName( ['IRSA', 'Gaia', 'CADC', 'MASTImages', 'GAVO', 'HSA', 'NED',
         'VizieR', 'Simbad', 'ExoplanetArchive'])
 ];
 
 const siaServices=  [
     makeLsstSiaEntry(),
-    ...getSIAv2Services( ['IRSA', 'CADC']),
+    ...getSIAv2ServicesByName( ['IRSA', 'CADC']),
 ];
 
 
