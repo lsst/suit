@@ -1,6 +1,7 @@
 /*
  * License information at https://github.com/Caltech-IPAC/firefly/blob/master/License.txt
  */
+import {DLGeneratedDropDown} from 'firefly/ui/dynamic/DLGeneratedDropDown';
 import {SIAv2SearchPanel} from 'firefly/ui/tap/SIASearchRootPanel';
 import {getSIAv2ServicesByName} from 'firefly/ui/tap/SiaUtil';
 import React from 'react';
@@ -19,6 +20,7 @@ import {
     makeLsstClickToAction, makeLsstTapEntry, LSST_DP02_DC2, LSST_DP03_SSO, makeLsstSiaEntry, LSST_DP02_SIAV2_DC2,
     LSST_DP02_DC2_ID
 } from './actions.jsx';
+import {getRubinDCECollectionAttributes, makeRubinDCERegistryRequest} from './RubinInventoryConfig';
 import {RubinLanding, RubinLandingAPI} from './RubinLanding.jsx';
 
 import APP_ICON from '../html/images/rubin-favicon-transparent-45px.png';
@@ -40,6 +42,7 @@ let props = {
     appIcon: <img src={APP_ICON} style={{width:36}}/>,
     showViewsSwitch: true,
     menu: [
+        {label:'Data Collections', action:'RubinDataCollections', primary: true,  category:RUBIN},
         {label: 'DP0.2 Images', action: LSST_DP02_DC2_IMAGES, primary:true, category:RUBIN,
             title: 'Search DP0.2 Images'},
         {label: 'DP0.2 Images SIAv2', action: LSST_DP02_DC2_SIAV2_IMAGES, primary:true, category:RUBIN,
@@ -84,6 +87,15 @@ let props = {
         //                 lockObsCore={true}
         //                 layout= {{width: '100%'}}
         //                 name={LSST_DP03_SSO_IMAGES}/>,
+        <DLGeneratedDropDown {...{
+            name:'RubinDataCollections',
+            key:'RubinDataCollections',
+            registrySearchDef:{
+                makeRegistryRequest:makeRubinDCERegistryRequest,
+                getCollectionAttributes: getRubinDCECollectionAttributes,
+                dataServiceId: 'rubin'
+            },
+        }}/>
     ],
 
 
