@@ -1,6 +1,8 @@
 /*
  * License information at https://github.com/Caltech-IPAC/firefly/blob/master/License.txt
  */
+import {SIAv2SearchPanel} from 'firefly/ui/tap/SIASearchRootPanel';
+import {getSIAv2ServicesByName} from 'firefly/ui/tap/SiaUtil';
 import React from 'react';
 import {set} from 'lodash';
 import {firefly} from 'firefly/Firefly.js';
@@ -11,9 +13,12 @@ import {
     makeDefTableSearchActions, makeDefTapSearchActions, makeExternalSearchActions
 } from 'firefly/ui/DefaultSearchActions.js';
 import {mergeObjectOnly} from 'firefly/util/WebUtil.js';
-import {getTAPServices} from 'firefly/ui/tap/TapKnownServices.js';
+import {getTAPServicesByName} from 'firefly/ui/tap/TapKnownServices.js';
 import {getFireflyViewerWebApiCommands} from 'firefly/api/webApiCommands/ViewerWebApiCommands.js';
-import {makeLsstClickToAction, makeLsstTapEntry, LSST_DP02_DC2, LSST_DP03_SSO} from './actions.jsx';
+import {
+    makeLsstClickToAction, makeLsstTapEntry, LSST_DP02_DC2, LSST_DP03_SSO, makeLsstSiaEntry, LSST_DP02_SIAV2_DC2,
+    LSST_DP02_DC2_ID
+} from './actions.jsx';
 import {RubinLanding, RubinLandingAPI} from './RubinLanding.jsx';
 
 import APP_ICON from '../html/images/rubin-favicon-transparent-45px.png';
@@ -23,6 +28,7 @@ const OTHER_CAT= 'Other archive searches';
 
 const RUBIN= 'Rubin searches';
 const LSST_DP02_DC2_IMAGES= LSST_DP02_DC2+'-images';
+const LSST_DP02_DC2_SIAV2_IMAGES= LSST_DP02_DC2+'-siaV2images';
 // const LSST_DP03_SSO_IMAGES=LSST_DP03_SSO+'-images';
 
 /**
@@ -36,6 +42,8 @@ let props = {
     menu: [
         {label: 'DP0.2 Images', action: LSST_DP02_DC2_IMAGES, primary:true, category:RUBIN,
             title: 'Search DP0.2 Images'},
+        {label: 'DP0.2 Images SIAv2', action: LSST_DP02_DC2_SIAV2_IMAGES, primary:true, category:RUBIN,
+            title: 'Search DP0.2 Images SIAv2'},
         {label: 'DP0.2 Catalogs', action: LSST_DP02_DC2, primary:true, category:RUBIN,
             title: 'Search DP0.2 catalogs'},
         {label: 'DP0.3 Catalogs', action: LSST_DP03_SSO, primary:true, category:RUBIN,
@@ -47,6 +55,7 @@ let props = {
         {label:'IRSA Catalogs', action: 'IrsaCatalog',  category:OTHER_CAT},
         {label:'NED Objects', action: 'ClassicNedSearchCmd', primary: false, category:OTHER_CAT},
         {label:'VO Cone Search', action: 'ClassicVOCatalogPanelCmd', primary: false, category: OTHER_CAT},
+        {label: 'SIAv2 Searches', action: 'SIAv2Search', primary:true, category: OTHER_CAT},
 
         {label: 'Upload', action: 'FileUploadDropDownCmd', primary:true}
     ],
@@ -67,6 +76,10 @@ let props = {
         <TapSearchPanel lockService={true} lockedServiceName={LSST_DP03_SSO} groupKey={LSST_DP03_SSO}
                         layout= {{width: '100%'}}
                         name={LSST_DP03_SSO}/>,
+        <SIAv2SearchPanel lockService={true} lockedServiceName={LSST_DP02_SIAV2_DC2} groupKey='LSST_DP02_DC2_SIAV2_IMAGES'
+                          layout= {{width: '100%'}}
+                          lockTitle='DP0.2 Image Search via SIAv2 Search'
+                          name={LSST_DP02_DC2_SIAV2_IMAGES}/>,
         // <TapSearchPanel lockService={true} lockedServiceName={LSST_DP03_SSO_IMAGES} groupKey={LSST_DP03_SSO_IMAGES}
         //                 lockObsCore={true}
         //                 layout= {{width: '100%'}}
@@ -89,8 +102,13 @@ if (!props?.template) { // api mode
 
 const tapServices=  [
     makeLsstTapEntry(),
-    ...getTAPServices( ['IRSA', 'Gaia', 'CADC', 'MAST Images', 'GAVO', 'HSA', 'NED',
-        'VizieR (CDS)', 'Simbad (CDS)', 'NASA Exoplanet Archive'])
+    ...getTAPServicesByName( ['IRSA', 'Gaia', 'CADC', 'MASTImages', 'GAVO', 'HSA', 'NED',
+        'VizieR', 'Simbad', 'ExoplanetArchive'])
+];
+
+const siaServices=  [
+    makeLsstSiaEntry(),
+    ...getSIAv2ServicesByName( ['IRSA', 'CADC']),
 ];
 
 
@@ -155,7 +173,7 @@ let options = {
     coverage : { // example of using DSS and wise combination for coverage (not that anyone would want to combination)
         // Use a server that is purely internal to the RSP, pending authentication-flow changes:
         hipsSourceURL : 'https://data-int.lsst.cloud/api/hips/images/color_gri',
-        hipsSource360URL : 'http://hips.hips.svc.cluster.local:8080/api/hips/images/color_gri', // url
+        hipsSource360URL : 'https://data-int.lsst.cloud/api/hips/images/color_gri',
         fovDegFallOver: .00001, // small number will never show an image only a HiPS
         exclusiveHiPS: true,
         imageSourceParams: { //use 2mass if the user forces an image request
@@ -172,10 +190,20 @@ let options = {
         services: tapServices,
         defaultMaxrec: 50000
     },
-    tapObsCore: {
+    SIAv2 : {
+        services: siaServices,
+        defaultMaxrec: 50000
+    },
+    dataServiceOptions: {
+        targetPanelExampleRow1: ['62, -37', '60.4 -35.1', '4h11m59s -32d51m59s equ j2000', '239.2 -47.6 gal'],
+        targetPanelExampleRow2: ['NGC 1532', '(NB: DC2 is a simulated sky, so names are not useful)'],
         enableObsCoreDownload: true, // enable for other obscore
-        [LSST_DP02_DC2]  : {
+        preferCutout: false,
+        [LSST_DP02_DC2_ID]  : {
+            targetPanelExampleRow1: ['62, -37', '60.4 -35.1', '4h11m59s -32d51m59s equ j2000', '239.2 -47.6 gal'],
+            targetPanelExampleRow2: ['NGC 1532', '(NB: DC2 is a simulated sky, so names are not useful)'],
             enableObsCoreDownload: false, //disable for the portal
+            cutoutDefSizeDeg: .02,
             enableMetadataLoad: true, // loads metadata for columns to generate input field options
             filterDefinitions: [
                 {
@@ -240,7 +268,7 @@ let options = {
         'tableNed', 'tableSimbad', 'tableSimbadGoto', 'imageFits', 'tableHiPS',
         'tapRadius', 'tapArea', 'tableTapRadius',
         'imageFits', 'HiPS', 'lsstObsCoreTap', 'lsstTruthSummaryRadius', 'lsstTruthSummaryArea',
-        'lsstObsCoreTapTable', 'lsstTruthSummaryRadiusTable'
+        'lsstObsCoreTapTable', 'lsstTruthSummaryRadiusTable', 'showDatalinkTable'
     ],
 };
 
