@@ -4,8 +4,15 @@ import {getTapServices} from 'firefly/ui/tap/TapUtil.js';
 import {makeWorldPt} from 'firefly/visualize/Point.js';
 
 export const LSST_DP02_DC2= 'LSST DP0.2 DC2';
-export const LSST_DP02_DC2_ID= 'RubinDp02Dc2';
+export const RUBIN_DP02_DC2_ID= 'RubinDp02Dc2';
+export const RUBIN_SIA_DP0_ID= 'RubinSiaDp02Dc2';
+// export const LSST_DP03_SSP_ID= 'RubinDp03SSO';
 export const LSST_DP03_SSO='LSST DP0.3 SSO';
+export const RUBIN_DP03_SSO_ID='RubinDp03SSO';
+
+// "LSST Live ObsCore"
+export const RUBIN_LIVE_OBSCORE_ID=  'RubinLiveObsCore';
+
 
 export const LSST_DP02_SIAV2_DC2= 'LSST SIAV2 DP0.2 DC2';
 export const LSST_DP02_SIAV2_DC2_ID= 'RubinSiaDp02Dc2';
@@ -52,7 +59,7 @@ export function makeLsstTapEntry() {
 
     return (
         {
-            serviceId: LSST_DP02_DC2_ID,
+            serviceId: RUBIN_DP02_DC2_ID,
             label: LSST_DP02_DC2,
             value: 'https://data-int.lsst.cloud/api/tap',
             fovDeg: 10,
@@ -124,3 +131,37 @@ export function makeLsstSiaEntry() {
 
 }
 
+export const getAlternateColorScheme= () => ({
+    light: {
+        palette: {
+            primary: {
+                50: '#f8fafc',
+                100: '#f1f5f9',
+                200: '#e2e8f0',
+                300: '#cbd5e1',
+                400: '#94a3b8',
+                500: '#64748b',
+                600: '#475569',
+                700: '#334155',
+                800: '#1e293b',
+                900: '#0f172a'
+            }
+        }
+    },
+    dark: {
+        palette: {
+            primary: {
+                50: '#fafafa',
+                100: '#f4f4f5',
+                200: '#e4e4e7',
+                300: '#d4d4d8',
+                400: '#a1a1aa',
+                500: '#71717a',
+                600: '#52525b',
+                700: '#3f3f46',
+                800: '#27272a',
+                900: '#18181b'
+            }
+        }
+    }
+});

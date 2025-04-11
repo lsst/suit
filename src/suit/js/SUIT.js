@@ -1,6 +1,8 @@
 /*
  * License information at https://github.com/Caltech-IPAC/firefly/blob/master/License.txt
  */
+import {getAppOptions} from 'firefly/api/ApiUtil';
+import {DLGeneratedDropDown} from 'firefly/ui/dynamic/DLGeneratedDropDown';
 import {SIAv2SearchPanel} from 'firefly/ui/tap/SIASearchRootPanel';
 import {getSIAv2ServicesByName} from 'firefly/ui/tap/SiaUtil';
 import React from 'react';
@@ -17,8 +19,9 @@ import {getTAPServicesByName} from 'firefly/ui/tap/TapKnownServices.js';
 import {getFireflyViewerWebApiCommands} from 'firefly/api/webApiCommands/ViewerWebApiCommands.js';
 import {
     makeLsstClickToAction, makeLsstTapEntry, LSST_DP02_DC2, LSST_DP03_SSO, makeLsstSiaEntry, LSST_DP02_SIAV2_DC2,
-    LSST_DP02_DC2_ID
+    RUBIN_DP02_DC2_ID, RUBIN_DP03_SSO_ID, RUBIN_LIVE_OBSCORE_ID, RUBIN_SIA_DP0_ID, getAlternateColorScheme
 } from './actions.jsx';
+import {getRubinDCECollectionAttributes, makeRubinDCERegistryRequest} from './RubinInventoryConfig';
 import {RubinLanding, RubinLandingAPI} from './RubinLanding.jsx';
 
 import APP_ICON from '../html/images/rubin-favicon-transparent-45px.png';
@@ -40,23 +43,23 @@ let props = {
     appIcon: <img src={APP_ICON} style={{width:36}}/>,
     showViewsSwitch: true,
     menu: [
-        {label: 'DP0.2 Images', action: LSST_DP02_DC2_IMAGES, primary:true, category:RUBIN,
-            title: 'Search DP0.2 Images'},
-        {label: 'DP0.2 Images SIAv2', action: LSST_DP02_DC2_SIAV2_IMAGES, primary:true, category:RUBIN,
-            title: 'Search DP0.2 Images SIAv2'},
-        {label: 'DP0.2 Catalogs', action: LSST_DP02_DC2, primary:true, category:RUBIN,
-            title: 'Search DP0.2 catalogs'},
-        {label: 'DP0.3 Catalogs', action: LSST_DP03_SSO, primary:true, category:RUBIN,
-            title: 'Search DP0.3 catalogs'},
-        {label:'Rubin HiPS Search', action: 'HiPSSearchPanel', primary: false, category:RUBIN},
+        {label:'Data Collections', action:'RubinDataCollections', primary: menuItemPrimary,  category:RUBIN, enabled:menuItemEnabled},
+        {label: 'DP0.2 Images', action: LSST_DP02_DC2_IMAGES, primary:menuItemPrimary, category:RUBIN,
+            title: 'Search DP0.2 Images',  enabled:menuItemEnabled},
+        {label: 'DP0.2 Images SIAv2', action: LSST_DP02_DC2_SIAV2_IMAGES, primary:menuItemPrimary, category:RUBIN,
+            title: 'Search DP0.2 Images SIAv2',  enabled:menuItemEnabled},
+        {label: 'DP0.2 Catalogs', action: LSST_DP02_DC2, primary:menuItemPrimary, category:RUBIN,
+            title: 'Search DP0.2 catalogs',  enabled:menuItemEnabled},
+        {label: 'DP0.3 Catalogs', action: LSST_DP03_SSO, primary:menuItemPrimary, category:RUBIN,
+            title: 'Search DP0.3 catalogs', enabled:menuItemEnabled},
+        {label:'Rubin HiPS Search', action: 'HiPSSearchPanel', primary: false, category:RUBIN,enabled:menuItemEnabled },
 
-        {label:'General TAP', action: 'TAPSearch', category:OTHER_CAT},
+        {label: 'General TAP', action: 'TAPSearch', category:OTHER_CAT},
+        {label: 'SIAv2 Searches', action: 'SIAv2Search', primary:false, category: OTHER_CAT},
         {label: 'IRSA Images', action: 'ImageSelectDropDownCmd', category: OTHER_CAT},
-        {label:'IRSA Catalogs', action: 'IrsaCatalog',  category:OTHER_CAT},
-        {label:'NED Objects', action: 'ClassicNedSearchCmd', primary: false, category:OTHER_CAT},
-        {label:'VO Cone Search', action: 'ClassicVOCatalogPanelCmd', primary: false, category: OTHER_CAT},
-        {label: 'SIAv2 Searches', action: 'SIAv2Search', primary:true, category: OTHER_CAT},
-
+        {label: 'IRSA Catalogs', action: 'IrsaCatalog',  category:OTHER_CAT},
+        {label: 'NED Objects', action: 'ClassicNedSearchCmd', primary: false, category:OTHER_CAT},
+        {label: 'VO Cone Search', action: 'ClassicVOCatalogPanelCmd', primary: false, category: OTHER_CAT},
         {label: 'Upload', action: 'FileUploadDropDownCmd', primary:true}
     ],
     appTitle: 'Rubin Portal',
@@ -84,11 +87,43 @@ let props = {
         //                 lockObsCore={true}
         //                 layout= {{width: '100%'}}
         //                 name={LSST_DP03_SSO_IMAGES}/>,
+        <DLGeneratedDropDown {...{
+            name:'RubinDataCollections',
+            key:'RubinDataCollections',
+            registrySearchDef:{
+                makeRegistryRequest:makeRubinDCERegistryRequest,
+                getCollectionAttributes: getRubinDCECollectionAttributes,
+                dataServiceId: 'rubin'
+            },
+        }}/>
     ],
-
-
-
 };
+
+const alwaysEnabled= [
+        'TAPSearch', 'ImageSelectDropDownCmd', 'IrsaCatalog', 'ClassicNedSearchCmd', 'ClassicVOCatalogPanelCmd',
+        'SIAv2Search', 'FileUploadDropDownCmd'];
+
+const defPrimaryMenuList= [
+    'RubinDataCollections', LSST_DP02_DC2_IMAGES, LSST_DP02_DC2_SIAV2_IMAGES, LSST_DP02_DC2, LSST_DP03_SSO,
+];
+
+const defEnabledMenuList= [
+    'RubinDataCollections', LSST_DP02_DC2_IMAGES, LSST_DP02_DC2_SIAV2_IMAGES, LSST_DP02_DC2, LSST_DP03_SSO,
+    'HiPSSearchPanel'
+];
+
+
+function menuItemEnabled(item) {
+   const {rubinEnabledMenuItems:enabledList=[]}=  getAppOptions();
+   if (!enabledList.length) return true;
+   return [...enabledList,...alwaysEnabled].includes(item.action);
+}
+
+function menuItemPrimary(item) {
+    const {rubinPrimaryMenuItems:primList=[]}=  getAppOptions();
+    if (!primList.length) return true;
+    return primList.includes(item.action);
+}
 
 // const LSST_TAP_LABEL= 'LSST DP0.2 DC2';
 
@@ -111,6 +146,44 @@ const siaServices=  [
     ...getSIAv2ServicesByName( ['IRSA', 'CADC']),
 ];
 
+const rubinDataServiceOptions= {
+    targetPanelExampleRow1: ['62, -37', '60.4 -35.1', '4h11m59s -32d51m59s equ j2000', '239.2 -47.6 gal'],
+    targetPanelExampleRow2: ['NGC 1532', '(NB: DC2 is a simulated sky, so names are not useful)'],
+    enableObsCoreDownload: false, //disable for the portal
+    cutoutDefSizeDeg: .02,
+    enableMetadataLoad: true, // loads metadata for columns to generate input field options
+    filterDefinitions: [
+        {
+            name: 'LSSTCam',
+            options: [
+                {label: 'u', value : '367', title: '367nm central value'},
+                {label: 'g', value : '483', title: '483nm central value'},
+                {label: 'r', value : '622', title: '622nm central value'},
+                {label: 'i', value : '755', title: '755nm central value'},
+                {label: 'z', value : '869', title: '869nm central value'},
+                {label: 'y', value : '971', title: '971nm central value'},
+            ],
+        },
+    ],
+    obsCoreCalibrationLevel: {
+        tooltip: 'Calibration Level',
+        helptext: '1 is raw data; 2 is PVIs; 3 includes coadds and difference images',
+        level: {
+            1: {title: 'For Rubin: Raw Data'},
+            2: {title: 'For Rubin: PVIs'},
+            3: {title: 'For Rubin: Coadds and Difference Images'},
+        },
+    },
+    obsCoreInstrumentName: {
+        tooltip: 'Name of instrument',
+    },
+    obsCoreSubType: {
+        tooltip: 'Specific type of image or other dataset',
+        helptext: '"lsst." + Butler Repo Dataset type'
+    },
+};
+
+
 
 let options = {
     theme: {
@@ -120,40 +193,7 @@ let options = {
                     display: 'Source Sans Pro, inter', // applies to `h1`–`h4`
                     body: 'Source Sans Pro, inter', // applies to `title-*` and `body-*`
                 },
-                DISABLED_colorSchemes: {
-                    light: {
-                      palette: {
-                        primary: {
-                          50: '#f8fafc',
-                          100: '#f1f5f9',
-                          200: '#e2e8f0',
-                          300: '#cbd5e1',
-                          400: '#94a3b8',
-                          500: '#64748b',
-                          600: '#475569',
-                          700: '#334155',
-                          800: '#1e293b',
-                          900: '#0f172a'
-                        }
-                      }
-                    },
-                    dark: {
-                      palette: {
-                        primary: {
-                          50: '#fafafa',
-                          100: '#f4f4f5',
-                          200: '#e4e4e7',
-                          300: '#d4d4d8',
-                          400: '#a1a1aa',
-                          500: '#71717a',
-                          600: '#52525b',
-                          700: '#3f3f46',
-                          800: '#27272a',
-                          900: '#18181b'
-                        }
-                      }
-                    }
-                  }
+                DISABLED_colorSchemes: { ...getAlternateColorScheme()}
             }
         )
     },
@@ -195,46 +235,14 @@ let options = {
         defaultMaxrec: 50000
     },
     dataServiceOptions: {
-        targetPanelExampleRow1: ['62, -37', '60.4 -35.1', '4h11m59s -32d51m59s equ j2000', '239.2 -47.6 gal'],
-        targetPanelExampleRow2: ['NGC 1532', '(NB: DC2 is a simulated sky, so names are not useful)'],
         enableObsCoreDownload: true, // enable for other obscore
         preferCutout: false,
-        [LSST_DP02_DC2_ID]  : {
-            targetPanelExampleRow1: ['62, -37', '60.4 -35.1', '4h11m59s -32d51m59s equ j2000', '239.2 -47.6 gal'],
-            targetPanelExampleRow2: ['NGC 1532', '(NB: DC2 is a simulated sky, so names are not useful)'],
-            enableObsCoreDownload: false, //disable for the portal
-            cutoutDefSizeDeg: .02,
-            enableMetadataLoad: true, // loads metadata for columns to generate input field options
-            filterDefinitions: [
-                {
-                    name: 'LSSTCam',
-                    options: [
-                        {label: 'u', value : '367', title: '367nm central value'},
-                        {label: 'g', value : '483', title: '483nm central value'},
-                        {label: 'r', value : '622', title: '622nm central value'},
-                        {label: 'i', value : '755', title: '755nm central value'},
-                        {label: 'z', value : '869', title: '869nm central value'},
-                        {label: 'y', value : '971', title: '971nm central value'},
-                    ],
-                },
-            ],
-            obsCoreCalibrationLevel: {
-                tooltip: 'Calibration Level',
-                helptext: '1 is raw data; 2 is PVIs; 3 includes coadds and difference images',
-                level: {
-                    1: {title: 'For Rubin: Raw Data'},
-                    2: {title: 'For Rubin: PVIs'},
-                    3: {title: 'For Rubin: Coadds and Difference Images'},
-                },
-            },
-            obsCoreInstrumentName: {
-                tooltip: 'Name of instrument',
-            },
-            obsCoreSubType: {
-                tooltip: 'Specific type of image or other dataset',
-                helptext: '"lsst." + Butler Repo Dataset type'
-            },
-        }
+        ...rubinDataServiceOptions,
+        [RUBIN_DP02_DC2_ID]  : {},
+        [RUBIN_DP03_SSO_ID]  : {},
+        [RUBIN_SIA_DP0_ID]  : {},
+        [RUBIN_LIVE_OBSCORE_ID]  : {},
+        'rubin'  : {},
     },
     hips: {
         readoutShowsPixel : true,
@@ -251,10 +259,6 @@ let options = {
         },
     },
     // workspace: {showOptions: true},
-    /* eslint-disable quotes */
-    targetPanelExampleRow1: [`'62, -37'`, `'60.4 -35.1'`, `'4h11m59s -32d51m59s equ j2000'`, `'239.2 -47.6 gal'`],
-    targetPanelExampleRow2: [`'NGC 1532' (NB: DC2 is a simulated sky, so names are not useful)`],
-    /* eslint-enable quotes */
     searchActions : [
         ...makeExternalSearchActions(),
         ...makeDefTableSearchActions(),
@@ -270,6 +274,8 @@ let options = {
         'imageFits', 'HiPS', 'lsstObsCoreTap', 'lsstTruthSummaryRadius', 'lsstTruthSummaryArea',
         'lsstObsCoreTapTable', 'lsstTruthSummaryRadiusTable', 'showDatalinkTable'
     ],
+    rubinEnabledMenuItems: defEnabledMenuList,
+    rubinPrimaryMenuItems: defPrimaryMenuList,
 };
 
 options = mergeObjectOnly(options, window.firefly?.options ?? {});
