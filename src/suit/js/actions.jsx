@@ -4,8 +4,14 @@ import {getTapServices} from 'firefly/ui/tap/TapUtil.js';
 import {makeWorldPt} from 'firefly/visualize/Point.js';
 
 export const LSST_DP02_DC2= 'LSST DP0.2 DC2';
-export const LSST_DP02_DC2_ID= 'RubinDp02Dc2';
-export const LSST_DP03_SSO='LSST DP0.3 SSO';
+export const RUBIN_DP02_DC2_ID= 'RubinDp02Dc2';
+// export const LSST_DP03_SSP_ID= 'RubinDp03SSO';
+// export const LSST_DP03_SSO='LSST DP0.3 SSO';
+export const RUBIN_DP03_SSO_ID='RubinDp03SSO';
+
+// "LSST Live ObsCore"
+export const RUBIN_LIVE_OBSCORE_ID=  'RubinLiveObsCore';
+
 
 export const LSST_DP02_SIAV2_DC2= 'LSST SIAV2 DP0.2 DC2';
 export const LSST_DP02_SIAV2_DC2_ID= 'RubinSiaDp02Dc2';
@@ -52,7 +58,7 @@ export function makeLsstTapEntry() {
 
     return (
         {
-            serviceId: LSST_DP02_DC2_ID,
+            serviceId: RUBIN_DP02_DC2_ID,
             label: LSST_DP02_DC2,
             value: 'https://data-int.lsst.cloud/api/tap',
             fovDeg: 10,

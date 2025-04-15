@@ -18,7 +18,7 @@ import {getTAPServicesByName} from 'firefly/ui/tap/TapKnownServices.js';
 import {getFireflyViewerWebApiCommands} from 'firefly/api/webApiCommands/ViewerWebApiCommands.js';
 import {
     makeLsstClickToAction, makeLsstTapEntry, LSST_DP02_DC2, LSST_DP03_SSO, makeLsstSiaEntry, LSST_DP02_SIAV2_DC2,
-    LSST_DP02_DC2_ID
+    RUBIN_DP02_DC2_ID, RUBIN_DP03_SSO_ID, RUBIN_LIVE_OBSCORE_ID
 } from './actions.jsx';
 import {getRubinDCECollectionAttributes, makeRubinDCERegistryRequest} from './RubinInventoryConfig';
 import {RubinLanding, RubinLandingAPI} from './RubinLanding.jsx';
@@ -123,6 +123,78 @@ const siaServices=  [
     ...getSIAv2ServicesByName( ['IRSA', 'CADC']),
 ];
 
+const rubinDataServiceOptions= {
+    targetPanelExampleRow1: ['62, -37', '60.4 -35.1', '4h11m59s -32d51m59s equ j2000', '239.2 -47.6 gal'],
+    targetPanelExampleRow2: ['NGC 1532', '(NB: DC2 is a simulated sky, so names are not useful)'],
+    enableObsCoreDownload: false, //disable for the portal
+    cutoutDefSizeDeg: .02,
+    enableMetadataLoad: true, // loads metadata for columns to generate input field options
+    filterDefinitions: [
+        {
+            name: 'LSSTCam',
+            options: [
+                {label: 'u', value : '367', title: '367nm central value'},
+                {label: 'g', value : '483', title: '483nm central value'},
+                {label: 'r', value : '622', title: '622nm central value'},
+                {label: 'i', value : '755', title: '755nm central value'},
+                {label: 'z', value : '869', title: '869nm central value'},
+                {label: 'y', value : '971', title: '971nm central value'},
+            ],
+        },
+    ],
+    obsCoreCalibrationLevel: {
+        tooltip: 'Calibration Level',
+        helptext: '1 is raw data; 2 is PVIs; 3 includes coadds and difference images',
+        level: {
+            1: {title: 'For Rubin: Raw Data'},
+            2: {title: 'For Rubin: PVIs'},
+            3: {title: 'For Rubin: Coadds and Difference Images'},
+        },
+    },
+    obsCoreInstrumentName: {
+        tooltip: 'Name of instrument',
+    },
+    obsCoreSubType: {
+        tooltip: 'Specific type of image or other dataset',
+        helptext: '"lsst." + Butler Repo Dataset type'
+    },
+};
+
+const alternateColorScheme= {
+    light: {
+        palette: {
+            primary: {
+                50: '#f8fafc',
+                100: '#f1f5f9',
+                200: '#e2e8f0',
+                300: '#cbd5e1',
+                400: '#94a3b8',
+                500: '#64748b',
+                600: '#475569',
+                700: '#334155',
+                800: '#1e293b',
+                900: '#0f172a'
+            }
+        }
+    },
+    dark: {
+        palette: {
+            primary: {
+                50: '#fafafa',
+                100: '#f4f4f5',
+                200: '#e4e4e7',
+                300: '#d4d4d8',
+                400: '#a1a1aa',
+                500: '#71717a',
+                600: '#52525b',
+                700: '#3f3f46',
+                800: '#27272a',
+                900: '#18181b'
+            }
+        }
+    }
+};
+
 
 let options = {
     theme: {
@@ -132,40 +204,7 @@ let options = {
                     display: 'Source Sans Pro, inter', // applies to `h1`–`h4`
                     body: 'Source Sans Pro, inter', // applies to `title-*` and `body-*`
                 },
-                DISABLED_colorSchemes: {
-                    light: {
-                      palette: {
-                        primary: {
-                          50: '#f8fafc',
-                          100: '#f1f5f9',
-                          200: '#e2e8f0',
-                          300: '#cbd5e1',
-                          400: '#94a3b8',
-                          500: '#64748b',
-                          600: '#475569',
-                          700: '#334155',
-                          800: '#1e293b',
-                          900: '#0f172a'
-                        }
-                      }
-                    },
-                    dark: {
-                      palette: {
-                        primary: {
-                          50: '#fafafa',
-                          100: '#f4f4f5',
-                          200: '#e4e4e7',
-                          300: '#d4d4d8',
-                          400: '#a1a1aa',
-                          500: '#71717a',
-                          600: '#52525b',
-                          700: '#3f3f46',
-                          800: '#27272a',
-                          900: '#18181b'
-                        }
-                      }
-                    }
-                  }
+                DISABLED_colorSchemes: { ...alternateColorScheme }
             }
         )
     },
@@ -211,42 +250,10 @@ let options = {
         targetPanelExampleRow2: ['NGC 1532', '(NB: DC2 is a simulated sky, so names are not useful)'],
         enableObsCoreDownload: true, // enable for other obscore
         preferCutout: false,
-        [LSST_DP02_DC2_ID]  : {
-            targetPanelExampleRow1: ['62, -37', '60.4 -35.1', '4h11m59s -32d51m59s equ j2000', '239.2 -47.6 gal'],
-            targetPanelExampleRow2: ['NGC 1532', '(NB: DC2 is a simulated sky, so names are not useful)'],
-            enableObsCoreDownload: false, //disable for the portal
-            cutoutDefSizeDeg: .02,
-            enableMetadataLoad: true, // loads metadata for columns to generate input field options
-            filterDefinitions: [
-                {
-                    name: 'LSSTCam',
-                    options: [
-                        {label: 'u', value : '367', title: '367nm central value'},
-                        {label: 'g', value : '483', title: '483nm central value'},
-                        {label: 'r', value : '622', title: '622nm central value'},
-                        {label: 'i', value : '755', title: '755nm central value'},
-                        {label: 'z', value : '869', title: '869nm central value'},
-                        {label: 'y', value : '971', title: '971nm central value'},
-                    ],
-                },
-            ],
-            obsCoreCalibrationLevel: {
-                tooltip: 'Calibration Level',
-                helptext: '1 is raw data; 2 is PVIs; 3 includes coadds and difference images',
-                level: {
-                    1: {title: 'For Rubin: Raw Data'},
-                    2: {title: 'For Rubin: PVIs'},
-                    3: {title: 'For Rubin: Coadds and Difference Images'},
-                },
-            },
-            obsCoreInstrumentName: {
-                tooltip: 'Name of instrument',
-            },
-            obsCoreSubType: {
-                tooltip: 'Specific type of image or other dataset',
-                helptext: '"lsst." + Butler Repo Dataset type'
-            },
-        }
+        [RUBIN_DP02_DC2_ID]  : { ...rubinDataServiceOptions },
+        [RUBIN_DP03_SSO_ID]  : { ...rubinDataServiceOptions },
+        [RUBIN_LIVE_OBSCORE_ID]  : { ...rubinDataServiceOptions },
+        'rubin'  : { ...rubinDataServiceOptions },
     },
     hips: {
         readoutShowsPixel : true,
