@@ -272,7 +272,7 @@ let options = {
     // workspace: {showOptions: true},
     /* eslint-disable quotes */
     targetPanelExampleRow1: [`'62, -37'`, `'60.4 -35.1'`, `'4h11m59s -32d51m59s equ j2000'`, `'239.2 -47.6 gal'`],
-    targetPanelExampleRow2: [`'NGC 1532' (NB: DC2 is a simulated sky, so names are not useful)`],
+    targetPanelExampleRow2: ['NGC 1532', '(NB: DC2 is a simulated sky, so names are not useful)'],
     /* eslint-enable quotes */
     searchActions : [
         ...makeExternalSearchActions(),
