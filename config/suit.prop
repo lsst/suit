@@ -33,3 +33,5 @@ workspace.propfind.infinity = @__$workspace.propfind.infinity@
 
 lsst.hips.masterUrl=@lsst.hips.masterUrl@
 redis.host = @redis.host@
+
+uws.history.svcs=https://data.lsst.cloud/api/tap|DP02_DC2|TAP
