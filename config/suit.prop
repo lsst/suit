@@ -2,6 +2,7 @@
 # this path does not need to include the upload or cache directory
 visualize.fits.search.path=@alerts.dir@:@work.directory@:@visualize.fits.search.path@:@wise.filesystem_basepath@:@planck.filesystem_basepath@:@ptf.filesystem_basepath@:@lcogt.filesystem_basepath@:@lsst.filesystem_basepath@
 
+inventory.serverURLAry=@inventory.serverURLAry@
 
 FireflyTools.Advertise= @FireflyTools.Advertise@
 
