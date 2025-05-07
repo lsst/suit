@@ -14,9 +14,11 @@ import edu.caltech.ipac.util.StringUtils;
 import org.json.simple.parser.JSONParser;
 
 import java.util.Base64;
-import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
+import java.util.UUID;
+
+import static edu.caltech.ipac.util.StringUtils.isEmpty;
+import static edu.caltech.ipac.firefly.core.Util.Try;
 
 /**
  * This class support authentication for LSST PDAC deployment using a custom AUTH_PROXY
@@ -33,7 +35,7 @@ public class LsstSsoAdapter implements SsoAdapter {
     private static final String EMAIL_HEADER = "X-Auth-Request-Email";
     private static final String NAME_HEADER = "X-Auth-Request-Name";
     private static final String TOKEN_HEADER = "X-Auth-Request-Token";
-    private static final String USERNAME_HEADER = "X-Auth-Request-Username";
+    private static final String USERNAME_HEADER = "X-Auth-Request-User";
 
     // the keywords are listed in https://confluence.lsstcorp.org/display/LAAIM/Web+SSO
     private static final String USER_NAME = "sub"; // ex.value "http://cilogon.org/serverT/users/123456'
@@ -65,11 +67,15 @@ public class LsstSsoAdapter implements SsoAdapter {
 
                     return token;
                 } else {
-                    String username = getString(ra, USERNAME_HEADER, "");
-
+                    String email = getString(ra, EMAIL_HEADER, null);
+                    String username = getString(ra, USERNAME_HEADER, email);
+                    if (isEmpty(username)) {
+                        username = Try.it(() -> ServerContext.getRequestOwner().getUserKey())
+                                        .getOrElse(UUID.randomUUID().toString());       // all fail, use a random unique id
+                    }
                     token = new Token(username);
                     token.setExpiresOn(0);
-                    token.set(EMAIL, getString(ra, EMAIL_HEADER, null));
+                    token.set(EMAIL, email);
                     token.set(NAME, getString(ra, NAME_HEADER, null));
                     token.set(UID, username);
                     token.set(ID_TOKEN, id_token);
