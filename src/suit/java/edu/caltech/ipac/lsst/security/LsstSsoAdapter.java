@@ -53,6 +53,9 @@ public class LsstSsoAdapter implements SsoAdapter {
             try {
                 RequestAgent ra = ServerContext.getRequestOwner().getRequestAgent();
                 String id_token = getString(ra, TOKEN_HEADER, "");      // this is a 3-parts base64 encoded JWT token
+                if (isEmpty(id_token)) {
+                    return null;
+                }
                 String[] parts = id_token.split("\\.");
                 if (parts.length == 3) {
                     String jsonContent = new String(Base64.getDecoder().decode(parts[1]));
@@ -69,10 +72,7 @@ public class LsstSsoAdapter implements SsoAdapter {
                 } else {
                     String email = getString(ra, EMAIL_HEADER, null);
                     String username = getString(ra, USERNAME_HEADER, email);
-                    if (isEmpty(username)) {
-                        username = Try.it(() -> ServerContext.getRequestOwner().getUserKey())
-                                        .getOrElse(UUID.randomUUID().toString());       // all fail, use a random unique id
-                    }
+                    if (isEmpty(username))  username = UUID.randomUUID().toString();       // all fail, use a random unique id
                     token = new Token(username);
                     token.setExpiresOn(0);
                     token.set(EMAIL, email);
