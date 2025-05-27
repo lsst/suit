@@ -276,6 +276,14 @@ let options = {
     ],
     rubinEnabledMenuItems: defEnabledMenuList,
     rubinPrimaryMenuItems: defPrimaryMenuList,
+    background : {
+        history: {
+            note: `
+                Note: The jobs shown are associated with your user account and may include jobs submitted from other applications, not just this one. 
+                You must be logged in to view your jobs. Only jobs created within the retention period will be displayed.
+            `.trim(),
+        }
+    },
 };
 
 options = mergeObjectOnly(options, window.firefly?.options ?? {});
