@@ -31,7 +31,6 @@ export function RubinLanding() {
         <LandingPage
             slotProps={{
                 topSection: {component: RubinBranding},
-                bgMonitorHint: {sx: {right: 80}},
                 // bottomSection: {icon: <img src={PORTAL_SYMBOL} alt={'Rubin Portal Symbol'} style={{width: '14rem'}}/>}
                 bottomSection: {icon: <Logo/>}
         }}/>
@@ -43,7 +42,6 @@ export function RubinLandingAPI() {
         <LandingPage
             slotProps={{
                 topSection: {component: Api},
-                bgMonitorHint: {sx: {right: 80}},
                 bottomSection: {
                     icon: <Logo/>,
                     text: '',
