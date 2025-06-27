@@ -21,7 +21,7 @@ export const RUBIN_LIVE_OBSCORE_ID=  'RubinLiveObsCore';
 export const LSST_DP02_SIAV2_DC2= 'DP0 Images SIAv2';
 export const LSST_DP02_SIAV2_DC2_ID= 'RubinSiaDp02Dc2';
 export const RUBIN_DP1_SIAV2= 'DP1 Images SIAv2';
-export const RUBIN_DP1_SIAV2_ID= 'DP1 Images SIAv2';
+export const RUBIN_DP1_SIAV2_ID= 'DP1ImagesSIAv2';
 
 function getLsstTapServiceUrl() {
     const url= getTapServices().filter( ({label}) => label===LSST_DP02_DC2)?.[0]?.value;
