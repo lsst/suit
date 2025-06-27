@@ -54,10 +54,11 @@ let props = {
             title: 'Search DP1 catalogs',  enabled:menuItemEnabled},
 
 
-        {label: 'DP0 Images', action: 'rubin-obscore-images-dp0', primary:menuItemPrimary, category: DP0,enabled:menuItemEnabled},
-        {label: 'DP0 Images SIAv2', action: 'dp02-siav2-images', primary:menuItemPrimary, category: DP0,enabled:menuItemEnabled},
+        {label: 'DP0.2 Images', action: 'rubin-obscore-images-dp0', primary:menuItemPrimary, category: DP0,enabled:menuItemEnabled},
+        {label: 'DP0.2 Images SIAv2', action: 'dp02-siav2-images', primary:menuItemPrimary, category: DP0,enabled:menuItemEnabled},
+        {label: 'DP0.2 Catalogs', action: 'rubin-catalogs-dp0', primary:menuItemPrimary, category: DP0,enabled:menuItemEnabled},
 
-        {label: 'DP0.3 Catalogs', action: LSST_DP03_SSO, primary:menuItemPrimary, category:DP0,
+        {label: 'DP0.3 SSO Catalogs', action: LSST_DP03_SSO, primary:menuItemPrimary, category:DP0,
                 title: 'Search DP0.3 catalogs', enabled:menuItemEnabled},
 
         {label: 'Gaia TAP at EASC', action: 'gaia-tap', primary:menuItemPrimary, category: OTHER_CAT,enabled:menuItemEnabled},
@@ -84,7 +85,6 @@ let props = {
                         lockObsCore={true}
                         obsCoreLockTitle='DP1 Image Search via ObsTAP' layout= {{width: '100%'}}/>,
         <TapSearchPanel lockService={true} lockedServiceName={RUBIN_PRIMARY_TAP}
-                        lockedSchemaName='dp1' obsCoreLockTitle='DP1 Catalogs'
                         groupKey='rubin-catalogs-dp1' name='rubin-catalogs-dp1'
                         layout= {{width: '100%'}}/>,
         <SIAv2SearchPanel lockService={true} lockedServiceName={RUBIN_DP1_SIAV2_ID} groupKey={RUBIN_DP1_SIAV2_ID}
@@ -99,8 +99,14 @@ let props = {
                         lockedSchemaName='dp02_dc2_catalogs'
                         lockedTableName='dp02_dc2_catalogs.ObsCore'
                         obsCoreLockTitle='DP0 Image Search via ObsTAP' layout= {{width: '100%'}}/>,
+        <TapSearchPanel lockService={true} lockedServiceName={RUBIN_PRIMARY_TAP}
+                        lockedSchemaName='dp02_dc2_catalogs'
+                        obsCoreLockTitle='DP0.2 Catalogs'
+                        groupKey='rubin-catalogs-dp0' name='rubin-catalogs-dp0'
+                        layout= {{width: '100%'}}/>,
 
         <TapSearchPanel lockService={true} lockedServiceName='Gaia' groupKey={'gaia-tap'}
+                        obsCoreLockTitle='Gaia Tables at ESAC'
                         layout= {{width: '100%'}} name='gaia-tap'/>,
         <TapSearchPanel lockService={true} lockedServiceName={LSST_DP03_SSO} groupKey={LSST_DP03_SSO}
                         layout= {{width: '100%'}} name={LSST_DP03_SSO}/>,
@@ -129,7 +135,8 @@ const defPrimaryMenuList= [
 ];
 
 const defEnabledMenuList= [
-    'rubin-obscore-images-dp1', 'rubin-catalogs-dp1', 'dp02-siav2-images', 'rubin-obscore-images-dp0',
+    'rubin-obscore-images-dp1', 'rubin-catalogs-dp1', 'dp02-siav2-images',
+    'rubin-obscore-images-dp0', 'rubin-catalogs-dp0',
     'RubinDataCollections', 'gaia-tap',
     LSST_DP02_DC2_SIAV2_IMAGES, LSST_DP02_DC2, LSST_DP03_SSO,
     'HiPSSearchPanel', RUBIN_DP1_SIAV2_ID, RUBIN_DP1
