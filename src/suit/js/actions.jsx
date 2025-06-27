@@ -3,7 +3,11 @@ import {showTapSearchPanel} from 'firefly/ui/DefaultSearchActions.js';
 import {getTapServices} from 'firefly/ui/tap/TapUtil.js';
 import {makeWorldPt} from 'firefly/visualize/Point.js';
 
+export const RUBIN_DP1= 'RUBIN DP1';
+export const RUBIN_DP1_ID= 'RUBIN_DP1';
 export const LSST_DP02_DC2= 'LSST DP0.2 DC2';
+export const RUBIN_PRIMARY_TAP= 'Rubin TAP';
+export const RUBIN_PRIMARY_TAP_ID= 'RubinPrimaryTAPID';
 export const RUBIN_DP02_DC2_ID= 'RubinDp02Dc2';
 export const RUBIN_SIA_DP0_ID= 'RubinSiaDp02Dc2';
 // export const LSST_DP03_SSP_ID= 'RubinDp03SSO';
@@ -14,8 +18,10 @@ export const RUBIN_DP03_SSO_ID='RubinDp03SSO';
 export const RUBIN_LIVE_OBSCORE_ID=  'RubinLiveObsCore';
 
 
-export const LSST_DP02_SIAV2_DC2= 'LSST SIAV2 DP0.2 DC2';
+export const LSST_DP02_SIAV2_DC2= 'DP0 Images SIAv2';
 export const LSST_DP02_SIAV2_DC2_ID= 'RubinSiaDp02Dc2';
+export const RUBIN_DP1_SIAV2= 'DP1 Images SIAv2';
+export const RUBIN_DP1_SIAV2_ID= 'DP1 Images SIAv2';
 
 function getLsstTapServiceUrl() {
     const url= getTapServices().filter( ({label}) => label===LSST_DP02_DC2)?.[0]?.value;
@@ -55,13 +61,13 @@ export function makeLsstClickToAction() {
 
 
 
-export function makeLsstTapEntry() {
+export function makeLsstTapEntry(serviceId, label, value) {
 
     return (
         {
-            serviceId: RUBIN_DP02_DC2_ID,
-            label: LSST_DP02_DC2,
-            value: 'https://data-int.lsst.cloud/api/tap',
+            serviceId,
+            label,
+            value,
             fovDeg: 10,
             centerWP: makeWorldPt(62,-37).toString(),
              // hipsUrl: 'https://data-int.lsst.cloud/api/hips/images/color_gri',
@@ -110,12 +116,12 @@ AND ( 600e-9 BETWEEN em_min AND em_max )`
 
 
 
-export function makeLsstSiaEntry() {
+export function makeLsstSiaEntry(serviceId, label, value) {
     return (
         {
-            serviceId: LSST_DP02_SIAV2_DC2_ID,
-            label: LSST_DP02_SIAV2_DC2,
-            value: 'https://data-int.lsst.cloud/api/sia/dp02/query',
+            serviceId,
+            label,
+            value,
             fovDeg: 10,
             centerWP: makeWorldPt(62,-37).toString(),
             metaOptions: [
