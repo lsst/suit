@@ -180,7 +180,7 @@ const siaServices = [
 
 const rubinDataServiceOptions= {
     targetPanelExampleRow1: ['40.07, -34.4', '106.1, -10.45', '37.83, 6.95'],
-    targetPanelExampleRow2: ['62, -37', '60.4 -35.1', '4h11m59s -32d51m59s equ j2000', '239.2 -47.6 gal'],
+    targetPanelExampleRow2: ['53.25, -28.089 EQ_J2000', '62, -37'],
     enableObsCoreDownload: false, //disable for the portal
     cutoutDefSizeDeg: .02,
     enableMetadataLoad: true, // loads metadata for columns to generate input field options
@@ -271,8 +271,6 @@ let options = {
         preferCutout: false,
         ...rubinDataServiceOptions,
         [RUBIN_PRIMARY_TAP_ID]  : {
-            targetPanelExampleRow1: ['40.07, -34.4', '106.1, -10.45', '37.83, 6.95'],
-            targetPanelExampleRow2: ['53.25, -28.089 EQ_J2000', '62, -37'],
         },
         [RUBIN_DP03_SSO_ID]  : {
             targetPanelExampleRow1: ['62, -37', '60.4 -35.1', '4h11m59s -32d51m59s equ j2000', '239.2 -47.6 gal'],
@@ -283,8 +281,6 @@ let options = {
             targetPanelExampleRow2: ['NGC 1532', '(NB: DC2 is a simulated sky, so names are not useful)'],
         },
         [RUBIN_DP1_SIAV2_ID] : {
-            targetPanelExampleRow1: ['40.07, -34.4', '106.1, -10.45', '37.83, 6.95'],
-            targetPanelExampleRow2: ['53.25, -28.089 EQ_J2000', '62, -37'],
         },
         [RUBIN_LIVE_OBSCORE_ID]  : {},
         'rubin'  : {},
