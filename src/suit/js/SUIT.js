@@ -61,7 +61,7 @@ let props = {
         {label: 'DP0.3 SSO Catalogs', action: LSST_DP03_SSO, primary:menuItemPrimary, category:DP0,
                 title: 'Search DP0.3 catalogs', enabled:menuItemEnabled},
 
-        {label: 'Gaia TAP at EASC', action: 'gaia-tap', primary:menuItemPrimary, category: OTHER_CAT,enabled:menuItemEnabled},
+        {label: 'Gaia TAP at ESAC', action: 'gaia-tap', primary:menuItemPrimary, category: OTHER_CAT,enabled:menuItemEnabled},
 
         {label: 'Multi-archive TAP', action: 'TAPSearch', category:OTHER_CAT, primary:false},
         {label: 'Multi-archive SIAv2', action: 'SIAv2Search', primary:false, category: OTHER_CAT},
@@ -88,17 +88,17 @@ let props = {
                         groupKey='rubin-catalogs-dp1' name='rubin-catalogs-dp1'
                         layout= {{width: '100%'}}/>,
         <SIAv2SearchPanel lockService={true} lockedServiceName={RUBIN_DP1_SIAV2_ID} groupKey={RUBIN_DP1_SIAV2_ID}
-                          layout= {{width: '100%'}} lockTitle='DP1 Images SIAv2' name={RUBIN_DP1_SIAV2_ID}/>,
+                          layout= {{width: '100%'}} lockTitle='DP1 Image Search via SIAv2' name={RUBIN_DP1_SIAV2_ID}/>,
         <SIAv2SearchPanel lockService={true} lockedServiceName={LSST_DP02_SIAV2_DC2} groupKey='LSST_DP02_DC2_SIAV2_IMAGES'
                           layout= {{width: '100%'}}
-                          lockTitle='DP0.2 Image Search via SIAv2 Search'
+                          lockTitle='DP0.2 Image Search via SIAv2'
                           name='dp02-siav2-images'/>,
         <TapSearchPanel lockService={true} lockedServiceName={RUBIN_PRIMARY_TAP}
                         groupKey='rubin-obscore-images-dp0' name='rubin-obscore-images-dp0'
                         lockObsCore={true}
                         lockedSchemaName='dp02_dc2_catalogs'
                         lockedTableName='dp02_dc2_catalogs.ObsCore'
-                        obsCoreLockTitle='DP0 Image Search via ObsTAP' layout= {{width: '100%'}}/>,
+                        obsCoreLockTitle='DP0.2 Image Search via ObsTAP' layout= {{width: '100%'}}/>,
         <TapSearchPanel lockService={true} lockedServiceName={RUBIN_PRIMARY_TAP}
                         lockedSchemaName='dp02_dc2_catalogs'
                         obsCoreLockTitle='DP0.2 Catalogs'
@@ -339,6 +339,6 @@ firefly.bootstrap(props, options,
             {desc:'DP1 Images', name:'rubin-obscore-images-dp1'},
             {desc:'DP1 Catalogs', name:'rubin-catalogs-dp1'},
             {desc:'DP0 Images', name:'rubin-obscore-images-dp0'},
-            {desc:'Gaia TAP at EASC', name:'gaia-tap'},
+            {desc:'Gaia TAP at ESAC', name:'gaia-tap'},
         ],
     ));
