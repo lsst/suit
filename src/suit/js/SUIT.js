@@ -173,7 +173,7 @@ const tapServices=  [
 ];
 
 const siaServices = [
-    makeLsstSiaEntry(RUBIN_DP1_SIAV2, RUBIN_DP1_SIAV2_ID, 'https://data-int.lsst.cloud/api/sia/dp1/query'),
+    makeLsstSiaEntry(RUBIN_DP1_SIAV2_ID, RUBIN_DP1_SIAV2, 'https://data-int.lsst.cloud/api/sia/dp1/query'),
     makeLsstSiaEntry(LSST_DP02_SIAV2_DC2_ID, LSST_DP02_SIAV2_DC2, 'https://data-int.lsst.cloud/api/sia/dp02/query'),
     ...getSIAv2ServicesByName(['IRSA', 'CADC']),
 ];
