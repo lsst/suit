@@ -26,10 +26,10 @@ import static edu.caltech.ipac.firefly.core.Util.Try;
  * @author loi
  */
 public class LsstSsoAdapter implements SsoAdapter {
-    private static Logger.LoggerImpl LOGGER = Logger.getLogger();
-    private static String LOGIN_URL         = AppProperties.getProperty("sso.login.url", "/login?rd=/portal/suit/");
-    private static String LOGOUT_URL        = AppProperties.getProperty("sso.logout.url", "/logout");
-    private static String REQ_AUTH_HOSTS    = AppProperties.getProperty("sso.req.auth.hosts", ".ncsa.illinois.edu,.lsst.cloud");
+    private static final Logger.LoggerImpl LOGGER = Logger.getLogger();
+    private static final String LOGIN_URL         = AppProperties.getProperty("sso.login.url", "/login?rd=/portal/suit/");
+    private static final String LOGOUT_URL        = AppProperties.getProperty("sso.logout.url", "/logout");
+    private static final String REQ_AUTH_HOSTS    = AppProperties.getProperty("sso.req.auth.hosts", ".ncsa.illinois.edu,.lsst.cloud");
 
     private static final String GROUPS_HEADER = "X-Auth-Request-Groups";
     private static final String EMAIL_HEADER = "X-Auth-Request-Email";
@@ -43,7 +43,7 @@ public class LsstSsoAdapter implements SsoAdapter {
     private static final String NAME = "name";
     private static final String EMAIL = "email";
     private static final String EXPIRES = "exp";
-    private static final String ID_TOKEN = "X-Auth-Request-Token";
+    private static final String ID_TOKEN = "id_token";
     private static final String[] reqAuthHosts = REQ_AUTH_HOSTS.split(",");
 
     private Token token = null;
@@ -52,8 +52,13 @@ public class LsstSsoAdapter implements SsoAdapter {
         if (token == null) {
             try {
                 RequestAgent ra = ServerContext.getRequestOwner().getRequestAgent();
+                if (ra == null) {
+                    LOGGER.warn("Should not happen: RequestAgent is null");
+                    return null;
+                }
                 String id_token = getString(ra, TOKEN_HEADER, "");      // this is a 3-parts base64 encoded JWT token
                 if (isEmpty(id_token)) {
+                    LOGGER.warn("%s not found in the header".formatted(TOKEN_HEADER));
                     return null;
                 }
                 String[] parts = id_token.split("\\.");
@@ -72,7 +77,10 @@ public class LsstSsoAdapter implements SsoAdapter {
                 } else {
                     String email = getString(ra, EMAIL_HEADER, null);
                     String username = getString(ra, USERNAME_HEADER, email);
-                    if (isEmpty(username))  username = UUID.randomUUID().toString();       // all fail, use a random unique id
+                    if (isEmpty(username))  {
+                        username = UUID.randomUUID().toString();       // all fail, use a random unique id
+                        LOGGER.warn("No username nor email found in the header, using a random id: " + username);
+                    }
                     token = new Token(username);
                     token.setExpiresOn(0);
                     token.set(EMAIL, email);
@@ -83,7 +91,8 @@ public class LsstSsoAdapter implements SsoAdapter {
                     return token;
                 }
             } catch (Exception e) {
-                LOGGER.error(e);
+                LOGGER.error("Error parsing token: " + e.getMessage());
+                token = null;
             }
         }
         return token;
