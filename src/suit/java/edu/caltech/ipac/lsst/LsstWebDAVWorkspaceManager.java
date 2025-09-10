@@ -22,7 +22,7 @@ public class LsstWebDAVWorkspaceManager extends WebDAVWorkspaceManagerBase {
 
     public LsstWebDAVWorkspaceManager(String wsId) {
 
-        Map<String, String> cookies = HttpServiceInput.createWithCredential(getWsHostUrl()).getCookies();          // should look at this again.
+        Map<String, String> cookies = new HttpServiceInput(getWsHostUrl()).getCookies();          // should look at this again.
         // for development from a local machine, set wsId to your user name
         // if (wsId == null || wsId.equals("Guest")) wsId = "tatianag";
         this.creds = new WsCredentials(wsId, cookies);
