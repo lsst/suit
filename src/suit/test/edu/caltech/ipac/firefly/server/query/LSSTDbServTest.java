@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -87,7 +88,7 @@ public class LSSTDbServTest extends ConfigTest {
 
 	private static boolean getJsonData(String query) {
 		try {
-			String sql = "QUERY=" + URLEncoder.encode(query, "UTF-8");
+			String sql = URLEncoder.encode(query, "UTF-8");
 
 			String url = LSSTQuery.getDbservURL();
 			File file = File.createTempFile("lssttest", "json");
@@ -96,7 +97,8 @@ public class LSSTDbServTest extends ConfigTest {
 			requestHeader.put("Accept", "application/json");
 
 			long cTime = System.currentTimeMillis();
-			FileInfo fileData = URLDownload.getDataToFileUsingPost(new URL(url), sql, null, requestHeader, file, null, 180);
+            var postParams= Collections.singletonMap("QUERY", sql);
+			FileInfo fileData = URLDownload.getDataToFileUsingPost(new URL(url), postParams, null, requestHeader, file, null, 180);
 			ConfigTest.LOG.info("SQL query took " + (System.currentTimeMillis() - cTime) + "ms");
 			ConfigTest.LOG.info(query);
 
