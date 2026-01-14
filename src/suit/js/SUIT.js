@@ -298,6 +298,7 @@ let options = {
             ],
             label: 'Rubin Featured MOC '
         },
+        adhocMocIncludeAdditionSources: '',
     },
     // workspace: {showOptions: true},
     searchActions : [
