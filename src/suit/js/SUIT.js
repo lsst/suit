@@ -15,7 +15,7 @@ import {
     makeDefTableSearchActions, makeDefTapSearchActions, makeExternalSearchActions
 } from 'firefly/ui/DefaultSearchActions.js';
 import {mergeObjectOnly} from 'firefly/util/WebUtil.js';
-import {getTAPServicesByName} from 'firefly/ui/tap/TapKnownServices.js';
+import {makeTAPDefaultServicesByName} from 'firefly/ui/tap/TapKnownServices.js';
 import {getFireflyViewerWebApiCommands} from 'firefly/api/webApiCommands/ViewerWebApiCommands.js';
 import {
     makeLsstClickToAction, makeLsstTapEntry, LSST_DP02_DC2, LSST_DP03_SSO, makeLsstSiaEntry, LSST_DP02_SIAV2_DC2,
@@ -168,7 +168,7 @@ if (!props?.template) { // api mode
 const tapServices=  [
     makeLsstTapEntry(RUBIN_PRIMARY_TAP_ID, RUBIN_PRIMARY_TAP, 'https://data-int.lsst.cloud/api/tap'),
     makeLsstTapEntry('RubinDp03SSO', 'LSST DP0.3 SSO', 'https://data-int.lsst.cloud/api/ssotap'),
-    ...getTAPServicesByName( ['IRSA', 'Gaia', 'CADC', 'MASTImages', 'GAVO', 'HSA', 'NED',
+    ...makeTAPDefaultServicesByName( ['IRSA', 'Gaia', 'CADC', 'MASTImages', 'GAVO', 'HSA', 'NED',
         'VizieR', 'Simbad', 'ExoplanetArchive'])
 ];
 
