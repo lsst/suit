@@ -1,0 +1,122 @@
+name: Build Rubin Portal Image
+
+on:
+  workflow_dispatch:
+    inputs:
+      push_image:
+        description: "Push image to GHCR"
+        required: false
+        default: "false"
+  release:
+    types: [published]
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # ------------------------------------------------------------
+      # Checkout suit (this repo)
+      # ------------------------------------------------------------
+      - name: Checkout suit
+        uses: actions/checkout@v4
+        with:
+          path: suit
+
+      # ------------------------------------------------------------
+      # Extract firefly tag from suit/config/app.config
+      # firefly.tag.name = "release-xxxx.x.x"
+      # ------------------------------------------------------------
+      - name: Read Firefly tag from config
+        id: firefly_ref
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          ref="$(
+            grep -E '^[[:space:]]*firefly\.tag\.name[[:space:]]*=' suit/config/app.config | cut -d'"' -f2
+          )"
+
+          if [[ -z "$ref" ]]; then
+            echo "ERROR: firefly.tag.name not found or malformed"
+            exit 1
+          fi
+
+          echo "Using firefly tag: $ref"
+          echo "ref=$ref" >> "$GITHUB_OUTPUT"
+
+      # ------------------------------------------------------------
+      # Checkout firefly repo at configured tag
+      # ------------------------------------------------------------
+      - name: Checkout firefly
+        uses: actions/checkout@v4
+        with:
+          repository: Caltech-IPAC/firefly
+          ref: ${{ steps.firefly_ref.outputs.ref }}
+          path: firefly
+
+      # ------------------------------------------------------------
+      # Checkout Portal online help
+      # ------------------------------------------------------------
+      - name: Checkout Portal online help
+        uses: actions/checkout@v4
+        with:
+          repository: lsst/suit-help
+          ref: master
+          path: suit-help
+
+      # ------------------------------------------------------------
+      # Setup Docker multi-platform build
+      # ------------------------------------------------------------
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      # ------------------------------------------------------------
+      # Login to GHCR (only if pushing)
+      # ------------------------------------------------------------
+      - name: Login to GHCR
+        if: github.event_name == 'release' || inputs.push_image == 'true'
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      # ------------------------------------------------------------
+      # Determine image tag
+      # - Release: use release tag
+      # - Manual: use firefly tag
+      # ------------------------------------------------------------
+      - name: Set image tag
+        id: image_tag
+        run: |
+          if [[ "${{ github.event_name }}" == "release" ]]; then
+            echo "tag=${{ github.event.release.tag_name }}" >> $GITHUB_OUTPUT
+          else
+            echo "tag=${{ steps.firefly_ref.outputs.ref }}" >> $GITHUB_OUTPUT
+          fi
+
+      # ------------------------------------------------------------
+      # Build (and optionally push) multi-platform image
+      # ------------------------------------------------------------
+      - name: Build and push image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: firefly/docker/Dockerfile
+          platforms: linux/amd64,linux/arm64
+          push: ${{ github.event_name == 'release' || inputs.push_image == 'true' }}
+          tags: ghcr.io/lsst/suit:${{ steps.image_tag.outputs.tag }}
+          build-args: |
+            env=ops
+            build_dir=suit
+            target=-Psso.auth.required=false :suit:warAll
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
