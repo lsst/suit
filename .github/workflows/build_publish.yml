@@ -6,7 +6,8 @@ on:
       push_image:
         description: "Push image to GHCR"
         required: false
-        default: "false"
+        default: false
+        type: boolean
   release:
     types: [published]
 
@@ -82,7 +83,7 @@ jobs:
       # Login to GHCR (only if pushing)
       # ------------------------------------------------------------
       - name: Login to GHCR
-        if: github.event_name == 'release' || inputs.push_image == 'true'
+        if: github.event_name == 'release' || inputs.push_image
         uses: docker/login-action@v3
         with:
           registry: ghcr.io
