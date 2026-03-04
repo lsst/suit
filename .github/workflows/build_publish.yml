@@ -3,6 +3,14 @@ name: Build Rubin Portal Image
 on:
   workflow_dispatch:
     inputs:
+      git_tag:
+        description: "Git tag to use(e.g. 'portal-xxxx.x.x' or a full git tag)"
+        required: true
+        type: string
+      img_tag:
+        description: "Optional: Docker image tag(e.g. 'xxxx.x.x'); If omitted, `git_tag` will be used."
+        required: false
+        type: string
       push_image:
         description: "Push image to GHCR"
         required: false
@@ -20,35 +28,32 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Checkout firefly local actions
+        uses: actions/checkout@v4
+        with:
+          repository: Caltech-IPAC/firefly
+          ref: dev
+          path: firefly-actions
+          sparse-checkout: .github/actions
+          fetch-depth: 1
+
       # ------------------------------------------------------------
       # Checkout suit (this repo)
       # ------------------------------------------------------------
       - name: Checkout suit
         uses: actions/checkout@v4
         with:
+          ref: ${{ inputs.git_tag || github.event.release.tag_name }}
           path: suit
 
       # ------------------------------------------------------------
       # Extract firefly tag from suit/config/app.config
-      # firefly.tag.name = "release-xxxx.x.x"
       # ------------------------------------------------------------
-      - name: Read Firefly tag from config
-        id: firefly_ref
-        shell: bash
-        run: |
-          set -euo pipefail
-
-          ref="$(
-            grep -E '^[[:space:]]*firefly\.tag\.name[[:space:]]*=' suit/config/app.config | cut -d'"' -f2
-          )"
-
-          if [[ -z "$ref" ]]; then
-            echo "ERROR: firefly.tag.name not found or malformed"
-            exit 1
-          fi
-
-          echo "Using firefly tag: $ref"
-          echo "ref=$ref" >> "$GITHUB_OUTPUT"
+      - name: Resolve Firefly version
+        id: firefly_version
+        uses: ./firefly-actions/.github/actions/firefly-version
+        with:
+          config_path: ./suit/config/app.config
 
       # ------------------------------------------------------------
       # Checkout firefly repo at configured tag
@@ -57,8 +62,18 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: Caltech-IPAC/firefly
-          ref: ${{ steps.firefly_ref.outputs.ref }}
+          ref: ${{ steps.firefly_version.outputs.ref }}
           path: firefly
+
+      # -------------------------------------------------------------
+      # Use local action to resolve git ref and image tag from inputs
+      # -------------------------------------------------------------
+      - name: Resolve tags
+        id: resolve_tags
+        uses: ./firefly/.github/actions/resolve-tags
+        with:
+          git_tag: ${{ inputs.git_tag }}
+          img_tag: ${{ inputs.img_tag }}
 
       # ------------------------------------------------------------
       # Checkout Portal online help
@@ -91,20 +106,6 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       # ------------------------------------------------------------
-      # Determine image tag
-      # - Release: use release tag
-      # - Manual: use firefly tag
-      # ------------------------------------------------------------
-      - name: Set image tag
-        id: image_tag
-        run: |
-          if [[ "${{ github.event_name }}" == "release" ]]; then
-            echo "tag=${{ github.event.release.tag_name }}" >> $GITHUB_OUTPUT
-          else
-            echo "tag=${{ steps.firefly_ref.outputs.ref }}" >> $GITHUB_OUTPUT
-          fi
-
-      # ------------------------------------------------------------
       # Build (and optionally push) multi-platform image
       # ------------------------------------------------------------
       - name: Build and push image
@@ -114,7 +115,7 @@ jobs:
           file: firefly/docker/Dockerfile
           platforms: linux/amd64,linux/arm64
           push: ${{ github.event_name == 'release' || inputs.push_image == 'true' }}
-          tags: ghcr.io/lsst/suit:${{ steps.image_tag.outputs.tag }}
+          tags: ghcr.io/${{ github.repository }}:${{ steps.resolve_tags.outputs.tag }}
           build-args: |
             env=ops
             build_dir=suit
