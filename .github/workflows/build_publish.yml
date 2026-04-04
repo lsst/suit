@@ -70,7 +70,7 @@ jobs:
       # -------------------------------------------------------------
       - name: Resolve tags
         id: resolve_tags
-        uses: ./firefly/.github/actions/resolve-tags
+        uses: ./firefly-actions/.github/actions/resolve-tags
         with:
           git_tag: ${{ inputs.git_tag }}
           img_tag: ${{ inputs.img_tag }}
@@ -114,7 +114,7 @@ jobs:
           context: .
           file: firefly/docker/Dockerfile
           platforms: linux/amd64,linux/arm64
-          push: ${{ github.event_name == 'release' || inputs.push_image == 'true' }}
+          push: ${{ github.event_name == 'release' || inputs.push_image }}
           tags: ghcr.io/${{ github.repository }}:${{ steps.resolve_tags.outputs.tag }}
           build-args: |
             env=ops
