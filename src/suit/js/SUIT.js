@@ -25,6 +25,9 @@ import {
 } from './actions.jsx';
 import {getRubinDCECollectionAttributes, makeRubinDCERegistryRequest} from './RubinInventoryConfig';
 import {RubinLanding, RubinLandingAPI} from './RubinLanding.jsx';
+import {ROUTER} from 'firefly/templates/router/RouteHelper';
+import {alertviewer} from 'firefly/apps/alertviewer/alertviewer';
+import {AlertIdPanel} from 'firefly/apps/alertviewer/AlertUploadPanel';
 
 import APP_ICON from '../html/images/rubin-favicon-transparent-45px.png';
 import './suit.css';
@@ -36,6 +39,16 @@ const OTHER_CAT= 'Other archive searches';
 const RUBIN_DP1_IMAGES= RUBIN_DP1+'-images';
 const LSST_DP02_DC2_SIAV2_IMAGES= LSST_DP02_DC2+'-siaV2images';
 // const LSST_DP03_SSO_IMAGES=LSST_DP03_SSO+'-images';
+
+/**
+ * Pages are spa within a webapp.  In this case, a page can be alertviewer and a webapp is firefly(applications).
+ * @type {object}
+ * @prop {function} init  an init function to call after firefly completes bootstrap.
+ * @prop {object[]} menu  a list of menu for this page.
+ */
+const pages = {
+    alertviewer
+};
 
 /**
  * This entry point is customized for LSST suit.  Refer to FFEntryPoint.js for information on
@@ -69,6 +82,7 @@ let props = {
         {label: 'IRSA Catalogs', action: 'IrsaCatalog',  category:OTHER_CAT},
         {label: 'NED Objects', action: 'ClassicNedSearchCmd', primary: false, category:OTHER_CAT},
         {label: 'VO Cone Search', action: 'ClassicVOCatalogPanelCmd', primary: false, category: OTHER_CAT},
+        {label: 'Alert Viewer', action: 'AlertViewerSearch', primary: true, category: OTHER_CAT},
         {label: 'Upload', action: 'FileUploadDropDownCmd', primary:true}
     ],
     appTitle: 'Rubin Portal',
@@ -110,7 +124,7 @@ let props = {
                         layout= {{width: '100%'}} name='gaia-tap'/>,
         <TapSearchPanel lockService={true} lockedServiceName={LSST_DP03_SSO} groupKey={LSST_DP03_SSO}
                         layout= {{width: '100%'}} name={LSST_DP03_SSO}/>,
-
+        <AlertIdPanel name='AlertViewerSearch' loadInPlace={false} layout={{width: '100%'}}/>,
         <DLGeneratedDropDown {...{
             name:'RubinDataCollections',
             key:'RubinDataCollections',
@@ -329,13 +343,29 @@ let options = {
 };
 
 options = mergeObjectOnly(options, window.firefly?.options ?? {});
-firefly.bootstrap(props, options,
-    getFireflyViewerWebApiCommands(undefined,
-        [
-            {desc:LSST_DP02_DC2, name:LSST_DP02_DC2},
-            {desc:'DP1 Images', name:'rubin-obscore-images-dp1'},
-            {desc:'DP1 Catalogs', name:'rubin-catalogs-dp1'},
-            {desc:'DP0 Images', name:'rubin-obscore-images-dp0'},
-            {desc:'Gaia TAP at ESAC', name:'gaia-tap'},
-        ],
-    ));
+
+let apiCommands = getFireflyViewerWebApiCommands(
+    undefined,
+    [
+        {desc:LSST_DP02_DC2, name:LSST_DP02_DC2},
+        {desc:'DP1 Images', name:'rubin-obscore-images-dp1'},
+        {desc:'DP1 Catalogs', name:'rubin-catalogs-dp1'},
+        {desc:'DP0 Images', name:'rubin-obscore-images-dp0'},
+        {desc:'Gaia TAP at ESAC', name:'gaia-tap'},
+    ],
+);
+let initApp;
+
+const {template, page} = props;
+
+if (template === ROUTER) {
+    const pageDef = pages[page];
+    props = mergeObjectOnly(props, pageDef?.props);
+    options = mergeObjectOnly(options, pageDef?.options);
+    if (pageDef?.menu) props.menu = pageDef.menu;
+    apiCommands = pageDef?.webApiCommands;
+    initApp = pageDef?.init;
+}
+
+firefly.bootstrap(props, options, apiCommands).then(() => initApp?.());
+
