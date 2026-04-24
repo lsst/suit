@@ -9,4 +9,14 @@
         <url-pattern>/timeseries</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>alertviewer</servlet-name>
+        <jsp-file>/alertviewer.html</jsp-file>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>alertviewer</servlet-name>
+        <url-pattern>/alertviewer/*</url-pattern>
+    </servlet-mapping>
+
+
 </web-fragment>
