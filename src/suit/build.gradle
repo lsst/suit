@@ -13,7 +13,11 @@ dependencies {
 }
 
 jar {
-  includes = ['edu/caltech/ipac/**/*']
+  includes = ['edu/caltech/ipac/**/*', 'web-fragment.xml']
+
+  from("$rootDir/config/web-fragment.xml") {
+    into 'META-INF'
+  }
 }
 
 onlinehelp {
