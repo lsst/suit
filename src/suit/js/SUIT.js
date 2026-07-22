@@ -21,7 +21,8 @@ import {
     makeLsstClickToAction, makeLsstTapEntry, LSST_DP02_DC2, LSST_DP03_SSO, makeLsstSiaEntry, LSST_DP02_SIAV2_DC2,
     RUBIN_PRIMARY_TAP_ID,
     RUBIN_DP03_SSO_ID, RUBIN_LIVE_OBSCORE_ID, getAlternateColorScheme, RUBIN_DP1,
-    LSST_DP02_SIAV2_DC2_ID, RUBIN_DP1_SIAV2, RUBIN_DP1_SIAV2_ID, RUBIN_PRIMARY_TAP
+    LSST_DP02_SIAV2_DC2_ID, RUBIN_DP1_SIAV2, RUBIN_DP1_SIAV2_ID, RUBIN_PRIMARY_TAP, RUBIN_DP2_SIAV2_ID,
+    RUBIN_DP2_SIAV2
 } from './actions.jsx';
 import {getRubinDCECollectionAttributes, makeRubinDCERegistryRequest} from './RubinInventoryConfig';
 import {RubinLanding, RubinLandingAPI} from './RubinLanding.jsx';
@@ -32,8 +33,8 @@ import {AlertIdPanel} from 'firefly/apps/alertviewer/AlertUploadPanel';
 import APP_ICON from '../html/images/rubin-favicon-transparent-45px.png';
 import './suit.css';
 
+const DP1_AND_DP2= 'Data Preview 1 & 2';
 
-const DP1= 'Data Preview 1';
 const DP0= 'Data Preview 0';
 const OTHER_CAT= 'Other archive searches';
 const RUBIN_DP1_IMAGES= RUBIN_DP1+'-images';
@@ -59,14 +60,17 @@ let props = {
     appIcon: <img src={APP_ICON} style={{width:36}}/>,
     showViewsSwitch: true,
     menu: [
-        {label:'Rubin HiPS Search', action: 'HiPSSearchPanel', primary: menuItemPrimary, category:DP1,enabled:menuItemEnabled},
-        {label: 'DP1 Images', action: 'rubin-obscore-images-dp1', primary:menuItemPrimary, category:DP1,
-            title: 'Search DP1 Images',  enabled:menuItemEnabled},
-        {label: 'DP1 Images SIAv2', action: RUBIN_DP1_SIAV2_ID, primary:menuItemPrimary, category: DP1,enabled:menuItemEnabled},
-        {label: 'DP1 Catalogs', action: 'rubin-catalogs-dp1', primary:menuItemPrimary, category:DP1,
-            title: 'Search DP1 catalogs',  enabled:menuItemEnabled},
+        // Image Data Preview 1 & 2
+        {label:'Rubin HiPS Search', action: 'HiPSSearchPanel', primary: menuItemPrimary, category:DP1_AND_DP2,enabled:menuItemEnabled},
+        {label: 'DP1 & DP2 Images', action: 'rubin-obscore-images-dp1dp2', primary:menuItemPrimary, category:DP1_AND_DP2,
+            title: 'Search DP1 & DP2 Images',  enabled:menuItemEnabled},
+        {label: 'DP1 & DP2 Catalogs', action: 'rubin-catalogs-dp1dp2', primary:menuItemPrimary, category:DP1_AND_DP2,
+            title: 'Search DP1 & DP2 catalogs',  enabled:menuItemEnabled},
+        {label: 'DP2 Images SIAv2', action: RUBIN_DP2_SIAV2_ID, primary:menuItemPrimary, category: DP1_AND_DP2,enabled:menuItemEnabled},
+        {label: 'DP1 Images SIAv2', action: RUBIN_DP1_SIAV2_ID, primary:menuItemPrimary, category: DP1_AND_DP2,enabled:menuItemEnabled},
 
 
+        // Data Preview 0
         {label: 'DP0.2 Images', action: 'rubin-obscore-images-dp0', primary:menuItemPrimary, category: DP0,enabled:menuItemEnabled},
         {label: 'DP0.2 Images SIAv2', action: 'dp02-siav2-images', primary:menuItemPrimary, category: DP0,enabled:menuItemEnabled},
         {label: 'DP0.2 Catalogs', action: 'rubin-catalogs-dp0', primary:menuItemPrimary, category: DP0,enabled:menuItemEnabled},
@@ -74,6 +78,7 @@ let props = {
         {label: 'DP0.3 SSO Catalogs', action: LSST_DP03_SSO, primary:menuItemPrimary, category:DP0,
                 title: 'Search DP0.3 catalogs', enabled:menuItemEnabled},
 
+        // Other
         {label: 'Gaia TAP at ESAC', action: 'gaia-tap', primary:menuItemPrimary, category: OTHER_CAT,enabled:menuItemEnabled},
 
         {label: 'Multi-archive TAP', action: 'TAPSearch', category:OTHER_CAT, primary:false},
@@ -95,18 +100,21 @@ let props = {
         <TapSearchPanel lockService={true} lockedServiceName={RUBIN_PRIMARY_TAP} groupKey={RUBIN_DP1_IMAGES}
                         layout= {{width: '100%'}} name={RUBIN_DP1_IMAGES}/>,
         <TapSearchPanel lockService={true} lockedServiceName={RUBIN_PRIMARY_TAP}
-                        groupKey='rubin-obscore-images-dp1' name='rubin-obscore-images-dp1'
+                        groupKey='rubin-obscore-images-dp1dp2' name='rubin-obscore-images-dp1dp2'
                         lockObsCore={true}
-                        obsCoreLockTitle='DP1 Image Search via ObsTAP' layout= {{width: '100%'}}/>,
+                        obsCoreLockTitle='DP1 & DP2 Image Search via ObsTAP' layout= {{width: '100%'}}/>,
+
         <TapSearchPanel lockService={true} lockedServiceName={RUBIN_PRIMARY_TAP}
-                        groupKey='rubin-catalogs-dp1' name='rubin-catalogs-dp1'
+                        groupKey='rubin-catalogs-dp1dp2' name='rubin-catalogs-dp1dp2'
                         layout= {{width: '100%'}}/>,
-        <SIAv2SearchPanel lockService={true} lockedServiceName={RUBIN_DP1_SIAV2_ID} groupKey={RUBIN_DP1_SIAV2_ID}
+
+
+        <SIAv2SearchPanel lockService={true} lockedServiceName={RUBIN_DP2_SIAV2} groupKey={RUBIN_DP2_SIAV2_ID}
+                          layout= {{width: '100%'}} lockTitle='DP2 Image Search via SIAv2' name={RUBIN_DP2_SIAV2_ID}/>,
+        <SIAv2SearchPanel lockService={true} lockedServiceName={RUBIN_DP1_SIAV2} groupKey={RUBIN_DP1_SIAV2_ID}
                           layout= {{width: '100%'}} lockTitle='DP1 Image Search via SIAv2' name={RUBIN_DP1_SIAV2_ID}/>,
         <SIAv2SearchPanel lockService={true} lockedServiceName={LSST_DP02_SIAV2_DC2} groupKey='LSST_DP02_DC2_SIAV2_IMAGES'
-                          layout= {{width: '100%'}}
-                          lockTitle='DP0.2 Image Search via SIAv2'
-                          name='dp02-siav2-images'/>,
+                          layout= {{width: '100%'}} lockTitle='DP0.2 Image Search via SIAv2' name='dp02-siav2-images'/>,
         <TapSearchPanel lockService={true} lockedServiceName={RUBIN_PRIMARY_TAP}
                         groupKey='rubin-obscore-images-dp0' name='rubin-obscore-images-dp0'
                         lockObsCore={true}
@@ -142,18 +150,18 @@ const alwaysEnabled= [
         'SIAv2Search', 'FileUploadDropDownCmd'];
 
 const defPrimaryMenuList= [
-    'rubin-obscore-images-dp1', 'rubin-catalogs-dp1',
-    'rubin-obscore-images-dp1',
+    'rubin-obscore-images-dp1dp2', 'rubin-catalogs-dp1dp2',
     'RubinDataCollections', RUBIN_DP1_IMAGES, LSST_DP02_DC2_SIAV2_IMAGES, LSST_DP02_DC2,
     RUBIN_DP1,
 ];
 
 const defEnabledMenuList= [
-    'rubin-obscore-images-dp1', 'rubin-catalogs-dp1', 'dp02-siav2-images',
+    'rubin-obscore-images-dp1dp2', 'rubin-catalogs-dp1dp2',
+    'dp02-siav2-images',
     'rubin-obscore-images-dp0', 'rubin-catalogs-dp0',
     'RubinDataCollections', 'gaia-tap',
     LSST_DP02_DC2_SIAV2_IMAGES, LSST_DP02_DC2, LSST_DP03_SSO,
-    'HiPSSearchPanel', RUBIN_DP1_SIAV2_ID, RUBIN_DP1
+    'HiPSSearchPanel', RUBIN_DP2_SIAV2_ID, RUBIN_DP1_SIAV2_ID, RUBIN_DP1
 ];
 
 
@@ -188,6 +196,7 @@ const tapServices=  [
 
 const siaServices = [
     makeLsstSiaEntry(RUBIN_DP1_SIAV2_ID, RUBIN_DP1_SIAV2, 'https://data-int.lsst.cloud/api/sia/dp1/query'),
+    makeLsstSiaEntry(RUBIN_DP2_SIAV2_ID, RUBIN_DP2_SIAV2, 'https://data-int.lsst.cloud/api/sia/dp2/query'),
     makeLsstSiaEntry(LSST_DP02_SIAV2_DC2_ID, LSST_DP02_SIAV2_DC2, 'https://data-int.lsst.cloud/api/sia/dp02/query'),
     ...getSIAv2ServicesByName(['IRSA', 'CADC']),
 ];
@@ -304,15 +313,11 @@ let options = {
         hipsSources: 'lsst,cds',
         defHipsSources: {source: 'lsst', label: 'Rubin Featured'},
         mergedListPriority: 'lsst',
+        adhocMocIncludeAdditionSources: 'lsst',
         adhocMocSource: {
-            sources: [
-                'temp://lsst/dp02_dc2/hips/images/color_gri',
-                'temp://lsst/dp02_dc2/hips/images/band_u',
-                'temp://lsst/dp02_dc2/hips/images/band_g',
-            ],
-            label: 'Rubin Featured MOC '
+            sources: [],
+            label: 'Rubin Featured MOC',
         },
-        adhocMocIncludeAdditionSources: '',
     },
     // workspace: {showOptions: true},
     searchActions : [

@@ -33,4 +33,5 @@ workspace.root.path = @workspace.root.path@
 workspace.propfind.infinity = @__$workspace.propfind.infinity@
 
 lsst.hips.masterUrl=@lsst.hips.masterUrl@
+lsst.moc.masterUrl=@lsst.moc.masterUrl@
 redis.host = @redis.host@

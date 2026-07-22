@@ -4,12 +4,12 @@ import {getTapServices} from 'firefly/ui/tap/TapUtil.js';
 import {makeWorldPt} from 'firefly/visualize/Point.js';
 
 export const RUBIN_DP1= 'RUBIN DP1';
-export const RUBIN_DP1_ID= 'RUBIN_DP1';
 export const LSST_DP02_DC2= 'LSST DP0.2 DC2';
 export const RUBIN_PRIMARY_TAP= 'Rubin TAP';
 export const RUBIN_PRIMARY_TAP_ID= 'RubinPrimaryTAPID';
-export const RUBIN_DP02_DC2_ID= 'RubinDp02Dc2';
-export const RUBIN_SIA_DP0_ID= 'RubinSiaDp02Dc2';
+export const RUBIN_TAP_DP2= 'RubinTapDp2';
+// export const RUBIN_DP02_DC2_ID= 'RubinDp02Dc2';
+// export const RUBIN_SIA_DP0_ID= 'RubinSiaDp02Dc2';
 // export const LSST_DP03_SSP_ID= 'RubinDp03SSO';
 export const LSST_DP03_SSO='LSST DP0.3 SSO';
 export const RUBIN_DP03_SSO_ID='RubinDp03SSO';
@@ -21,7 +21,9 @@ export const RUBIN_LIVE_OBSCORE_ID=  'RubinLiveObsCore';
 export const LSST_DP02_SIAV2_DC2= 'DP0 Images SIAv2';
 export const LSST_DP02_SIAV2_DC2_ID= 'RubinSiaDp02Dc2';
 export const RUBIN_DP1_SIAV2= 'DP1 Images SIAv2';
+export const RUBIN_DP2_SIAV2= 'DP2 Images SIAv2';
 export const RUBIN_DP1_SIAV2_ID= 'DP1ImagesSIAv2';
+export const RUBIN_DP2_SIAV2_ID= 'DP2ImagesSIAv2';
 
 function getLsstTapServiceUrl() {
     const url= getTapServices().filter( ({label}) => label===LSST_DP02_DC2)?.[0]?.value;
