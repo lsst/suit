@@ -204,7 +204,7 @@ const siaServices = [
 const rubinDataServiceOptions= {
     targetPanelExampleRow1: ['40.07, -34.4', '106.1, -10.45', '37.83, 6.95'],
     targetPanelExampleRow2: ['53.25, -28.089 EQ_J2000', '62, -37'],
-    enableObsCoreDownload: false, //disable for the portal
+    // enableObsCoreDownload: false, //disable for the portal
     cutoutDefSizeDeg: .02,
     enableMetadataLoad: true, // loads metadata for columns to generate input field options
     filterDefinitions: [
@@ -307,6 +307,18 @@ let options = {
         },
         [RUBIN_LIVE_OBSCORE_ID]  : {},
         'rubin'  : {},
+        enumConfig: {
+            columnNames: ['refBand', 'lsst_band'],
+            order: ['u', 'g', 'r', 'i', 'z', 'y'],
+            palette: {
+                'u' : '#0c71ff',
+                'g' : '#49be61',
+                'r' : '#c61c00',
+                'i' : '#ffc200',
+                'z' : '#f341a2',
+                'y' : '#5d0000',
+            }
+        }
     },
     hips: {
         readoutShowsPixel : true,
